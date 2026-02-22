@@ -26,6 +26,67 @@ const Index = () => {
   const [directoryHandle, setDirectoryHandle] = useState<any>(null);
   const [isRenaming, setIsRenaming] = useState(false);
 
+  // Auto-Updater State
+  const [appVersion, setAppVersion] = useState('');
+  const [updateStatus, setUpdateStatus] = useState<string>('');
+  const [updateProgress, setUpdateProgress] = useState<number>(0);
+  const [isUpdateChecking, setIsUpdateChecking] = useState(false);
+  const [isUpdateDownloaded, setIsUpdateDownloaded] = useState(false);
+
+  useEffect(() => {
+    // @ts-ignore
+    const electron = window.electron;
+    if (electron && electron.updater) {
+      electron.updater.onAppVersion((version: string) => setAppVersion(version));
+
+      electron.updater.onUpdateChecking(() => {
+        setIsUpdateChecking(true);
+        setUpdateStatus('Checking for updates...');
+      });
+
+      electron.updater.onUpdateAvailable((version: string) => {
+        setUpdateStatus(`Downloading v${version}...`);
+      });
+
+      electron.updater.onUpdateNotAvailable(() => {
+        setIsUpdateChecking(false);
+        setUpdateStatus('You are on the latest version.');
+      });
+
+      electron.updater.onUpdateError((error: string) => {
+        setIsUpdateChecking(false);
+        setUpdateStatus(`Update check failed: ${error}`);
+      });
+
+      electron.updater.onUpdateProgress((progress: number) => {
+        setUpdateProgress(progress);
+        setUpdateStatus(`Downloading: ${progress}%`);
+      });
+
+      electron.updater.onUpdateDownloaded(() => {
+        setIsUpdateChecking(false);
+        setIsUpdateDownloaded(true);
+        setUpdateStatus('Update downloaded and ready to install!');
+      });
+    }
+  }, []);
+
+  const handleCheckForUpdates = () => {
+    // @ts-ignore
+    if (window.electron?.updater) {
+      // @ts-ignore
+      window.electron.updater.checkForUpdates();
+    }
+  };
+
+  const handleInstallUpdate = () => {
+    // @ts-ignore
+    if (window.electron?.updater) {
+      // @ts-ignore
+      window.electron.updater.installUpdate();
+    }
+  };
+
   const [anchorText, setAnchorText] = useState('');
   const [position, setPosition] = useState<SearchPosition>('after');
   const [prefix, setPrefix] = useState('');
@@ -360,10 +421,51 @@ const Index = () => {
         )}
 
         {activeTab === 'settings' && (
-          <div className="h-full flex flex-col items-center justify-center bg-[#141414] text-[#848484] font-mono animate-in fade-in duration-200">
-            <Settings size={40} className="mb-4 opacity-50 text-[#b8f2a0]" />
-            <p className="font-bold text-[13px] text-[#c8c8c8] uppercase tracking-[1px]">Settings coming soon</p>
-            <p className="text-[11px] mt-2 text-[#848484]">App preferences and regex templates.</p>
+          <div className="h-full flex flex-col items-center justify-center bg-[#141414] text-[#848484] font-mono animate-in fade-in duration-200 p-8">
+
+            <div className="max-w-md w-full border border-[#2e2e2e] bg-[#0d0d0d] rounded-[8px] p-6 shadow-xl flex flex-col items-center">
+              <Settings size={32} className="mb-4 text-[#b8f2a0]" />
+              <h2 className="font-bold text-[16px] text-[#f5f5f5] mb-1">Nomina Settings</h2>
+              <p className="text-[12px] text-[#848484] mb-6">Current Version: v{appVersion || '1.0.0'}</p>
+
+              <div className="w-full bg-[#141414] border border-[#2e2e2e] rounded-[6px] p-4 flex flex-col items-center">
+
+                {isUpdateDownloaded ? (
+                  <Button
+                    className="w-full h-10 rounded-[6px] text-[12px] font-bold tracking-[1px] uppercase font-mono shadow-sm bg-[rgba(184,242,160,0.13)] text-[#b8f2a0] border border-[#b8f2a0] hover:bg-[rgba(184,242,160,0.3)] transition-all"
+                    onClick={handleInstallUpdate}
+                  >
+                    Restart & Install Update
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    onClick={handleCheckForUpdates}
+                    disabled={isUpdateChecking}
+                    className="w-full h-10 rounded-[6px] border border-[#3d3d3d] bg-[#1e1e1e] hover:bg-[#272727] text-[#c8c8c8] hover:text-[#f5f5f5] text-[12px] font-bold tracking-[1px] uppercase font-mono transition-all flex items-center justify-center gap-2"
+                  >
+                    {isUpdateChecking ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                    {isUpdateChecking ? 'Checking...' : 'Check for Updates'}
+                  </Button>
+                )}
+
+                {updateStatus && (
+                  <div className="mt-4 w-full text-center">
+                    <p className="text-[11px] text-[#848484] mb-2">{updateStatus}</p>
+                    {isUpdateChecking && updateProgress > 0 && updateProgress < 100 && (
+                      <div className="w-full h-1.5 bg-[#1e1e1e] rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-[#b8f2a0] transition-all duration-300 ease-out"
+                          style={{ width: `${updateProgress}%` }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+              </div>
+            </div>
+
           </div>
         )}
       </div>
