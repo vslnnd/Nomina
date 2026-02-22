@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #0d0d0d;
+    --bg2: #141414;
+    --bg3: #1e1e1e;
+    --bg4: #272727;
+    --border: #2e2e2e;
+    --border2: #3d3d3d;
+    --accent: #b8f2a0;
+    --accent-dim: rgba(184, 242, 160, 0.13);
+    --red: #ff5c5c;
+    --text: #f5f5f5;
+    --text2: #c8c8c8;
+    --text3: #848484;
+    
+    --radius: 6px;
+
+    --background: var(--bg);
+    --foreground: var(--text);
+
+    --card: var(--bg2);
+    --card-foreground: var(--text);
+
+    --popover: var(--bg2);
+    --popover-foreground: var(--text);
+
+    --primary: var(--accent);
+    --primary-foreground: #000000;
+
+    --secondary: var(--bg3);
+    --secondary-foreground: var(--text2);
+
+    --muted: var(--bg3);
+    --muted-foreground: var(--text3);
+
+    --destructive: var(--red);
+    --destructive-foreground: #ffffff;
+
+    --input: var(--border);
+    --ring: var(--accent);
+
+    --sidebar-background: var(--bg2);
+    --sidebar-foreground: var(--text);
+    --sidebar-primary: var(--accent);
+    --sidebar-primary-foreground: #000;
+    --sidebar-accent: var(--bg3);
+    --sidebar-accent-foreground: var(--text);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--accent);
+  }
+
+  .dark {
+    /* Only dark theme used */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
