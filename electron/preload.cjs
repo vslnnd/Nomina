@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('electron', {
     minimize: () => ipcRenderer.send('window-minimize'),
     maximize: () => ipcRenderer.send('window-maximize'),
     close: () => ipcRenderer.send('window-close'),
+    openExternal: (url) => ipcRenderer.invoke('open-external', url),
     updater: {
         checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
         installUpdate: () => ipcRenderer.invoke('install-update'),
@@ -14,5 +15,10 @@ contextBridge.exposeInMainWorld('electron', {
         onUpdateProgress: (callback) => ipcRenderer.on('update-progress', (_event, progress) => callback(progress)),
         onUpdateDownloaded: (callback) => ipcRenderer.on('update-downloaded', callback),
         onAppVersion: (callback) => ipcRenderer.on('app-version', (_event, version) => callback(version)),
+    },
+    history: {
+        getHistory: () => ipcRenderer.invoke('get-history'),
+        addHistoryEntry: (entry) => ipcRenderer.invoke('add-history-entry', entry),
+        clearHistory: () => ipcRenderer.invoke('clear-history'),
     }
 })

@@ -29,9 +29,28 @@ const Index = () => {
   // Auto-Updater State
   const [appVersion, setAppVersion] = useState('');
   const [updateStatus, setUpdateStatus] = useState<string>('');
-  const [updateProgress, setUpdateProgress] = useState<number>(0);
+  const [updateProgress, setUpdateProgress] = useState<{ percent: number; bytesPerSecond: number; transferred: number; total: number } | null>(null);
   const [isUpdateChecking, setIsUpdateChecking] = useState(false);
   const [isUpdateDownloaded, setIsUpdateDownloaded] = useState(false);
+
+  // History
+  interface HistoryEntry {
+    id: string;
+    timestamp: string;
+    anchorText: string;
+    totalRenamed: number;
+    files: { originalName: string; newName: string }[];
+  }
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [openHistoryId, setOpenHistoryId] = useState<string | null>(null);
+
+  const loadHistory = async () => {
+    // @ts-ignore
+    const h = await window.electron?.history?.getHistory();
+    if (h) setHistory(h);
+  };
+
+  useEffect(() => { loadHistory(); }, []);
 
   useEffect(() => {
     // @ts-ignore
@@ -58,9 +77,9 @@ const Index = () => {
         setUpdateStatus(`Update check failed: ${error}`);
       });
 
-      electron.updater.onUpdateProgress((progress: number) => {
+      electron.updater.onUpdateProgress((progress: { percent: number; bytesPerSecond: number; transferred: number; total: number }) => {
         setUpdateProgress(progress);
-        setUpdateStatus(`Downloading: ${progress}%`);
+        setUpdateStatus(`Downloading v${progress.percent}%...`);
       });
 
       electron.updater.onUpdateDownloaded(() => {
@@ -253,6 +272,21 @@ const Index = () => {
         }
       }
       showSuccess(`Successfully renamed ${successCount} files directly in your folder!`);
+
+      // Save to history
+      if (successCount > 0) {
+        const renamedFiles = files.filter(f => f.fileHandle && f.newName !== f.originalFile.name);
+        const entry = {
+          id: Math.random().toString(36).substr(2, 9),
+          timestamp: new Date().toISOString(),
+          anchorText: anchorText || '(no anchor)',
+          totalRenamed: successCount,
+          files: renamedFiles.map(f => ({ originalName: f.originalFile.name, newName: f.newName }))
+        };
+        // @ts-ignore
+        await window.electron?.history?.addHistoryEntry(entry);
+        setHistory(prev => [entry, ...prev]);
+      }
     } catch (err) {
       showError("An error occurred during renaming");
     } finally {
@@ -280,6 +314,23 @@ const Index = () => {
     setFiles([]);
     setDirectoryHandle(null);
     showSuccess("Cleared all files");
+  };
+
+  const formatBytes = (bytes: number) => {
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const formatSpeed = (bps: number) => {
+    if (bps < 1024 * 1024) return `${(bps / 1024).toFixed(0)} KB/s`;
+    return `${(bps / (1024 * 1024)).toFixed(1)} MB/s`;
+  };
+
+  const formatEta = (transferred: number, total: number, bps: number) => {
+    if (bps <= 0) return '–';
+    const remaining = (total - transferred) / bps;
+    if (remaining < 60) return `${Math.round(remaining)}s remaining`;
+    return `${Math.round(remaining / 60)}m remaining`;
   };
 
   const hasLocalHandles = files.some(f => f.fileHandle);
@@ -413,10 +464,76 @@ const Index = () => {
         )}
 
         {activeTab === 'history' && (
-          <div className="h-full flex flex-col items-center justify-center bg-[#141414] text-[#848484] font-mono animate-in fade-in duration-200">
-            <Clock size={40} className="mb-4 opacity-50 text-[#b8f2a0]" />
-            <p className="font-bold text-[13px] text-[#c8c8c8] uppercase tracking-[1px]">History coming soon</p>
-            <p className="text-[11px] mt-2 text-[#848484]">Your previous renaming batches will appear here.</p>
+          <div className="h-full flex flex-col bg-[#141414] animate-in fade-in duration-200 font-mono">
+            {/* Toolbar */}
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#2e2e2e] shrink-0">
+              <span className="text-[11px] font-bold text-[#848484] uppercase tracking-[0.5px]">
+                {history.length > 0 ? `${history.length} entr${history.length === 1 ? 'y' : 'ies'}` : ''}
+              </span>
+              <div className="flex gap-2">
+                <button
+                  onClick={loadHistory}
+                  className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.4px] bg-[#1e1e1e] border border-[#3d3d3d] text-[#848484] hover:bg-[#272727] hover:text-[#c8c8c8] rounded-[5px] transition-all"
+                >↻ Refresh</button>
+                <button
+                  onClick={async () => {
+                    // @ts-ignore
+                    await window.electron?.history?.clearHistory();
+                    setHistory([]);
+                  }}
+                  className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.4px] bg-[#1e1e1e] border border-[#3d3d3d] text-[#848484] hover:bg-[#272727] hover:text-[#c8c8c8] rounded-[5px] transition-all"
+                >Clear All</button>
+              </div>
+            </div>
+
+            {/* List */}
+            <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2">
+              {history.length === 0 ? (
+                <div className="flex-1 flex flex-col items-center justify-center text-[#848484]">
+                  <Clock size={40} className="mb-4 opacity-50 text-[#b8f2a0]" />
+                  <p className="font-bold text-[13px] text-[#c8c8c8] uppercase tracking-[1px]">No history yet</p>
+                  <p className="text-[11px] mt-2">Completed rename batches will appear here.</p>
+                </div>
+              ) : (
+                history.map(entry => {
+                  const d = new Date(entry.timestamp);
+                  const dateStr = d.toLocaleDateString() + ' · ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  const isOpen = openHistoryId === entry.id;
+                  return (
+                    <div key={entry.id} className="bg-[#1e1e1e] border border-[#2e2e2e] rounded-[7px] overflow-hidden">
+                      {/* Header — clickable to expand */}
+                      <div
+                        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-[#272727] transition-colors select-none"
+                        onClick={() => setOpenHistoryId(isOpen ? null : entry.id)}
+                      >
+                        <span className="text-[9px] text-[#848484] transition-transform duration-150" style={{ display: 'inline-block', transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}>▶</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[12px] font-bold text-[#f5f5f5] truncate">
+                            {entry.files[0]?.originalName}{entry.files.length > 1 ? ` +${entry.files.length - 1} more` : ''}
+                          </div>
+                          <div className="text-[10px] text-[#848484] mt-0.5">
+                            {dateStr} · anchor: <span className="text-[#b8f2a0]">{entry.anchorText}</span> · {entry.totalRenamed} file{entry.totalRenamed !== 1 ? 's' : ''} renamed
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Expanded file list */}
+                      {isOpen && (
+                        <div className="border-t border-[#2e2e2e] px-3 py-2 flex flex-col gap-1.5">
+                          {entry.files.map((f, i) => (
+                            <div key={i} className="flex items-center gap-2 text-[11px]">
+                              <span className="text-[#848484] truncate max-w-[38%]">{f.originalName}</span>
+                              <span className="text-[#3d3d3d] shrink-0">→</span>
+                              <span className="text-[#b8f2a0] font-bold truncate">{f.newName}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         )}
 
@@ -454,14 +571,21 @@ const Index = () => {
                   </div>
                 </div>
 
-                {updateStatus && (
+                {updateProgress && (
                   <div className="flex items-center gap-3 px-[14px] py-3 min-h-[48px]">
-                    <div className="text-[11px] text-[var(--text3)]">{updateStatus}</div>
-                    {isUpdateChecking && updateProgress > 0 && updateProgress < 100 && (
-                      <div className="flex-1 h-1 bg-[var(--bg4)] rounded-full overflow-hidden">
-                        <div className="h-full bg-[#b8f2a0] transition-all duration-300" style={{ width: `${updateProgress}%` }} />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[11px] text-[var(--text3)]">{updateStatus}</span>
+                        <span className="text-[11px] text-[#b8f2a0] font-bold">{updateProgress.percent}%</span>
                       </div>
-                    )}
+                      <div className="w-full h-1 bg-[#272727] rounded-full overflow-hidden">
+                        <div className="h-full bg-[#b8f2a0] transition-all duration-300" style={{ width: `${updateProgress.percent}%` }} />
+                      </div>
+                      <div className="flex items-center justify-between mt-1.5 text-[10px] text-[#848484]">
+                        <span>{formatBytes(updateProgress.transferred)} / {formatBytes(updateProgress.total)}</span>
+                        <span>{formatSpeed(updateProgress.bytesPerSecond)} · {formatEta(updateProgress.transferred, updateProgress.total, updateProgress.bytesPerSecond)}</span>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

@@ -1,6 +1,21 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
+const fs = require('fs');
+
+const HISTORY_PATH = path.join(app.getPath('userData'), 'nomina_history.json');
+
+function loadHistory() {
+  try {
+    if (fs.existsSync(HISTORY_PATH)) return JSON.parse(fs.readFileSync(HISTORY_PATH, 'utf8'));
+  } catch (e) {}
+  return [];
+}
+
+function saveHistory(history) {
+  try { fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2)); return true; }
+  catch (e) { return false; }
+}
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -57,7 +72,12 @@ app.whenReady().then(() => {
   });
 
   autoUpdater.on('download-progress', (progress) => {
-    if (win) win.webContents.send('update-progress', Math.round(progress.percent));
+    if (win) win.webContents.send('update-progress', {
+      percent: Math.round(progress.percent),
+      bytesPerSecond: progress.bytesPerSecond,
+      transferred: progress.transferred,
+      total: progress.total
+    });
   });
 
   autoUpdater.on('update-downloaded', () => {
@@ -77,6 +97,19 @@ app.whenReady().then(() => {
   ipcMain.handle('install-update', () => {
     autoUpdater.quitAndInstall();
   });
+
+  ipcMain.handle('get-history', () => loadHistory());
+
+  ipcMain.handle('add-history-entry', (_, entry) => {
+    const h = loadHistory();
+    h.unshift(entry);
+    if (h.length > 100) h.splice(100);
+    return saveHistory(h);
+  });
+
+  ipcMain.handle('clear-history', () => saveHistory([]));
+
+  ipcMain.handle('open-external', (_, url) => shell.openExternal(url));
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
