@@ -57,9 +57,14 @@ rl.question('New version (e.g. 1.1.0): ', (version) => {
                 execSync('git push', { stdio: 'inherit' });
                 console.log('✓ git push');
 
+                // 4b. Create and push git tag (required for electron-builder GitHub publish)
+                execSync(`git tag v${version}`, { stdio: 'inherit' });
+                execSync('git push --tags', { stdio: 'inherit' });
+                console.log(`✓ git tag v${version} pushed`);
+
                 // 5. Build + publish
                 console.log('\n🔨 Building and publishing to GitHub...\n');
-                execSync('npm run electron:build', { stdio: 'inherit' });
+                execSync('vite build && electron-builder --publish always', { stdio: 'inherit' });
 
                 console.log(`\n✅ v${version} released successfully!`);
 
