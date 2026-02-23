@@ -294,7 +294,7 @@ const Index = () => {
           </div>
           <div className="flex items-baseline gap-2">
             <h1 className="logo-name font-sans font-extrabold text-[17px] tracking-[-0.3px] text-[#f5f5f5]">Nomina</h1>
-            <span className="logo-version text-[10px] text-[#848484] font-mono mt-[1px]">v1.0.0 by VSL software</span>
+            <span className="logo-version text-[10px] text-[#848484] font-mono mt-[1px]">v{appVersion || '...'} by VSL software</span>
           </div>
         </div>
 
