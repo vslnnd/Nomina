@@ -421,51 +421,77 @@ const Index = () => {
         )}
 
         {activeTab === 'settings' && (
-          <div className="h-full flex flex-col items-center justify-center bg-[#141414] text-[#848484] font-mono animate-in fade-in duration-200 p-8">
+          <div className="h-full overflow-y-auto bg-[var(--bg)] animate-in fade-in duration-200">
+            <div className="max-w-2xl mx-auto px-4 py-4 flex flex-col gap-3 font-mono">
 
-            <div className="max-w-md w-full border border-[#2e2e2e] bg-[#0d0d0d] rounded-[8px] p-6 shadow-xl flex flex-col items-center">
-              <Settings size={32} className="mb-4 text-[#b8f2a0]" />
-              <h2 className="font-bold text-[16px] text-[#f5f5f5] mb-1">Nomina Settings</h2>
-              <p className="text-[12px] text-[#848484] mb-6">Current Version: v{appVersion || '1.0.0'}</p>
+              {/* Updates */}
+              <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[8px] overflow-hidden">
+                <div className="px-[14px] py-2 text-[10px] font-bold tracking-[0.8px] uppercase text-[var(--text3)] border-b border-[var(--border)] bg-[var(--bg3)]">Updates</div>
 
-              <div className="w-full bg-[#141414] border border-[#2e2e2e] rounded-[6px] p-4 flex flex-col items-center">
-
-                {isUpdateDownloaded ? (
-                  <Button
-                    className="w-full h-10 rounded-[6px] text-[12px] font-bold tracking-[1px] uppercase font-mono shadow-sm bg-[rgba(184,242,160,0.13)] text-[#b8f2a0] border border-[#b8f2a0] hover:bg-[rgba(184,242,160,0.3)] transition-all"
-                    onClick={handleInstallUpdate}
-                  >
-                    Restart & Install Update
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline"
-                    onClick={handleCheckForUpdates}
-                    disabled={isUpdateChecking}
-                    className="w-full h-10 rounded-[6px] border border-[#3d3d3d] bg-[#1e1e1e] hover:bg-[#272727] text-[#c8c8c8] hover:text-[#f5f5f5] text-[12px] font-bold tracking-[1px] uppercase font-mono transition-all flex items-center justify-center gap-2"
-                  >
-                    {isUpdateChecking ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
-                    {isUpdateChecking ? 'Checking...' : 'Check for Updates'}
-                  </Button>
-                )}
+                <div className="flex items-center justify-between gap-3 px-[14px] py-3 border-b border-[var(--border)] min-h-[52px]">
+                  <div>
+                    <div className="text-[13px] font-semibold text-[var(--text)] mb-0.5">Current Version</div>
+                    <div className="text-[11px] text-[var(--text3)]">v{appVersion || '...'}</div>
+                  </div>
+                  <div className="shrink-0">
+                    {isUpdateDownloaded ? (
+                      <button
+                        onClick={handleInstallUpdate}
+                        className="px-3 py-1.5 rounded-[6px] text-[11px] font-bold uppercase tracking-[0.4px] bg-[rgba(184,242,160,0.13)] text-[#b8f2a0] border border-[rgba(184,242,160,0.25)] hover:bg-[rgba(184,242,160,0.2)] hover:border-[#b8f2a0] transition-all cursor-pointer"
+                      >
+                        Restart & Install
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleCheckForUpdates}
+                        disabled={isUpdateChecking}
+                        className="px-3 py-1.5 rounded-[6px] text-[11px] font-bold uppercase tracking-[0.4px] bg-[rgba(184,242,160,0.13)] text-[#b8f2a0] border border-[rgba(184,242,160,0.25)] hover:bg-[rgba(184,242,160,0.2)] hover:border-[#b8f2a0] transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                      >
+                        {isUpdateChecking ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
+                        {isUpdateChecking ? 'Checking...' : 'Check Now'}
+                      </button>
+                    )}
+                  </div>
+                </div>
 
                 {updateStatus && (
-                  <div className="mt-4 w-full text-center">
-                    <p className="text-[11px] text-[#848484] mb-2">{updateStatus}</p>
+                  <div className="flex items-center gap-3 px-[14px] py-3 min-h-[48px]">
+                    <div className="text-[11px] text-[var(--text3)]">{updateStatus}</div>
                     {isUpdateChecking && updateProgress > 0 && updateProgress < 100 && (
-                      <div className="w-full h-1.5 bg-[#1e1e1e] rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-[#b8f2a0] transition-all duration-300 ease-out"
-                          style={{ width: `${updateProgress}%` }}
-                        />
+                      <div className="flex-1 h-1 bg-[var(--bg4)] rounded-full overflow-hidden">
+                        <div className="h-full bg-[#b8f2a0] transition-all duration-300" style={{ width: `${updateProgress}%` }} />
                       </div>
                     )}
                   </div>
                 )}
-
               </div>
-            </div>
 
+              {/* About */}
+              <div className="bg-[var(--bg2)] border border-[var(--border)] rounded-[8px] overflow-hidden">
+                <div className="px-[14px] py-2 text-[10px] font-bold tracking-[0.8px] uppercase text-[var(--text3)] border-b border-[var(--border)] bg-[var(--bg3)]">About</div>
+
+                <div className="flex items-center justify-between gap-3 px-[14px] py-3 border-b border-[var(--border)] min-h-[52px]">
+                  <div>
+                    <div className="text-[13px] font-semibold text-[var(--text)] mb-0.5">VSL Nomina</div>
+                    <div className="text-[11px] text-[var(--text3)]">Smart file renamer with anchor-based logic</div>
+                  </div>
+                  <span className="text-[10px] font-bold text-[var(--text3)] tracking-[0.5px] uppercase shrink-0">VSL Software</span>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 px-[14px] py-3 min-h-[52px]">
+                  <div>
+                    <div className="text-[13px] font-semibold text-[var(--text)] mb-0.5">Source Code</div>
+                    <div className="text-[11px] text-[var(--text3)]">github.com/vslnnd/Nomina</div>
+                  </div>
+                  <button
+                    // @ts-ignore
+                    onClick={() => window.electron?.openExternal('https://github.com/vslnnd/Nomina')}
+                    className="px-3 py-1.5 rounded-[6px] text-[11px] font-bold uppercase tracking-[0.4px] bg-transparent border border-transparent text-[var(--text3)] hover:bg-[var(--bg3)] hover:text-[var(--text2)] hover:border-[var(--border2)] transition-all cursor-pointer"
+                  >View ↗</button>
+                </div>
+              </div>
+
+            </div>
           </div>
         )}
       </div>
