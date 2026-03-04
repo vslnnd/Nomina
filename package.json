@@ -1,0 +1,46 @@
+{
+  "name": "nomina",
+  "version": "1.0.0",
+  "description": "Smart file renaming tool for IP and legal documents",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "electron:build": "node release.js",
+    "electron:build:local": "electron-builder --win --publish never"
+  },
+  "build": {
+    "appId": "com.vslnnd.nomina",
+    "productName": "Nomina",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "vslnnd",
+      "repo": "Nomina"
+    },
+    "files": [
+      "**/*",
+      "!.env",
+      "!.env.example",
+      "!release.js",
+      "!*.md",
+      "!.gitignore"
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.7",
+    "pdfjs-dist": "^3.11.174",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "electron": "^28.2.0",
+    "electron-builder": "^24.9.1"
+  }
+}
