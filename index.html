@@ -55,13 +55,11 @@
     .logo { display: flex; align-items: center; gap: 9px; -webkit-app-region: no-drag; }
     .logo-icon {
       width: 24px; height: 24px; background: var(--accent);
-      border-radius: 5px; display: flex; align-items: center; justify-content: center;
+      border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .logo-icon svg { width: 14px; height: 14px; }
     .logo-name { font-family: var(--sans); font-weight: 800; font-size: 17px; letter-spacing: -.3px; }
-    .logo-sub { display: flex; flex-direction: column; }
-    .logo-tagline { font-size: 10px; color: var(--text3); font-weight: 400; }
-    #app-version { font-size: 10px; color: var(--text3); font-weight: 400; }
+    .logo-version { font-size: 10px; color: var(--text3); font-weight: 400; margin-top: 1px; }
 
     /* ── Update Banner ── */
     #update-banner {
@@ -151,19 +149,22 @@
     .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
     /* ── Toggle ── */
-    .toggle-wrap { display: flex; align-items: center; justify-content: space-between; }
-    .toggle { position: relative; width: 38px; height: 20px; flex-shrink: 0; }
+    .toggle {
+      position: relative; width: 42px; height: 24px; flex-shrink: 0; cursor: pointer;
+    }
     .toggle input { opacity: 0; width: 0; height: 0; }
-    .toggle-track {
-      position: absolute; inset: 0; border-radius: 20px; background: var(--bg4);
-      border: 1px solid var(--border2); transition: background var(--tr);
+    .toggle-slider {
+      position: absolute; inset: 0; cursor: pointer;
+      background: var(--bg4); border: 1px solid var(--border2);
+      border-radius: 24px; transition: all var(--tr);
     }
-    .toggle input:checked + .toggle-track { background: var(--accent-dim); border-color: rgba(184,242,160,.4); }
-    .toggle-thumb {
-      position: absolute; top: 3px; left: 3px; width: 12px; height: 12px;
-      border-radius: 50%; background: var(--text3); transition: all var(--tr);
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px; left: 3px; top: 3px;
+      background: var(--text3); border-radius: 50%; transition: all var(--tr);
     }
-    .toggle input:checked ~ .toggle-thumb { background: var(--accent2); left: 21px; }
+    .toggle input:checked + .toggle-slider { background: var(--accent-dim); border-color: var(--accent2); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(18px); background: var(--accent2); }
 
     /* ════════════════════════════════════
        RENAME TAB
@@ -355,25 +356,34 @@
     /* ════════════════════════════════════
        SETTINGS TAB
     ════════════════════════════════════ */
-    #settings-panel { flex: 1; overflow-y: auto; }
+    #settings-panel {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 8px;
+    }
     .settings-section {
-      border-bottom: 1px solid var(--border);
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; overflow: visible; width: 100%;
     }
     .settings-section-header {
-      padding: 10px 16px; font-size: 10px; font-weight: 700;
+      padding: 8px 14px; font-size: 10px; font-weight: 700;
       letter-spacing: .8px; text-transform: uppercase; color: var(--text3);
+      border-bottom: 1px solid var(--border); background: var(--bg3);
+      border-radius: 8px 8px 0 0;
     }
     .settings-row {
-      padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
-      border-top: 1px solid var(--border); gap: 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border);
+      width: 100%; box-sizing: border-box; min-height: 48px;
     }
+    .settings-row:last-child { border-bottom: none; }
     .settings-row-info { flex: 1; min-width: 0; }
-    .settings-row-title { font-size: 12px; font-weight: 600; color: var(--text); }
-    .settings-row-desc { font-size: 11px; color: var(--text3); font-weight: 400; margin-top: 2px; }
-    .settings-row-ctrl { flex-shrink: 0; }
-    #update-status-line { padding: 8px 16px; font-size: 12px; font-weight: 600; display: none; }
-    #update-status-line.ok { color: var(--accent2); display: block; }
-    #update-status-line.err { color: var(--red); display: block; }
+    .settings-row-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .settings-row-desc { font-size: 11px; font-weight: 400; color: var(--text3); line-height: 1.4; }
+    .settings-row-ctrl { flex-shrink: 0; display: flex; align-items: center; gap: 6px; overflow: visible; }
+    #update-status-line { padding: 8px 14px; font-size: 12px; font-weight: 600; display: none; border-bottom: 1px solid var(--border); }
+    #update-status-line.ok  { color: var(--accent2); display: block; }
+    #update-status-line.err { color: var(--red);     display: block; }
+    #update-status-line.warn { color: var(--yellow); display: block; }
 
     /* Feedback */
     #feedback-area {
@@ -614,12 +624,14 @@
           <rect x="1" y="10" width="10" height="2" rx="1" fill="#0d0d0d"/>
         </svg>
       </div>
-      <div class="logo-sub">
-        <span class="logo-name">Nomina</span>
-        <span class="logo-tagline">by Vellova Apps</span>
+      <div>
+        <div class="logo-name">Nomina</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="logo-version" id="app-version">v1.0.0</div>
+          <div class="logo-version">by Vellova Apps</div>
+        </div>
       </div>
     </div>
-    <span id="app-version"></span>
   </div>
 
   <!-- Update Banner -->
@@ -721,7 +733,12 @@
           <div id="drop-zone">
             <div class="drop-icon">📂</div>
             <div class="drop-text">Drop files or a folder here</div>
-            <div class="drop-sub">or <span id="dz-browse" style="color:var(--accent);cursor:pointer">click to browse folder</span> · .pdf · .xlsx · .txt · .xml · .csv</div>
+            <div class="drop-sub">
+              <span id="dz-browse-files" style="color:var(--accent);cursor:pointer">Browse files</span>
+              <span style="color:var(--text3)"> · or · </span>
+              <span id="dz-browse" style="color:var(--accent);cursor:pointer">Browse folder</span>
+              <span style="color:var(--text3)"> · .pdf · .xlsx · .txt · .xml · .csv</span>
+            </div>
           </div>
 
           <!-- Queue header -->
@@ -773,16 +790,18 @@
 
       <!-- Updates -->
       <div class="settings-section">
-        <div class="settings-section-header">UPDATES</div>
+        <div class="settings-section-header">Updates</div>
+
         <div class="settings-row">
           <div class="settings-row-info">
             <div class="settings-row-title">Current Version</div>
             <div class="settings-row-desc" id="settings-version">v1.0.0</div>
           </div>
           <div class="settings-row-ctrl">
-            <button class="btn" id="btn-check-now">Check Now</button>
+            <button class="btn btn-accent" id="btn-check-now">Check Now</button>
           </div>
         </div>
+
         <div class="settings-row">
           <div class="settings-row-info">
             <div class="settings-row-title">Check on startup</div>
@@ -791,11 +810,11 @@
           <div class="settings-row-ctrl">
             <label class="toggle">
               <input type="checkbox" id="toggle-check-startup" checked />
-              <div class="toggle-track"></div>
-              <div class="toggle-thumb"></div>
+              <span class="toggle-slider"></span>
             </label>
           </div>
         </div>
+
         <div class="settings-row">
           <div class="settings-row-info">
             <div class="settings-row-title">Periodic check interval</div>
@@ -812,26 +831,31 @@
             </div>
           </div>
         </div>
+
         <div id="update-status-line"></div>
       </div>
 
-      <!-- Profiles import/export -->
+      <!-- Profiles — Import / Export -->
       <div class="settings-section">
-        <div class="settings-section-header">PROFILES — IMPORT / EXPORT</div>
+        <div class="settings-section-header">Profiles — Import / Export</div>
+
         <div class="settings-row">
           <div class="settings-row-info">
             <div class="settings-row-title">Export All Profiles</div>
             <div class="settings-row-desc">Save all profiles to a .json backup file</div>
           </div>
-          <div class="settings-row-ctrl"><button class="btn" id="btn-export-profiles">Export ↓</button></div>
+          <div class="settings-row-ctrl">
+            <button class="btn btn-accent" id="btn-export-profiles">Export ↓</button>
+          </div>
         </div>
+
         <div class="settings-row">
           <div class="settings-row-info">
             <div class="settings-row-title">Import Profiles</div>
             <div class="settings-row-desc">Load profiles from a .json backup file</div>
           </div>
           <div class="settings-row-ctrl">
-            <label class="btn" style="cursor:pointer">
+            <label class="btn btn-accent" style="cursor:pointer">
               Import ↑
               <input type="file" accept=".json" id="import-profiles-input" style="display:none" />
             </label>
@@ -841,27 +865,33 @@
 
       <!-- Feedback -->
       <div class="settings-section">
-        <div class="settings-section-header">FEEDBACK</div>
-        <div class="settings-inner">
-          <div style="font-size:12px;color:var(--text2);font-weight:400">Found a bug or have a suggestion? Send feedback directly.</div>
-          <textarea class="input" id="feedback-area" placeholder="Describe your feedback, bug report, or feature request..." rows="4"></textarea>
-          <div class="feedback-actions">
-            <a href="https://github.com/vslnnd/Nomina/issues" target="_blank" class="btn btn-ghost" style="text-decoration:none">Open GitHub Issue ↗</a>
-            <a id="btn-send-feedback" href="#" class="btn btn-accent">Send via Email</a>
+        <div class="settings-section-header">Feedback</div>
+        <div class="settings-row" style="flex-direction:column;align-items:stretch;gap:10px">
+          <div class="settings-row-desc" style="font-size:12px;color:var(--text2)">Found a bug or have a suggestion? Send feedback directly.</div>
+          <textarea class="input" id="feedback-area" rows="4"
+            placeholder="Describe your feedback, bug report, or feature request..."
+            style="resize:vertical;font-size:12px;line-height:1.6;font-weight:400"></textarea>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <a href="https://github.com/vslnnd/Nomina/issues/new" target="_blank" class="btn btn-ghost" style="text-decoration:none">Open GitHub Issue ↗</a>
+            <button class="btn btn-accent" id="btn-send-feedback">Send via Email</button>
           </div>
         </div>
       </div>
 
       <!-- About -->
       <div class="settings-section">
-        <div class="settings-section-header">ABOUT</div>
+        <div class="settings-section-header">About</div>
+
         <div class="settings-row">
           <div class="settings-row-info">
             <div class="settings-row-title">Nomina</div>
             <div class="settings-row-desc">Smart file renaming for IP and legal documents</div>
           </div>
-          <div class="settings-row-ctrl" style="color:var(--text3);font-size:11px">VELLOVA APPS</div>
+          <div class="settings-row-ctrl">
+            <span style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase">VELLOVA APPS</span>
+          </div>
         </div>
+
         <div class="settings-row">
           <div class="settings-row-info">
             <div class="settings-row-title">Source Code</div>
@@ -1573,13 +1603,13 @@ async function deleteProfile(id) {
 //  History — state persists across tab switches, resets on app load
 // ═══════════════════════════════════════════════════════════
 const histState = { sortOrder: 'newest', dateRange: 'all', search: '' };
+let histRenderGen = 0; // prevents double-render from concurrent async calls
 
 function isHistFiltered() {
   return histState.search.trim() !== '' || histState.dateRange !== 'all' || histState.sortOrder !== 'newest';
 }
 
 function updateHistoryControls() {
-  // Sort button
   const sortBtn = document.getElementById('hist-sort-btn');
   const arrow   = document.getElementById('hist-sort-arrow');
   const label   = document.getElementById('hist-sort-label');
@@ -1590,14 +1620,11 @@ function updateHistoryControls() {
     arrow.textContent = '↑'; label.textContent = 'Oldest first';
     sortBtn.classList.add('active');
   }
-  // Date chips
   document.querySelectorAll('.date-chip').forEach(c => {
     c.classList.toggle('active', c.dataset.range === histState.dateRange);
   });
-  // Reset pill — visible when any filter is dirty
   const resetBtn = document.getElementById('hist-reset-btn');
   resetBtn.classList.toggle('visible', isHistFiltered());
-  // Indicator strip
   const ind = document.getElementById('hist-indicator');
   if (isHistFiltered()) {
     const parts = [];
@@ -1613,12 +1640,15 @@ function updateHistoryControls() {
 }
 
 async function renderHistory() {
-  const list  = document.getElementById('history-list');
-  const count = document.getElementById('history-count');
-  list.innerHTML = '';
+  const gen = ++histRenderGen; // stamp this call
   updateHistoryControls();
 
   let history = await window.nomina.getHistory(); // newest-first from main
+  if (gen !== histRenderGen) return; // a newer call fired while we awaited — bail out
+
+  const list  = document.getElementById('history-list');
+  const count = document.getElementById('history-count');
+  list.innerHTML = ''; // clear AFTER await so only the latest call wins
   const total = history.length;
 
   // Search filter
@@ -1829,10 +1859,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   updatePreview();
 
   // ── Updater listeners (must be inside DOMContentLoaded) ──
-  window.nomina.onUpdateAvailable(info => {
-    document.getElementById('update-banner').classList.add('visible');
-    document.getElementById('ub-text').textContent = `Update v${info.version} available — downloading…`;
-    log(`Update v${info.version} available, downloading…`, 'ok');
+  // Tracks whether the current check was triggered manually (Check Now button)
+  let manualUpdateCheck = false;
+
+  window.nomina.onUpdateAvailable(async info => {
+    if (manualUpdateCheck) {
+      // Manual check: show prompt in status line area, user decides
+      manualUpdateCheck = false;
+    }
+    // Always show yes/no prompt regardless of how check was triggered
+    const ans = await showModal(
+      `Update v${info.version} Available`,
+      `A new version of Nomina is available. Would you like to download and install it now?`,
+      [
+        { label: 'Yes, Download', cls: 'btn-accent', value: 'yes' },
+        { label: 'Not Now',       cls: '',           value: 'no'  },
+      ]
+    );
+    if (ans === 'yes') {
+      document.getElementById('update-banner').classList.add('visible');
+      document.getElementById('ub-text').textContent = `Downloading v${info.version}…`;
+      log(`Downloading update v${info.version}…`, 'ok');
+      await window.nomina.approveDownload();
+    } else {
+      log(`Update v${info.version} available — skipped by user.`, 'warn');
+      const el = document.getElementById('update-status-line');
+      if (el) { el.className = 'warn'; el.style.display = 'block'; el.textContent = `Update v${info.version} available — click Check Now to download`; }
+    }
   });
 
   window.nomina.onDownloadProgress(p => {
@@ -1849,9 +1902,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   window.nomina.onUpdateError(msg => {
-    log(`Update: ${msg}`, 'warn');
+    log(`Update error: ${msg}`, 'warn');
     const el = document.getElementById('update-status-line');
     if (el) { el.className = 'err'; el.style.display = 'block'; el.textContent = `Update error: ${msg}`; }
+  });
+
+  window.nomina.onUpdateNotAvailable(() => {
+    const el = document.getElementById('update-status-line');
+    if (el) { el.className = 'ok'; el.style.display = 'block'; el.textContent = '✓ You are on the latest version'; }
   });
 
   window.nomina.onFirstLaunchAfterUpdate(data => showPatchNotes(data));
@@ -1865,12 +1923,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     const paths = Array.from(e.dataTransfer.files).map(f => f.path).filter(Boolean);
     if (paths.length) addFiles(paths);
   });
-  on('dz-browse', 'click', async () => {
+
+  // Browse files (individual)
+  on('dz-browse-files', 'click', async (e) => {
+    e.stopPropagation();
+    const files = await window.nomina.selectFiles();
+    if (files && files.length) addFiles(files);
+  });
+
+  // Browse folder
+  on('dz-browse', 'click', async (e) => {
+    e.stopPropagation();
     const folder = await window.nomina.selectFolder();
     if (folder) await addFolder(folder);
   });
+
+  // Click on drop zone background = browse files
   dz.addEventListener('click', e => {
-    if (e.target.id !== 'dz-browse') document.getElementById('dz-browse').click();
+    if (e.target.id !== 'dz-browse' && e.target.id !== 'dz-browse-files') {
+      document.getElementById('dz-browse-files').click();
+    }
   });
 
   // ── Action buttons ──
@@ -1917,10 +1989,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   qs('#toggle-check-startup').addEventListener('change', saveSettingsFromUI);
   qs('#sel-check-interval').addEventListener('change', saveSettingsFromUI);
   on('btn-check-now', 'click', async () => {
+    manualUpdateCheck = true;
     const el = document.getElementById('update-status-line');
-    el.className = ''; el.textContent = ''; el.style.display = 'none';
+    el.className = 'ok'; el.style.display = 'block'; el.textContent = '⟳ Checking for updates…';
     await window.nomina.checkForUpdates();
-    el.style.display = 'block'; el.className = 'ok'; el.textContent = '⟳ Checking for updates…';
   });
   on('btn-send-feedback', 'click', (e) => {
     e.preventDefault();

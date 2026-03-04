@@ -103,6 +103,18 @@ ipcMain.handle('select-output-folder', async () => {
   return r.canceled ? null : r.filePaths[0];
 });
 
+ipcMain.handle('select-files', async () => {
+  const r = await dialog.showOpenDialog(mainWindow, {
+    properties: ['openFile', 'multiSelections'],
+    title: 'Select files',
+    filters: [
+      { name: 'Supported Files', extensions: ['pdf', 'xlsx', 'txt', 'xml', 'csv'] },
+      { name: 'All Files', extensions: ['*'] },
+    ],
+  });
+  return r.canceled ? [] : r.filePaths;
+});
+
 ipcMain.handle('show-message-box', async (_, opts) => {
   const r = await dialog.showMessageBox(mainWindow, opts);
   return r.response;
@@ -340,7 +352,7 @@ ipcMain.handle('save-settings', (_, s) => {
 
 // ─── Auto Updater ──────────────────────────────────────────────────────────────
 
-autoUpdater.autoDownload = true;
+autoUpdater.autoDownload = false;       // we ask the user first
 autoUpdater.autoInstallOnAppQuit = true;
 
 let lastCheckedVersion = null;
@@ -389,6 +401,13 @@ autoUpdater.on('error', err => {
 
 ipcMain.handle('check-for-updates', () => {
   triggerUpdateCheck();
+});
+
+// User approved download after being prompted
+ipcMain.handle('approve-download', () => {
+  autoUpdater.downloadUpdate().catch(err => {
+    if (mainWindow) mainWindow.webContents.send('update-error', err.message);
+  });
 });
 
 ipcMain.on('install-update', () => {

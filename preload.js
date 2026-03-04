@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('nomina', {
 
   // Dialogs
   selectFolder: () => ipcRenderer.invoke('select-folder'),
+  selectFiles: () => ipcRenderer.invoke('select-files'),
   selectOutputFolder: () => ipcRenderer.invoke('select-output-folder'),
   showMessageBox: (opts) => ipcRenderer.invoke('show-message-box', opts),
   openFolder: (p) => ipcRenderer.invoke('open-folder', p),
@@ -37,10 +38,12 @@ contextBridge.exposeInMainWorld('nomina', {
 
   // Updater
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+  approveDownload: () => ipcRenderer.invoke('approve-download'),
   installUpdate: () => ipcRenderer.send('install-update'),
   onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_, info) => cb(info)),
   onDownloadProgress: (cb) => ipcRenderer.on('download-progress', (_, p) => cb(p)),
   onUpdateDownloaded: (cb) => ipcRenderer.on('update-downloaded', (_, info) => cb(info)),
+  onUpdateNotAvailable: (cb) => ipcRenderer.on('update-not-available', () => cb()),
   onUpdateError: (cb) => ipcRenderer.on('update-error', (_, msg) => cb(msg)),
   onFirstLaunchAfterUpdate: (cb) => ipcRenderer.on('first-launch-after-update', (_, data) => cb(data)),
 });
