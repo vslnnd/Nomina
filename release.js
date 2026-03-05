@@ -49,7 +49,7 @@ rl.question('New version (e.g. 1.1.0): ', (version) => {
     } catch (e) { /* Notepad sometimes exits non-zero, safe to ignore */ }
 
     const raw = fs.existsSync(tmpFile) ? fs.readFileSync(tmpFile, 'utf8') : '';
-    try { fs.unlinkSync(tmpFile); } catch (e) {}
+    try { fs.unlinkSync(tmpFile); } catch (e) { }
 
     const notes = raw
       .split('\n')
@@ -67,8 +67,8 @@ rl.question('New version (e.g. 1.1.0): ', (version) => {
 
     console.log(`\n📦 Releasing v${version} — "${desc}"\n`);
 
-    // Map NOMINA_GH_TOKEN → GH_TOKEN for electron-builder
-    if (process.env.NOMINA_GH_TOKEN && !process.env.GH_TOKEN) {
+    // Always prefer NOMINA_GH_TOKEN over any system-level GH_TOKEN
+    if (process.env.NOMINA_GH_TOKEN) {
       process.env.GH_TOKEN = process.env.NOMINA_GH_TOKEN;
     }
 
@@ -84,11 +84,12 @@ rl.question('New version (e.g. 1.1.0): ', (version) => {
       console.log(`✓ Updated package.json to v${version}`);
 
       // 2. Git add all
-      execSync('git add -A -- ":!node_modules" ":!.env" ":!dist"', { stdio: 'inherit' });
+      execSync('git add -A', { stdio: 'inherit' });
       console.log('✓ git add -A');
 
       // 3. Git commit
-      execSync(`git commit -m "v${version} - ${desc}"`, { stdio: 'inherit' });
+      const safeDesc = desc.replace(/"/g, '\\"');
+      execSync(`git commit -m "v${version} - ${safeDesc}"`, { stdio: 'inherit' });
       console.log('✓ git commit');
 
       // 4. Git push
@@ -121,7 +122,7 @@ function cleanupDist(newVersion) {
   const distDir = path.join(__dirname, 'dist');
   if (!fs.existsSync(distDir)) return;
 
-  const newExe      = `Nomina Setup ${newVersion}.exe`;
+  const newExe = `Nomina Setup ${newVersion}.exe`;
   const newBlockmap = `Nomina Setup ${newVersion}.exe.blockmap`;
 
   if (!fs.existsSync(path.join(distDir, newExe))) {
@@ -131,7 +132,7 @@ function cleanupDist(newVersion) {
 
   let deleted = 0;
   fs.readdirSync(distDir).forEach(file => {
-    const isOldExe      = file.endsWith('.exe')          && file.startsWith('Nomina Setup') && file !== newExe;
+    const isOldExe = file.endsWith('.exe') && file.startsWith('Nomina Setup') && file !== newExe;
     const isOldBlockmap = file.endsWith('.exe.blockmap') && file.startsWith('Nomina Setup') && file !== newBlockmap;
     if (isOldExe || isOldBlockmap) {
       try {

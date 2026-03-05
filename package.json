@@ -1,6 +1,6 @@
 {
   "name": "nomina",
-  "version": "1.2.0",
+  "version": "1.3.1",
   "description": "Smart file renaming tool for IP and legal documents",
   "main": "main.js",
   "scripts": {
@@ -27,11 +27,14 @@
     },
     "files": [
       "**/*",
+      "!node_modules/.bin",
+      "!dist/**",
       "!.env",
       "!.env.example",
       "!release.js",
       "!*.md",
-      "!.gitignore"
+      "!.gitignore",
+      "!package-lock.json"
     ]
   },
   "dependencies": {
