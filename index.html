@@ -70,14 +70,17 @@
       flex-shrink: 0;
     }
     #update-banner.visible { display: flex; }
-    #ub-text { flex: 1; font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    #ub-progress-wrap { width: 120px; flex-shrink: 0; }
+    #ub-left { display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 4px; }
+    #ub-text { font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #ub-meta { font-size: 10px; color: var(--text3); font-weight: 400; display: none; }
+    #ub-progress-wrap { flex: 1; max-width: 200px; flex-shrink: 0; }
     #ub-progress { height: 3px; background: var(--border); border-radius: 2px; }
     #ub-bar { height: 100%; background: var(--accent2); border-radius: 2px; transition: width .3s; width: 0%; }
     #ub-install {
-      display: none; padding: 5px 12px; font-family: var(--mono); font-size: 11px; font-weight: 700;
+      display: none; padding: 5px 14px; font-family: var(--mono); font-size: 11px; font-weight: 700;
       background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(184,242,160,.3);
       border-radius: var(--radius); cursor: pointer; letter-spacing: .4px; text-transform: uppercase;
+      white-space: nowrap; flex-shrink: 0;
     }
     #ub-install:hover { background: rgba(184,242,160,.2); }
 
@@ -169,15 +172,32 @@
     /* ════════════════════════════════════
        RENAME TAB
     ════════════════════════════════════ */
-    #rename-panel { flex: 1; display: flex; overflow: hidden; }
+    #rename-panel { flex: 1; display: flex; overflow: hidden; min-height: 0; }
 
     /* Left config column */
     #rename-config {
       width: 270px; flex-shrink: 0; overflow-y: auto;
-      border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 0;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 12px; box-sizing: border-box;
     }
-    .config-section { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
-    .config-field { display: flex; flex-direction: column; gap: 6px; }
+
+    /* Config cards — match Settings style */
+    .config-section {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; overflow: visible; width: 100%;
+      display: flex; flex-direction: column;
+    }
+    .config-section-header {
+      padding: 7px 12px; font-size: 10px; font-weight: 700;
+      letter-spacing: .8px; text-transform: uppercase; color: var(--text3);
+      border-bottom: 1px solid var(--border); background: var(--bg3);
+      border-radius: 8px 8px 0 0; flex-shrink: 0;
+    }
+    .config-section-body {
+      padding: 12px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .config-field { display: flex; flex-direction: column; gap: 5px; }
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
     /* Name preview box */
@@ -195,15 +215,15 @@
     #output-folder-field { display: none; flex-direction: column; gap: 6px; margin-top: 4px; }
     #output-folder-field.visible { display: flex; }
     #output-path-display {
-      padding: 7px 11px; background: var(--bg2); border: 1px solid var(--border);
+      padding: 7px 11px; background: var(--bg3); border: 1px solid var(--border);
       border-radius: var(--radius); font-size: 11px; color: var(--text3);
       font-weight: 400; word-break: break-all; min-height: 34px;
     }
 
     /* Right main area */
-    #rename-main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    #rename-main { flex: 1; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
 
-    #rename-top { padding: 14px 16px 0; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
+    #rename-top { padding: 12px 14px 0; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
 
     /* Drop zone */
     #drop-zone {
@@ -217,21 +237,27 @@
 
     /* Queue header */
     #queue-header {
-      display: flex; align-items: center; gap: 10px;
+      display: none; align-items: center; gap: 10px;
       padding: 7px 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
     }
     #queue-count { flex: 1; font-size: 11px; color: var(--text3); font-weight: 600; }
     #queue-actions { display: flex; gap: 6px; }
 
-    /* File list scroll */
+    /* File list scroll — custom modern scrollbar */
     #rename-scroll {
-      flex: 1; overflow-y: auto; padding: 0 16px 10px; display: flex; flex-direction: column; gap: 6px;
+      flex: 1; overflow-y: auto; padding: 8px 14px 10px;
+      display: flex; flex-direction: column; gap: 6px; min-height: 0;
     }
+    #rename-scroll::-webkit-scrollbar { width: 5px; }
+    #rename-scroll::-webkit-scrollbar-track { background: transparent; }
+    #rename-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
+    #rename-scroll::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 
     /* Group card */
     .group-card {
       background: var(--bg2); border: 1px solid var(--border);
       border-radius: var(--radius); overflow: hidden; animation: slideIn .2s cubic-bezier(.16,1,.3,1);
+      flex-shrink: 0;
     }
     .group-card.has-value { border-color: rgba(184,242,160,.2); }
     .group-card.has-error { border-color: rgba(255,92,92,.3); }
@@ -239,10 +265,20 @@
 
     .file-row {
       display: flex; align-items: center; gap: 9px; padding: 9px 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); position: relative;
     }
     .file-row:last-child { border-bottom: none; }
     .file-row.primary { background: var(--bg3); }
+
+    /* Remove button — shown on hover */
+    .file-remove {
+      display: none; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0;
+      background: var(--red-dim); color: var(--red); border: none;
+      cursor: pointer; font-size: 11px; font-weight: 700; transition: all var(--tr);
+    }
+    .file-row:hover .file-remove { display: flex; }
+    .file-remove:hover { background: rgba(255,92,92,.3); }
 
     .ext-badge {
       font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px;
@@ -277,12 +313,12 @@
     @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
 
     /* Ungrouped section */
-    .ungrouped-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .ungrouped-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; flex-shrink: 0; }
     .ungrouped-header { padding: 7px 12px; background: var(--bg3); font-size: 10px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); }
 
     /* Bottom bar */
     #rename-bottom {
-      padding: 10px 16px 12px; border-top: 1px solid var(--border);
+      padding: 10px 14px 12px; border-top: 1px solid var(--border);
       background: var(--bg); flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;
     }
 
@@ -292,6 +328,9 @@
       background: var(--bg2); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 9px 11px; max-height: 100px; overflow-y: auto; flex-shrink: 0;
     }
+    #log-area::-webkit-scrollbar { width: 4px; }
+    #log-area::-webkit-scrollbar-track { background: transparent; }
+    #log-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
     #log-area.visible { display: flex; }
     .log-line { font-size: 11px; font-weight: 500; line-height: 1.5; display: flex; gap: 8px; }
     .log-time { color: var(--text3); flex-shrink: 0; font-weight: 400; }
@@ -636,7 +675,10 @@
 
   <!-- Update Banner -->
   <div id="update-banner">
-    <span id="ub-text">Checking for updates…</span>
+    <div id="ub-left">
+      <span id="ub-text">Checking for updates…</span>
+      <span id="ub-meta"></span>
+    </div>
     <div id="ub-progress-wrap"><div id="ub-progress"><div id="ub-bar"></div></div></div>
     <button id="ub-install" onclick="window.nomina.installUpdate()">↻ Restart &amp; Install</button>
   </div>
@@ -658,68 +700,76 @@
 
         <!-- Profile select -->
         <div class="config-section">
-          <div class="section-title">Profile</div>
-          <div class="config-field">
-            <div class="select-wrap">
-              <select class="select" id="profile-select">
-                <option value="">— no profile —</option>
-              </select>
+          <div class="config-section-header">Profile</div>
+          <div class="config-section-body">
+            <div class="config-field">
+              <div class="select-wrap">
+                <select class="select" id="profile-select">
+                  <option value="">— no profile —</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Extraction -->
         <div class="config-section">
-          <div class="section-title">Extraction</div>
-          <div class="config-field">
-            <div class="field-label">Keyword</div>
-            <input class="input" type="text" id="keyword" placeholder="e.g. Matter Id" />
-          </div>
-          <div class="config-field">
-            <div class="field-label">Position</div>
-            <div class="select-wrap">
-              <select class="select" id="position">
-                <option value="">— select position —</option>
-                <option value="below">Below keyword</option>
-                <option value="after">After keyword (same line)</option>
-                <option value="above">Above keyword</option>
-                <option value="before">Before keyword (same line)</option>
-              </select>
+          <div class="config-section-header">Extraction</div>
+          <div class="config-section-body">
+            <div class="config-field">
+              <div class="field-label">Keyword</div>
+              <input class="input" type="text" id="keyword" placeholder="e.g. Matter Id" />
+            </div>
+            <div class="config-field">
+              <div class="field-label">Position</div>
+              <div class="select-wrap">
+                <select class="select" id="position">
+                  <option value="">— select position —</option>
+                  <option value="below">Below keyword</option>
+                  <option value="after">After keyword (same line)</option>
+                  <option value="above">Above keyword</option>
+                  <option value="before">Before keyword (same line)</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Naming -->
         <div class="config-section">
-          <div class="section-title">File Naming</div>
-          <div class="two-col">
-            <div class="config-field">
-              <div class="field-label">Prefix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
-              <input class="input" type="text" id="prefix" placeholder="CN_" />
+          <div class="config-section-header">File Naming</div>
+          <div class="config-section-body">
+            <div class="two-col">
+              <div class="config-field">
+                <div class="field-label">Prefix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
+                <input class="input" type="text" id="prefix" placeholder="CN_" />
+              </div>
+              <div class="config-field">
+                <div class="field-label">Suffix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
+                <input class="input" type="text" id="suffix" placeholder="_final" />
+              </div>
             </div>
             <div class="config-field">
-              <div class="field-label">Suffix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
-              <input class="input" type="text" id="suffix" placeholder="_final" />
-            </div>
-          </div>
-          <div class="config-field">
-            <div class="field-label">Preview</div>
-            <div id="name-preview-box">
-              <span class="pv-dim">prefix</span><span id="pv-value"> + value + </span><span class="pv-dim">suffix</span><span id="pv-ext" class="pv-dim">.ext</span>
+              <div class="field-label">Preview</div>
+              <div id="name-preview-box">
+                <span class="pv-dim">prefix</span><span id="pv-value"> + value + </span><span class="pv-dim">suffix</span><span id="pv-ext" class="pv-dim">.ext</span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Output -->
         <div class="config-section">
-          <div class="section-title">Output</div>
-          <div class="radio-group">
-            <label class="radio-opt"><input type="radio" name="out-mode" value="inplace" checked/> Rename in place</label>
-            <label class="radio-opt"><input type="radio" name="out-mode" value="copy"/> Copy to output folder</label>
-          </div>
-          <div id="output-folder-field">
-            <button class="btn btn-ghost" id="btn-select-output" style="font-size:10px;padding:5px 10px">Browse…</button>
-            <div id="output-path-display">No folder selected</div>
+          <div class="config-section-header">Output</div>
+          <div class="config-section-body">
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="out-mode" value="inplace" checked/> Rename in place</label>
+              <label class="radio-opt"><input type="radio" name="out-mode" value="copy"/> Copy to output folder</label>
+            </div>
+            <div id="output-folder-field">
+              <button class="btn btn-ghost" id="btn-select-output" style="font-size:10px;padding:5px 10px">Browse…</button>
+              <div id="output-path-display">No folder selected</div>
+            </div>
           </div>
         </div>
 
@@ -1362,21 +1412,25 @@ async function renameAll() {
 // ═══════════════════════════════════════════════════════════
 function renderFileList() {
   const scroll = document.getElementById('rename-scroll');
-  const empty = document.getElementById('empty-state');
-  const qh = document.getElementById('queue-header');
+  const empty  = document.getElementById('empty-state');
+  const qh     = document.getElementById('queue-header');
+  const dz     = document.getElementById('drop-zone');
 
   if (!state.files.length) {
     empty.style.display = 'flex';
-    qh.style.display = 'none';
+    qh.style.display    = 'none';
+    dz.style.display    = '';
     [...scroll.children].filter(c => c !== empty).forEach(c => c.remove());
     document.getElementById('queue-count').textContent = '0 files';
     qs('#btn-process-all').disabled = true;
-    qs('#btn-rename-all').disabled = true;
+    qs('#btn-rename-all').disabled  = true;
     return;
   }
 
+  // Files loaded — hide drop zone, show queue header
+  dz.style.display    = 'none';
   empty.style.display = 'none';
-  qh.style.display = 'flex';
+  qh.style.display    = 'flex';
   document.getElementById('queue-count').textContent = `${state.files.length} file${state.files.length !== 1 ? 's' : ''}`;
   qs('#btn-process-all').disabled = false;
 
@@ -1418,7 +1472,7 @@ function makeRow(file, isPrimary) {
   // Badge
   const badge = document.createElement('span');
   badge.className = `ext-badge ext-${extClass(file.ext)}`;
-  badge.textContent = file.ext.replace('.','');
+  badge.textContent = file.ext.replace('.', '');
   row.appendChild(badge);
 
   // Info
@@ -1455,7 +1509,7 @@ function makeRow(file, isPrimary) {
     row.appendChild(chip);
   }
 
-  // Status
+  // Status label
   const statusMap = { pending:'Pending', reading:'Reading…', ready:'Ready', error:'Error', matched:'Matched', unmatched:'No Match' };
   const clsMap    = { pending:'sl-pending', reading:'sl-reading', ready:'sl-ready', error:'sl-error', matched:'sl-matched', unmatched:'sl-unmatched' };
   const st = file.status || 'pending';
@@ -1463,6 +1517,18 @@ function makeRow(file, isPrimary) {
   sl.className = `status-label ${clsMap[st] || 'sl-pending'}`;
   sl.textContent = statusMap[st] || st;
   row.appendChild(sl);
+
+  // Remove button (shown on hover via CSS)
+  const rmBtn = document.createElement('button');
+  rmBtn.className = 'file-remove';
+  rmBtn.textContent = '✕';
+  rmBtn.title = 'Remove file';
+  rmBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.files = state.files.filter(f => f.path !== file.path);
+    renderFileList();
+  });
+  row.appendChild(rmBtn);
 
   return row;
 }
@@ -1501,14 +1567,16 @@ function applyProfile(id) {
 }
 
 function renderProfileList() {
-  const list = document.getElementById('profiles-list');
+  const list  = document.getElementById('profiles-list');
   const empty = document.getElementById('profiles-empty');
   const count = document.getElementById('profiles-count');
-  list.innerHTML = '';
+
+  // Remove only profile cards, never touch the empty element
+  [...list.children].filter(c => c !== empty).forEach(c => c.remove());
+
   count.textContent = `${state.profiles.length} PROFILE${state.profiles.length !== 1 ? 'S' : ''}`;
 
   if (!state.profiles.length) {
-    list.appendChild(empty);
     empty.style.display = '';
     return;
   }
@@ -1533,7 +1601,6 @@ function renderProfileList() {
     card.onclick = () => {
       qs('#profile-select').value = p.id;
       applyProfile(p.id);
-      // Switch to rename tab
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(pp => pp.classList.remove('active'));
       document.querySelector('[data-tab="rename"]').classList.add('active');
@@ -1859,15 +1926,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   updatePreview();
 
   // ── Updater listeners (must be inside DOMContentLoaded) ──
-  // Tracks whether the current check was triggered manually (Check Now button)
   let manualUpdateCheck = false;
+  let updateDownloaded  = false; // prevents re-prompting after download is done
+
+  function fmtBytes(b) {
+    if (b > 1048576) return (b / 1048576).toFixed(1) + ' MB';
+    if (b > 1024)    return (b / 1024).toFixed(0) + ' KB';
+    return b + ' B';
+  }
+  function fmtSpeed(bps) { return fmtBytes(bps) + '/s'; }
+  function fmtEta(sec) {
+    if (!isFinite(sec) || sec < 0) return '—';
+    if (sec < 60)  return `${Math.round(sec)}s`;
+    return `${Math.floor(sec / 60)}m ${Math.round(sec % 60)}s`;
+  }
 
   window.nomina.onUpdateAvailable(async info => {
-    if (manualUpdateCheck) {
-      // Manual check: show prompt in status line area, user decides
-      manualUpdateCheck = false;
+    manualUpdateCheck = false;
+
+    // If already downloaded, just make sure banner + install button are visible
+    if (updateDownloaded) {
+      document.getElementById('update-banner').classList.add('visible');
+      document.getElementById('ub-text').textContent = `Update v${info.version} ready to install`;
+      document.getElementById('ub-progress-wrap').style.display = 'none';
+      document.getElementById('ub-install').style.display = '';
+      return;
     }
-    // Always show yes/no prompt regardless of how check was triggered
+
     const ans = await showModal(
       `Update v${info.version} Available`,
       `A new version of Nomina is available. Would you like to download and install it now?`,
@@ -1878,6 +1963,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
     if (ans === 'yes') {
       document.getElementById('update-banner').classList.add('visible');
+      document.getElementById('ub-progress-wrap').style.display = '';
       document.getElementById('ub-text').textContent = `Downloading v${info.version}…`;
       log(`Downloading update v${info.version}…`, 'ok');
       await window.nomina.approveDownload();
@@ -1892,13 +1978,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('update-banner').classList.add('visible');
     document.getElementById('ub-bar').style.width = `${Math.round(p.percent)}%`;
     document.getElementById('ub-text').textContent = `Downloading update… ${Math.round(p.percent)}%`;
+    const meta = document.getElementById('ub-meta');
+    if (p.total && p.bytesPerSecond) {
+      const remaining = (p.total - p.transferred) / p.bytesPerSecond;
+      meta.textContent = `${fmtBytes(p.transferred)} / ${fmtBytes(p.total)}  ·  ${fmtSpeed(p.bytesPerSecond)}  ·  ETA ${fmtEta(remaining)}`;
+      meta.style.display = '';
+    }
   });
 
   window.nomina.onUpdateDownloaded(info => {
+    updateDownloaded = true;
+    document.getElementById('update-banner').classList.add('visible');
     document.getElementById('ub-text').textContent = `Update v${info.version} ready to install`;
+    document.getElementById('ub-meta').style.display = 'none';
     document.getElementById('ub-bar').style.width = '100%';
+    document.getElementById('ub-progress-wrap').style.display = 'none';
     document.getElementById('ub-install').style.display = '';
     log(`Update v${info.version} ready — click Restart & Install.`, 'ok');
+    const el = document.getElementById('update-status-line');
+    if (el) { el.className = 'ok'; el.style.display = 'block'; el.textContent = `✓ Update v${info.version} downloaded — click Restart & Install in the banner`; }
   });
 
   window.nomina.onUpdateError(msg => {
@@ -1908,6 +2006,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   window.nomina.onUpdateNotAvailable(() => {
+    if (updateDownloaded) return; // already downloaded, don't overwrite banner
     const el = document.getElementById('update-status-line');
     if (el) { el.className = 'ok'; el.style.display = 'block'; el.textContent = '✓ You are on the latest version'; }
   });
@@ -1989,6 +2088,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   qs('#toggle-check-startup').addEventListener('change', saveSettingsFromUI);
   qs('#sel-check-interval').addEventListener('change', saveSettingsFromUI);
   on('btn-check-now', 'click', async () => {
+    if (updateDownloaded) {
+      // Already downloaded — just make sure banner and install button are visible
+      document.getElementById('update-banner').classList.add('visible');
+      return;
+    }
     manualUpdateCheck = true;
     const el = document.getElementById('update-status-line');
     el.className = 'ok'; el.style.display = 'block'; el.textContent = '⟳ Checking for updates…';
