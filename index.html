@@ -1875,6 +1875,7 @@ document.getElementById('import-profiles-input').addEventListener('change', asyn
 // ═══════════════════════════════════════════════════════════
 function renderMd(str) {
   return String(str)
+    .replace(/<[^>]+>/g, '')           // strip any HTML tags first
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g,'<em>$1</em>')
@@ -1886,7 +1887,7 @@ function showPatchNotes({ prevVersion, newVersion, notes }) {
   qs('#pn-new').textContent = 'v' + newVersion + ' ✓';
   const body = document.getElementById('patchnotes-body');
   body.innerHTML = '';
-  const lines = (notes || '').split('\n').map(l => l.trim()).filter(Boolean);
+  const lines = (notes || '').replace(/<[^>]+>/g, '').split('\n').map(l => l.trim()).filter(Boolean);
   const sections = { new: [], improved: [], fixed: [] };
   let hasPfx = false;
   lines.forEach(l => {
