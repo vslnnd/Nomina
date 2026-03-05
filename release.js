@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ override: true });
 
 const { execSync } = require('child_process');
 const readline = require('readline');
