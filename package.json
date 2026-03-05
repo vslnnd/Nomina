@@ -1,6 +1,6 @@
 {
   "name": "nomina",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "Smart file renaming tool for IP and legal documents",
   "main": "main.js",
   "scripts": {
