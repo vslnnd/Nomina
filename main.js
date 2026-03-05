@@ -356,12 +356,10 @@ autoUpdater.logger = console;
 autoUpdater.autoDownload = false;       // we ask the user first
 autoUpdater.autoInstallOnAppQuit = true;
 
-// Force current version to match app.getVersion() to ensure consistency
-try {
-  autoUpdater.currentVersion = app.getVersion();
-  console.log(`[Updater] Current version explicitly set to: ${autoUpdater.currentVersion}`);
-} catch (e) {
-  console.error('[Updater] Failed to set currentVersion:', e.message);
+// Enable update testing in development mode
+if (!app.isPackaged) {
+  autoUpdater.forceDevUpdateConfig = true;
+  console.log('[Updater] Development mode detected: forceDevUpdateConfig enabled');
 }
 
 let lastCheckedVersion = null;
