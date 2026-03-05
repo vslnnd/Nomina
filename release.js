@@ -84,7 +84,7 @@ rl.question('New version (e.g. 1.1.0): ', (version) => {
       console.log(`✓ Updated package.json to v${version}`);
 
       // 2. Git add all
-      execSync('git add -A -- ":!node_modules" ":!.env"', { stdio: 'inherit' });
+      execSync('git add -A -- ":!node_modules" ":!.env" ":!dist"', { stdio: 'inherit' });
       console.log('✓ git add -A');
 
       // 3. Git commit
