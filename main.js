@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
-const { autoUpdater } = require('electron-updater');
+const { autoUpdater, CancellationToken } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
 
@@ -363,6 +363,7 @@ if (!app.isPackaged) {
 }
 
 let lastCheckedVersion = null;
+let downloadCancellationToken = null;
 
 function triggerUpdateCheck() {
   console.log('[Updater] Triggering update check...');
@@ -424,10 +425,21 @@ ipcMain.handle('check-for-updates', () => {
 // User approved download after being prompted
 ipcMain.handle('approve-download', () => {
   console.log('[Updater] User approved download');
-  autoUpdater.downloadUpdate().catch(err => {
-    console.error('[Updater] Download failed:', err.message);
+  downloadCancellationToken = new CancellationToken();
+  autoUpdater.downloadUpdate(downloadCancellationToken).catch(err => {
+    console.error('[Updater] Download failed or cancelled:', err.message);
     if (mainWindow) mainWindow.webContents.send('update-error', err.message);
   });
+});
+
+ipcMain.handle('cancel-download', () => {
+  if (downloadCancellationToken) {
+    console.log('[Updater] User cancelled download');
+    downloadCancellationToken.cancel();
+    downloadCancellationToken = null;
+    return true;
+  }
+  return false;
 });
 
 ipcMain.on('install-update', () => {

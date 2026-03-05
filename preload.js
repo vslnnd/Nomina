@@ -39,6 +39,7 @@ contextBridge.exposeInMainWorld('nomina', {
   // Updater
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   approveDownload: () => ipcRenderer.invoke('approve-download'),
+  cancelDownload: () => ipcRenderer.invoke('cancel-download'),
   installUpdate: () => ipcRenderer.send('install-update'),
   onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_, info) => cb(info)),
   onDownloadProgress: (cb) => ipcRenderer.on('download-progress', (_, p) => cb(p)),

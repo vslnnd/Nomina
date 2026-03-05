@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,21 +9,21 @@
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap');
 
     :root {
-      --bg:   #0d0d0d;
-      --bg2:  #141414;
-      --bg3:  #1e1e1e;
-      --bg4:  #272727;
-      --border:  #2e2e2e;
+      --bg: #0d0d0d;
+      --bg2: #141414;
+      --bg3: #1e1e1e;
+      --bg4: #272727;
+      --border: #2e2e2e;
       --border2: #3d3d3d;
-      --accent:      #b8f2a0;
-      --accent2:     #78e860;
-      --accent-dim:  rgba(184,242,160,.13);
-      --accent-dim2: rgba(184,242,160,.07);
-      --red:     #ff5c5c;
-      --red-dim: rgba(255,92,92,.13);
-      --yellow:  #f0c040;
-      --yellow-dim: rgba(240,192,64,.13);
-      --text:  #f5f5f5;
+      --accent: #b8f2a0;
+      --accent2: #78e860;
+      --accent-dim: rgba(184, 242, 160, .13);
+      --accent-dim2: rgba(184, 242, 160, .07);
+      --red: #ff5c5c;
+      --red-dim: rgba(255, 92, 92, .13);
+      --yellow: #f0c040;
+      --yellow-dim: rgba(240, 192, 64, .13);
+      --text: #f5f5f5;
       --text2: #c8c8c8;
       --text3: #848484;
       --mono: 'IBM Plex Mono', monospace;
@@ -31,1561 +32,2976 @@
       --tr: .15s ease;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      width: 100%; height: 100%;
-      background: var(--bg); color: var(--text);
-      font-family: var(--mono); font-size: 13px; font-weight: 500;
-      line-height: 1.5; overflow: hidden; user-select: none;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.5;
+      overflow: hidden;
+      user-select: none;
+    }
 
-    #app { display: flex; flex-direction: column; height: 100vh; }
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 2px;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
 
     /* ── Titlebar ── */
     #titlebar {
-      display: flex; align-items: center; padding: 0 16px;
-      height: 46px; background: var(--bg); border-bottom: 1px solid var(--border);
-      flex-shrink: 0; -webkit-app-region: drag; gap: 10px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 46px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      -webkit-app-region: drag;
+      gap: 10px;
     }
-    .logo { display: flex; align-items: center; gap: 9px; -webkit-app-region: no-drag; }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      -webkit-app-region: no-drag;
+    }
+
     .logo-icon {
-      width: 24px; height: 24px; background: var(--accent);
-      border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .logo-icon svg { width: 14px; height: 14px; }
-    .logo-name { font-family: var(--sans); font-weight: 800; font-size: 17px; letter-spacing: -.3px; }
-    .logo-version { font-size: 10px; color: var(--text3); font-weight: 400; margin-top: 1px; }
+
+    .logo-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .logo-name {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 17px;
+      letter-spacing: -.3px;
+    }
+
+    .logo-version {
+      font-size: 10px;
+      color: var(--text3);
+      font-weight: 400;
+      margin-top: 1px;
+    }
 
     /* ── Update Banner ── */
     #update-banner {
-      display: none; align-items: center; gap: 10px;
-      padding: 8px 16px;
-      background: rgba(184,242,160,.08);
-      border-bottom: 1px solid rgba(184,242,160,.2);
+      display: none;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(184, 242, 160, .08);
+      border-bottom: 1px solid rgba(184, 242, 160, .2);
       flex-shrink: 0;
     }
-    #update-banner.visible { display: flex; }
-    #ub-left { display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 4px; }
-    #ub-text { font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    #ub-meta { font-size: 10px; color: var(--text3); font-weight: 400; display: none; }
-    #ub-progress-wrap { flex: 1; max-width: 200px; flex-shrink: 0; }
-    #ub-progress { height: 3px; background: var(--border); border-radius: 2px; }
-    #ub-bar { height: 100%; background: var(--accent2); border-radius: 2px; transition: width .3s; width: 0%; }
-    #ub-install {
-      display: none; padding: 5px 14px; font-family: var(--mono); font-size: 11px; font-weight: 700;
-      background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(184,242,160,.3);
-      border-radius: var(--radius); cursor: pointer; letter-spacing: .4px; text-transform: uppercase;
-      white-space: nowrap; flex-shrink: 0;
+
+    #update-banner.visible {
+      display: flex;
     }
-    #ub-install:hover { background: rgba(184,242,160,.2); }
+
+    .ub-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 15px;
+    }
+
+    #ub-left {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    #ub-text {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    #ub-meta {
+      font-size: 10px;
+      color: var(--text3);
+      font-weight: 400;
+      font-family: var(--mono);
+      white-space: nowrap;
+      display: none;
+    }
+
+    #ub-progress-wrap {
+      flex: 1;
+      min-width: 100px;
+      display: none;
+    }
+
+    #ub-progress {
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    #ub-bar {
+      height: 100%;
+      background: var(--accent2);
+      border-radius: 4px;
+      transition: width .2s ease-out;
+      width: 0%;
+    }
+
+    #ub-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    #ub-install {
+      display: none;
+      padding: 6px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 0 10px rgba(184, 242, 160, .2);
+    }
+
+    #ub-install:hover {
+      background: var(--accent2);
+    }
+
+    #ub-cancel {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      background: var(--bg3);
+      color: var(--text3);
+      cursor: pointer;
+      font-size: 10px;
+      transition: all var(--tr);
+    }
+
+    #ub-cancel:hover {
+      background: var(--red-dim);
+      color: var(--red);
+      border-color: rgba(255, 92, 92, .3);
+    }
 
     /* ── Tabs ── */
     #tabs {
-      display: flex; border-bottom: 1px solid var(--border);
-      background: var(--bg); padding: 0 16px; flex-shrink: 0; -webkit-app-region: no-drag;
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      padding: 0 16px;
+      flex-shrink: 0;
+      -webkit-app-region: no-drag;
     }
+
     .tab {
-      padding: 10px 16px; font-size: 11px; font-weight: 700; letter-spacing: .8px;
-      text-transform: uppercase; color: var(--text3); cursor: pointer;
-      border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color var(--tr);
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color var(--tr);
     }
-    .tab:hover { color: var(--text2); }
-    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .tab-icon { margin-right: 5px; font-size: 10px; }
+
+    .tab:hover {
+      color: var(--text2);
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-icon {
+      margin-right: 5px;
+      font-size: 10px;
+    }
 
     /* ── Tab Panels ── */
-    .tab-panel { display: none; flex: 1; overflow: hidden; flex-direction: column; animation: fadeIn .15s ease-out; }
-    .tab-panel.active { display: flex; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .tab-panel {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+      flex-direction: column;
+      animation: fadeIn .15s ease-out;
+    }
+
+    .tab-panel.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     /* ── Buttons ── */
     .btn {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 12px; font-family: var(--mono); font-size: 11px; font-weight: 700;
-      letter-spacing: .4px; cursor: pointer; border-radius: var(--radius);
-      border: 1px solid var(--border2); background: var(--bg3); color: var(--text2);
-      transition: all var(--tr); white-space: nowrap; text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      cursor: pointer;
+      border-radius: var(--radius);
+      border: 1px solid var(--border2);
+      background: var(--bg3);
+      color: var(--text2);
+      transition: all var(--tr);
+      white-space: nowrap;
+      text-transform: uppercase;
     }
-    .btn:hover { background: var(--bg4); color: var(--text); }
-    .btn:active { transform: scale(.97); }
-    .btn:disabled { opacity: .3; cursor: not-allowed; }
-    .btn-accent { background: var(--accent-dim); color: var(--accent); border-color: rgba(184,242,160,.25); }
-    .btn-accent:hover { background: rgba(184,242,160,.2); color: var(--accent2); border-color: var(--accent); }
-    .btn-danger { background: var(--red-dim); color: var(--red); border-color: rgba(255,92,92,.2); }
-    .btn-danger:hover { background: rgba(255,92,92,.2); }
-    .btn-ghost { background: transparent; border-color: transparent; color: var(--text3); }
-    .btn-ghost:hover { background: var(--bg3); color: var(--text2); border-color: var(--border); }
+
+    .btn:hover {
+      background: var(--bg4);
+      color: var(--text);
+    }
+
+    .btn:active {
+      transform: scale(.97);
+    }
+
+    .btn:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    .btn-accent {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-color: rgba(184, 242, 160, .25);
+    }
+
+    .btn-accent:hover {
+      background: rgba(184, 242, 160, .2);
+      color: var(--accent2);
+      border-color: var(--accent);
+    }
+
+    .btn-danger {
+      background: var(--red-dim);
+      color: var(--red);
+      border-color: rgba(255, 92, 92, .2);
+    }
+
+    .btn-danger:hover {
+      background: rgba(255, 92, 92, .2);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--text3);
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg3);
+      color: var(--text2);
+      border-color: var(--border);
+    }
 
     /* ── Inputs / Selects ── */
     .field-label {
-      font-size: 10px; font-weight: 700; letter-spacing: .8px;
-      text-transform: uppercase; color: var(--text3); margin-bottom: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 6px;
     }
+
     .input {
-      width: 100%; padding: 8px 11px; font-family: var(--mono); font-size: 12px;
-      font-weight: 500; background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text); outline: none;
+      width: 100%;
+      padding: 8px 11px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      outline: none;
       transition: border-color var(--tr);
     }
-    .input:focus { border-color: var(--accent); }
-    .input::placeholder { color: var(--text3); font-weight: 400; }
-    .select-wrap { position: relative; }
-    .select {
-      width: 100%; padding: 8px 28px 8px 11px; font-family: var(--mono); font-size: 12px;
-      font-weight: 500; background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text); outline: none;
-      appearance: none; cursor: pointer; transition: border-color var(--tr);
+
+    .input:focus {
+      border-color: var(--accent);
     }
-    .select:focus { border-color: var(--accent); }
-    .select-wrap::after { content: '▾'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
+
+    .input::placeholder {
+      color: var(--text3);
+      font-weight: 400;
+    }
+
+    .select-wrap {
+      position: relative;
+    }
+
+    .select {
+      width: 100%;
+      padding: 8px 28px 8px 11px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      outline: none;
+      appearance: none;
+      cursor: pointer;
+      transition: border-color var(--tr);
+    }
+
+    .select:focus {
+      border-color: var(--accent);
+    }
+
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      pointer-events: none;
+    }
 
     /* ── Section title ── */
     .section-title {
-      font-size: 10px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
-      color: var(--text3); display: flex; align-items: center; gap: 7px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+      display: flex;
+      align-items: center;
+      gap: 7px;
     }
-    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
 
     /* ── Toggle ── */
     .toggle {
-      position: relative; width: 42px; height: 24px; flex-shrink: 0; cursor: pointer;
+      position: relative;
+      width: 42px;
+      height: 24px;
+      flex-shrink: 0;
+      cursor: pointer;
     }
-    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
     .toggle-slider {
-      position: absolute; inset: 0; cursor: pointer;
-      background: var(--bg4); border: 1px solid var(--border2);
-      border-radius: 24px; transition: all var(--tr);
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      background: var(--bg4);
+      border: 1px solid var(--border2);
+      border-radius: 24px;
+      transition: all var(--tr);
     }
+
     .toggle-slider::before {
-      content: ''; position: absolute;
-      width: 16px; height: 16px; left: 3px; top: 3px;
-      background: var(--text3); border-radius: 50%; transition: all var(--tr);
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: var(--text3);
+      border-radius: 50%;
+      transition: all var(--tr);
     }
-    .toggle input:checked + .toggle-slider { background: var(--accent-dim); border-color: var(--accent2); }
-    .toggle input:checked + .toggle-slider::before { transform: translateX(18px); background: var(--accent2); }
+
+    .toggle input:checked+.toggle-slider {
+      background: var(--accent-dim);
+      border-color: var(--accent2);
+    }
+
+    .toggle input:checked+.toggle-slider::before {
+      transform: translateX(18px);
+      background: var(--accent2);
+    }
 
     /* ════════════════════════════════════
        RENAME TAB
     ════════════════════════════════════ */
-    #rename-panel { flex: 1; display: flex; overflow: hidden; min-height: 0; }
+    #rename-panel {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      min-height: 0;
+    }
 
     /* Left config column */
     #rename-config {
-      width: 270px; flex-shrink: 0; overflow-y: auto;
+      width: 270px;
+      flex-shrink: 0;
+      overflow-y: auto;
       border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 8px;
-      padding: 12px; box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      box-sizing: border-box;
     }
 
     /* Config cards — match Settings style */
     .config-section {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 8px; overflow: visible; width: 100%;
-      display: flex; flex-direction: column;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: visible;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
     }
+
     .config-section-header {
-      padding: 7px 12px; font-size: 10px; font-weight: 700;
-      letter-spacing: .8px; text-transform: uppercase; color: var(--text3);
-      border-bottom: 1px solid var(--border); background: var(--bg3);
-      border-radius: 8px 8px 0 0; flex-shrink: 0;
+      padding: 7px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+      border-radius: 8px 8px 0 0;
+      flex-shrink: 0;
     }
+
     .config-section-body {
-      padding: 12px; display: flex; flex-direction: column; gap: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .config-field { display: flex; flex-direction: column; gap: 5px; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .config-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
 
     /* Name preview box */
     #name-preview-box {
-      padding: 8px 11px; background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--radius); font-size: 11px; color: var(--accent);
-      font-weight: 600; word-break: break-all; min-height: 34px;
+      padding: 8px 11px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+      word-break: break-all;
+      min-height: 34px;
     }
-    #name-preview-box .pv-dim { color: var(--text3); font-weight: 400; }
+
+    #name-preview-box .pv-dim {
+      color: var(--text3);
+      font-weight: 400;
+    }
 
     /* Output mode radio */
-    .radio-group { display: flex; flex-direction: column; gap: 8px; }
-    .radio-opt { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; color: var(--text2); }
-    .radio-opt input[type=radio] { accent-color: var(--accent2); width: 13px; height: 13px; cursor: pointer; }
-    #output-folder-field { display: none; flex-direction: column; gap: 6px; margin-top: 4px; }
-    #output-folder-field.visible { display: flex; }
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-opt {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .radio-opt input[type=radio] {
+      accent-color: var(--accent2);
+      width: 13px;
+      height: 13px;
+      cursor: pointer;
+    }
+
+    #output-folder-field {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    #output-folder-field.visible {
+      display: flex;
+    }
+
     #output-path-display {
-      padding: 7px 11px; background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--radius); font-size: 11px; color: var(--text3);
-      font-weight: 400; word-break: break-all; min-height: 34px;
+      padding: 7px 11px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 400;
+      word-break: break-all;
+      min-height: 34px;
     }
 
     /* Right main area */
-    #rename-main { flex: 1; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+    #rename-main {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
 
-    #rename-top { padding: 12px 14px 0; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+    #rename-top {
+      padding: 12px 14px 0;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
     /* Drop zone */
     #drop-zone {
-      border: 1.5px dashed var(--border2); border-radius: 8px; padding: 16px;
-      text-align: center; cursor: pointer; transition: all var(--tr); background: var(--bg2);
+      border: 1.5px dashed var(--border2);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--tr);
+      background: var(--bg2);
     }
-    #drop-zone:hover, #drop-zone.drag-over { border-color: var(--accent); background: var(--accent-dim2); }
-    #drop-zone .drop-icon { font-size: 22px; margin-bottom: 5px; opacity: .5; }
-    #drop-zone .drop-text { font-family: var(--sans); font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 2px; }
-    #drop-zone .drop-sub { font-size: 11px; color: var(--text3); font-weight: 400; }
+
+    #drop-zone:hover,
+    #drop-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-dim2);
+    }
+
+    #drop-zone .drop-icon {
+      font-size: 22px;
+      margin-bottom: 5px;
+      opacity: .5;
+    }
+
+    #drop-zone .drop-text {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    #drop-zone .drop-sub {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 400;
+    }
 
     /* Queue header */
     #queue-header {
-      display: none; align-items: center; gap: 10px;
-      padding: 7px 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
     }
-    #queue-count { flex: 1; font-size: 11px; color: var(--text3); font-weight: 600; }
-    #queue-actions { display: flex; gap: 6px; }
+
+    #queue-count {
+      flex: 1;
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 600;
+    }
+
+    #queue-actions {
+      display: flex;
+      gap: 6px;
+    }
 
     /* File list scroll — custom modern scrollbar */
     #rename-scroll {
-      flex: 1; overflow-y: auto; padding: 8px 14px 10px;
-      display: flex; flex-direction: column; gap: 6px; min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 0;
     }
-    #rename-scroll::-webkit-scrollbar { width: 5px; }
-    #rename-scroll::-webkit-scrollbar-track { background: transparent; }
-    #rename-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
-    #rename-scroll::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+    #rename-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    #rename-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #rename-scroll::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 10px;
+    }
+
+    #rename-scroll::-webkit-scrollbar-thumb:hover {
+      background: var(--text3);
+    }
 
     /* Group card */
     .group-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden; animation: slideIn .2s cubic-bezier(.16,1,.3,1);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      animation: slideIn .2s cubic-bezier(.16, 1, .3, 1);
       flex-shrink: 0;
     }
-    .group-card.has-value { border-color: rgba(184,242,160,.2); }
-    .group-card.has-error { border-color: rgba(255,92,92,.3); }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+
+    .group-card.has-value {
+      border-color: rgba(184, 242, 160, .2);
+    }
+
+    .group-card.has-error {
+      border-color: rgba(255, 92, 92, .3);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
 
     .file-row {
-      display: flex; align-items: center; gap: 9px; padding: 9px 12px;
-      border-bottom: 1px solid var(--border); position: relative;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
     }
-    .file-row:last-child { border-bottom: none; }
-    .file-row.primary { background: var(--bg3); }
+
+    .file-row:last-child {
+      border-bottom: none;
+    }
+
+    .file-row.primary {
+      background: var(--bg3);
+    }
 
     /* Remove button — shown on hover */
     .file-remove {
-      display: none; align-items: center; justify-content: center;
-      width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0;
-      background: var(--red-dim); color: var(--red); border: none;
-      cursor: pointer; font-size: 11px; font-weight: 700; transition: all var(--tr);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      background: var(--red-dim);
+      color: var(--red);
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+      transition: all var(--tr);
     }
-    .file-row:hover .file-remove { display: flex; }
-    .file-remove:hover { background: rgba(255,92,92,.3); }
+
+    .file-row:hover .file-remove {
+      display: flex;
+    }
+
+    .file-remove:hover {
+      background: rgba(255, 92, 92, .3);
+    }
 
     .ext-badge {
-      font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px;
-      text-transform: uppercase; flex-shrink: 0; min-width: 32px; text-align: center; letter-spacing: .4px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      min-width: 32px;
+      text-align: center;
+      letter-spacing: .4px;
     }
-    .ext-pdf  { background: rgba(255,92,92,.15);  color: #ff8080; }
-    .ext-xlsx { background: rgba(120,232,96,.15);  color: #78e860; }
-    .ext-txt  { background: rgba(100,180,255,.15); color: #6ab4ff; }
-    .ext-xml  { background: rgba(240,192,64,.15);  color: #f0c040; }
-    .ext-csv  { background: rgba(180,120,255,.15); color: #b478ff; }
-    .ext-other { background: var(--bg4); color: var(--text3); }
 
-    .file-info { flex: 1; min-width: 0; }
-    .file-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .file-newname { font-size: 11px; color: var(--accent2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .file-error { font-size: 11px; color: var(--red); margin-top: 2px; }
+    .ext-pdf {
+      background: rgba(255, 92, 92, .15);
+      color: #ff8080;
+    }
+
+    .ext-xlsx {
+      background: rgba(120, 232, 96, .15);
+      color: #78e860;
+    }
+
+    .ext-txt {
+      background: rgba(100, 180, 255, .15);
+      color: #6ab4ff;
+    }
+
+    .ext-xml {
+      background: rgba(240, 192, 64, .15);
+      color: #f0c040;
+    }
+
+    .ext-csv {
+      background: rgba(180, 120, 255, .15);
+      color: #b478ff;
+    }
+
+    .ext-other {
+      background: var(--bg4);
+      color: var(--text3);
+    }
+
+    .file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-newname {
+      font-size: 11px;
+      color: var(--accent2);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-error {
+      font-size: 11px;
+      color: var(--red);
+      margin-top: 2px;
+    }
 
     .value-chip {
-      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; flex-shrink: 0;
-      background: var(--accent-dim); color: var(--accent2); border: 1px solid rgba(184,242,160,.2);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      background: var(--accent-dim);
+      color: var(--accent2);
+      border: 1px solid rgba(184, 242, 160, .2);
     }
 
     .status-label {
-      font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; letter-spacing: .3px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      letter-spacing: .3px;
     }
-    .sl-pending  { background: var(--bg4);       color: var(--text3); }
-    .sl-reading  { background: var(--yellow-dim); color: var(--yellow); animation: pulse .8s infinite; }
-    .sl-ready    { background: var(--accent-dim); color: var(--accent2); }
-    .sl-matched  { background: var(--accent-dim); color: var(--accent2); }
-    .sl-unmatched { background: var(--bg4);       color: var(--text3); }
-    .sl-error    { background: var(--red-dim);    color: var(--red); }
-    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+
+    .sl-pending {
+      background: var(--bg4);
+      color: var(--text3);
+    }
+
+    .sl-reading {
+      background: var(--yellow-dim);
+      color: var(--yellow);
+      animation: pulse .8s infinite;
+    }
+
+    .sl-ready {
+      background: var(--accent-dim);
+      color: var(--accent2);
+    }
+
+    .sl-matched {
+      background: var(--accent-dim);
+      color: var(--accent2);
+    }
+
+    .sl-unmatched {
+      background: var(--bg4);
+      color: var(--text3);
+    }
+
+    .sl-error {
+      background: var(--red-dim);
+      color: var(--red);
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .4;
+      }
+    }
 
     /* Ungrouped section */
-    .ungrouped-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; flex-shrink: 0; }
-    .ungrouped-header { padding: 7px 12px; background: var(--bg3); font-size: 10px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); }
+    .ungrouped-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .ungrouped-header {
+      padding: 7px 12px;
+      background: var(--bg3);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--text3);
+      border-bottom: 1px solid var(--border);
+    }
 
     /* Bottom bar */
     #rename-bottom {
-      padding: 10px 14px 12px; border-top: 1px solid var(--border);
-      background: var(--bg); flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;
+      padding: 10px 14px 12px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     /* Log */
     #log-area {
-      display: none; flex-direction: column; gap: 2px;
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 9px 11px; max-height: 100px; overflow-y: auto; flex-shrink: 0;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 9px 11px;
+      max-height: 100px;
+      overflow-y: auto;
+      flex-shrink: 0;
     }
-    #log-area::-webkit-scrollbar { width: 4px; }
-    #log-area::-webkit-scrollbar-track { background: transparent; }
-    #log-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
-    #log-area.visible { display: flex; }
-    .log-line { font-size: 11px; font-weight: 500; line-height: 1.5; display: flex; gap: 8px; }
-    .log-time { color: var(--text3); flex-shrink: 0; font-weight: 400; }
-    .log-msg { color: var(--text2); }
-    .log-ok  .log-msg { color: var(--accent2); }
-    .log-err .log-msg { color: var(--red); }
-    .log-warn .log-msg { color: var(--yellow); }
+
+    #log-area::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #log-area::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #log-area::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 10px;
+    }
+
+    #log-area.visible {
+      display: flex;
+    }
+
+    .log-line {
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1.5;
+      display: flex;
+      gap: 8px;
+    }
+
+    .log-time {
+      color: var(--text3);
+      flex-shrink: 0;
+      font-weight: 400;
+    }
+
+    .log-msg {
+      color: var(--text2);
+    }
+
+    .log-ok .log-msg {
+      color: var(--accent2);
+    }
+
+    .log-err .log-msg {
+      color: var(--red);
+    }
+
+    .log-warn .log-msg {
+      color: var(--yellow);
+    }
 
     /* Action buttons row */
-    #action-row { display: flex; gap: 8px; align-items: center; }
+    #action-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
     #btn-process-all {
-      flex: 1; padding: 12px; font-family: var(--mono); font-size: 12px; font-weight: 700;
-      letter-spacing: 1.2px; text-transform: uppercase; background: var(--accent-dim);
-      color: var(--accent); border: 1.5px solid rgba(184,242,160,.3);
-      border-radius: var(--radius); cursor: pointer; transition: all var(--tr);
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      flex: 1;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1.5px solid rgba(184, 242, 160, .3);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all var(--tr);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    #btn-process-all:hover:not(:disabled) { background: rgba(184,242,160,.2); border-color: var(--accent); }
-    #btn-process-all:disabled { opacity: .3; cursor: not-allowed; }
+
+    #btn-process-all:hover:not(:disabled) {
+      background: rgba(184, 242, 160, .2);
+      border-color: var(--accent);
+    }
+
+    #btn-process-all:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
     #btn-rename-all {
-      flex: 1; padding: 12px; font-family: var(--mono); font-size: 12px; font-weight: 700;
-      letter-spacing: 1.2px; text-transform: uppercase;
-      background: rgba(120,232,96,.18); color: var(--accent2);
-      border: 1.5px solid rgba(120,232,96,.4); border-radius: var(--radius);
-      cursor: pointer; transition: all var(--tr); display: flex; align-items: center; justify-content: center; gap: 8px;
+      flex: 1;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      background: rgba(120, 232, 96, .18);
+      color: var(--accent2);
+      border: 1.5px solid rgba(120, 232, 96, .4);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all var(--tr);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    #btn-rename-all:hover:not(:disabled) { background: rgba(120,232,96,.28); border-color: var(--accent2); }
-    #btn-rename-all:disabled { opacity: .3; cursor: not-allowed; }
+
+    #btn-rename-all:hover:not(:disabled) {
+      background: rgba(120, 232, 96, .28);
+      border-color: var(--accent2);
+    }
+
+    #btn-rename-all:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
 
     /* Empty state */
     #empty-state {
-      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: var(--text3); gap: 8px; padding: 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text3);
+      gap: 8px;
+      padding: 40px;
     }
-    .es-icon { font-size: 38px; opacity: .3; }
-    .es-text { font-family: var(--sans); font-size: 13px; color: var(--text3); text-align: center; }
+
+    .es-icon {
+      font-size: 38px;
+      opacity: .3;
+    }
+
+    .es-text {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text3);
+      text-align: center;
+    }
 
     /* ════════════════════════════════════
        PROFILES TAB
     ════════════════════════════════════ */
-    #profiles-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    #profiles-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
     #profiles-header {
-      padding: 10px 16px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
     }
-    #profiles-count { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--text3); }
-    #profiles-list { flex: 1; overflow-y: auto; padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; }
+
+    #profiles-count {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    #profiles-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
     .profile-card {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 11px 14px; display: flex; align-items: center; gap: 10px;
-      cursor: pointer; transition: all var(--tr); animation: slideIn .2s cubic-bezier(.16,1,.3,1);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all var(--tr);
+      animation: slideIn .2s cubic-bezier(.16, 1, .3, 1);
     }
-    .profile-card:hover { border-color: var(--border2); background: var(--bg3); }
-    .profile-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); flex-shrink: 0; }
-    .profile-info { flex: 1; min-width: 0; }
-    .profile-name { font-size: 13px; font-weight: 600; color: var(--text); }
-    .profile-desc { font-size: 11px; color: var(--text3); font-weight: 400; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .profile-meta { font-size: 10px; color: var(--text3); font-weight: 400; margin-top: 2px; }
-    .profile-actions { display: flex; gap: 5px; opacity: 0; transition: opacity var(--tr); }
-    .profile-card:hover .profile-actions { opacity: 1; }
+
+    .profile-card:hover {
+      border-color: var(--border2);
+      background: var(--bg3);
+    }
+
+    .profile-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent2);
+      flex-shrink: 0;
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .profile-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .profile-desc {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 400;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .profile-meta {
+      font-size: 10px;
+      color: var(--text3);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 5px;
+      opacity: 0;
+      transition: opacity var(--tr);
+    }
+
+    .profile-card:hover .profile-actions {
+      opacity: 1;
+    }
 
     /* ════════════════════════════════════
        SETTINGS TAB
     ════════════════════════════════════ */
     #settings-panel {
-      flex: 1; overflow-y: auto; overflow-x: hidden;
-      padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 8px;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 12px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
+
     .settings-section {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 8px; overflow: visible; width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: visible;
+      width: 100%;
     }
+
     .settings-section-header {
-      padding: 8px 14px; font-size: 10px; font-weight: 700;
-      letter-spacing: .8px; text-transform: uppercase; color: var(--text3);
-      border-bottom: 1px solid var(--border); background: var(--bg3);
+      padding: 8px 14px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
       border-radius: 8px 8px 0 0;
     }
+
     .settings-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border);
-      width: 100%; box-sizing: border-box; min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 48px;
     }
-    .settings-row:last-child { border-bottom: none; }
-    .settings-row-info { flex: 1; min-width: 0; }
-    .settings-row-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-    .settings-row-desc { font-size: 11px; font-weight: 400; color: var(--text3); line-height: 1.4; }
-    .settings-row-ctrl { flex-shrink: 0; display: flex; align-items: center; gap: 6px; overflow: visible; }
-    #update-status-line { padding: 8px 14px; font-size: 12px; font-weight: 600; display: none; border-bottom: 1px solid var(--border); }
-    #update-status-line.ok  { color: var(--accent2); display: block; }
-    #update-status-line.err { color: var(--red);     display: block; }
-    #update-status-line.warn { color: var(--yellow); display: block; }
+
+    .settings-row:last-child {
+      border-bottom: none;
+    }
+
+    .settings-row-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .settings-row-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .settings-row-desc {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text3);
+      line-height: 1.4;
+    }
+
+    .settings-row-ctrl {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: visible;
+    }
+
+    #update-status-line {
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      display: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #update-status-line.ok {
+      color: var(--accent2);
+      display: block;
+    }
+
+    #update-status-line.err {
+      color: var(--red);
+      display: block;
+    }
+
+    #update-status-line.warn {
+      color: var(--yellow);
+      display: block;
+    }
 
     /* Feedback */
     #feedback-area {
-      width: 100%; min-height: 80px; padding: 9px 11px; font-family: var(--mono); font-size: 12px;
-      font-weight: 400; background: var(--bg2); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text); outline: none; resize: vertical;
+      width: 100%;
+      min-height: 80px;
+      padding: 9px 11px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 400;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      outline: none;
+      resize: vertical;
       transition: border-color var(--tr);
     }
-    #feedback-area:focus { border-color: var(--accent); }
-    .feedback-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
-    .settings-inner { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+
+    #feedback-area:focus {
+      border-color: var(--accent);
+    }
+
+    .feedback-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .settings-inner {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
     /* ════════════════════════════════════
        HISTORY TAB
     ════════════════════════════════════ */
-    #history-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    #history-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
     /* ── Row 1: Title + count badge + action buttons ── */
     #history-header {
-      padding: 10px 16px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-shrink: 0; gap: 12px; min-height: 44px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      gap: 12px;
+      min-height: 44px;
     }
-    #history-title-group { display: flex; align-items: center; gap: 9px; }
-    #history-title { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--text); }
+
+    #history-title-group {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    #history-title {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
     #history-count {
-      font-size: 10px; font-weight: 700; letter-spacing: .5px;
-      color: var(--text3); background: var(--bg3); border: 1px solid var(--border);
-      padding: 2px 8px; border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      color: var(--text3);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 10px;
     }
-    #history-header-actions { display: flex; gap: 6px; align-items: center; }
+
+    #history-header-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
 
     /* ── Row 2: Filter bar ── */
     #history-filterbar {
-      padding: 7px 16px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 7px; flex-shrink: 0;
+      padding: 7px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
     }
+
     /* Search */
-    #hist-search-wrap { position: relative; flex-shrink: 0; }
+    #hist-search-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
     #hist-search-icon {
-      position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
-      color: var(--text3); font-size: 11px; pointer-events: none; line-height: 1;
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      font-size: 11px;
+      pointer-events: none;
+      line-height: 1;
     }
+
     #hist-search {
-      width: 196px; padding: 5px 10px 5px 27px; font-family: var(--mono);
-      font-size: 11px; font-weight: 500; background: var(--bg2);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      color: var(--text); outline: none; transition: border-color var(--tr);
+      width: 196px;
+      padding: 5px 10px 5px 27px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      outline: none;
+      transition: border-color var(--tr);
     }
-    #hist-search:focus { border-color: var(--accent); width: 230px; }
-    #hist-search::placeholder { color: var(--text3); font-weight: 400; }
+
+    #hist-search:focus {
+      border-color: var(--accent);
+      width: 230px;
+    }
+
+    #hist-search::placeholder {
+      color: var(--text3);
+      font-weight: 400;
+    }
+
     /* Divider */
-    .fbar-sep { width: 1px; height: 16px; background: var(--border2); flex-shrink: 0; margin: 0 1px; }
-    /* Date chips */
-    .date-chips { display: flex; gap: 4px; }
-    .date-chip {
-      padding: 4px 10px; border-radius: 20px; font-family: var(--mono);
-      font-size: 10px; font-weight: 700; letter-spacing: .2px; cursor: pointer;
-      border: 1px solid transparent; background: transparent; color: var(--text3);
-      transition: all var(--tr); white-space: nowrap;
+    .fbar-sep {
+      width: 1px;
+      height: 16px;
+      background: var(--border2);
+      flex-shrink: 0;
+      margin: 0 1px;
     }
-    .date-chip:hover { background: var(--bg3); color: var(--text2); border-color: var(--border); }
-    .date-chip.active { background: var(--accent-dim); color: var(--accent2); border-color: rgba(184,242,160,.3); }
+
+    /* Date chips */
+    .date-chips {
+      display: flex;
+      gap: 4px;
+    }
+
+    .date-chip {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text3);
+      transition: all var(--tr);
+      white-space: nowrap;
+    }
+
+    .date-chip:hover {
+      background: var(--bg3);
+      color: var(--text2);
+      border-color: var(--border);
+    }
+
+    .date-chip.active {
+      background: var(--accent-dim);
+      color: var(--accent2);
+      border-color: rgba(184, 242, 160, .3);
+    }
+
     /* Sort toggle */
     #hist-sort-btn {
-      display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px;
-      font-family: var(--mono); font-size: 10px; font-weight: 700;
-      cursor: pointer; border-radius: var(--radius); border: 1px solid var(--border);
-      background: var(--bg3); color: var(--text3); transition: all var(--tr); white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text3);
+      transition: all var(--tr);
+      white-space: nowrap;
     }
-    #hist-sort-btn:hover { border-color: var(--border2); color: var(--text2); }
-    #hist-sort-btn.active { color: var(--accent2); border-color: rgba(184,242,160,.3); background: var(--accent-dim); }
-    #hist-sort-arrow { display: inline-block; transition: transform .2s ease; }
+
+    #hist-sort-btn:hover {
+      border-color: var(--border2);
+      color: var(--text2);
+    }
+
+    #hist-sort-btn.active {
+      color: var(--accent2);
+      border-color: rgba(184, 242, 160, .3);
+      background: var(--accent-dim);
+    }
+
+    #hist-sort-arrow {
+      display: inline-block;
+      transition: transform .2s ease;
+    }
+
     /* Reset pill — hidden until filters are dirty */
     #hist-reset-btn {
-      display: none; align-items: center; gap: 4px; padding: 4px 9px;
-      font-family: var(--mono); font-size: 10px; font-weight: 700; cursor: pointer;
-      border-radius: var(--radius); border: 1px solid rgba(255,92,92,.2);
-      background: var(--red-dim); color: var(--red); transition: all var(--tr);
+      display: none;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 9px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 92, 92, .2);
+      background: var(--red-dim);
+      color: var(--red);
+      transition: all var(--tr);
     }
-    #hist-reset-btn.visible { display: inline-flex; }
-    #hist-reset-btn:hover { background: rgba(255,92,92,.22); }
+
+    #hist-reset-btn.visible {
+      display: inline-flex;
+    }
+
+    #hist-reset-btn:hover {
+      background: rgba(255, 92, 92, .22);
+    }
+
     /* Push sort + reset to far right */
-    #hist-filterbar-right { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+    #hist-filterbar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
 
     /* ── Row 3: Active-filter indicator strip (hidden by default) ── */
     #hist-indicator {
-      display: none; padding: 4px 16px; background: rgba(184,242,160,.05);
-      border-bottom: 1px solid rgba(184,242,160,.1); flex-shrink: 0;
-      font-size: 10px; color: var(--accent2); font-weight: 600; letter-spacing: .3px;
+      display: none;
+      padding: 4px 16px;
+      background: rgba(184, 242, 160, .05);
+      border-bottom: 1px solid rgba(184, 242, 160, .1);
+      flex-shrink: 0;
+      font-size: 10px;
+      color: var(--accent2);
+      font-weight: 600;
+      letter-spacing: .3px;
     }
-    #hist-indicator.visible { display: block; }
+
+    #hist-indicator.visible {
+      display: block;
+    }
 
     /* ── Entry list ── */
-    #history-list { flex: 1; overflow-y: auto; padding: 8px 16px 12px; display: flex; flex-direction: column; gap: 3px; }
+    #history-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
 
     /* Entry card */
     .hi {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
-      overflow: hidden; animation: slideIn .18s cubic-bezier(.16,1,.3,1); transition: border-color var(--tr);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      animation: slideIn .18s cubic-bezier(.16, 1, .3, 1);
+      transition: border-color var(--tr);
     }
-    .hi:hover { border-color: var(--border2); }
-    .hi.open { border-color: rgba(184,242,160,.25); background: var(--bg2); }
+
+    .hi:hover {
+      border-color: var(--border2);
+    }
+
+    .hi.open {
+      border-color: rgba(184, 242, 160, .25);
+      background: var(--bg2);
+    }
 
     /* Collapsed row */
     .hi-row {
       display: grid;
       grid-template-columns: 8px 1fr auto auto 14px;
-      align-items: center; gap: 10px; padding: 9px 14px;
-      cursor: pointer; transition: background var(--tr);
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: background var(--tr);
     }
-    .hi-row:hover { background: rgba(255,255,255,.02); }
+
+    .hi-row:hover {
+      background: rgba(255, 255, 255, .02);
+    }
 
     /* Col 1: status dot */
-    .hi-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .hi-dot.ok   { background: var(--accent2); box-shadow: 0 0 6px rgba(120,232,96,.35); }
-    .hi-dot.warn { background: var(--yellow);  box-shadow: 0 0 6px rgba(240,192,64,.25); }
-    .hi-dot.err  { background: var(--red);     box-shadow: 0 0 6px rgba(255,92,92,.25);  }
+    .hi-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .hi-dot.ok {
+      background: var(--accent2);
+      box-shadow: 0 0 6px rgba(120, 232, 96, .35);
+    }
+
+    .hi-dot.warn {
+      background: var(--yellow);
+      box-shadow: 0 0 6px rgba(240, 192, 64, .25);
+    }
+
+    .hi-dot.err {
+      background: var(--red);
+      box-shadow: 0 0 6px rgba(255, 92, 92, .25);
+    }
 
     /* Col 2: info stack */
-    .hi-info { min-width: 0; }
-    .hi-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .hi-meta { display: flex; align-items: center; gap: 7px; margin-top: 2px; flex-wrap: wrap; }
-    .hi-time { font-size: 10px; color: var(--text3); font-weight: 400; }
+    .hi-info {
+      min-width: 0;
+    }
+
+    .hi-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hi-meta {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 2px;
+      flex-wrap: wrap;
+    }
+
+    .hi-time {
+      font-size: 10px;
+      color: var(--text3);
+      font-weight: 400;
+    }
+
     .hi-profile-tag {
-      font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 3px;
-      background: var(--bg4); color: var(--text3); border: 1px solid var(--border);
-      text-transform: uppercase; letter-spacing: .3px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--bg4);
+      color: var(--text3);
+      border: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: .3px;
     }
 
     /* Col 3: renamed count pill */
     .hi-pill {
-      font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; white-space: nowrap;
-      background: var(--accent-dim); color: var(--accent2); border: 1px solid rgba(184,242,160,.2);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 10px;
+      white-space: nowrap;
+      background: var(--accent-dim);
+      color: var(--accent2);
+      border: 1px solid rgba(184, 242, 160, .2);
     }
 
     /* Col 4: chevron */
-    .hi-chev { color: var(--text3); font-size: 9px; transition: transform .15s, color .15s; justify-self: end; }
-    .hi.open .hi-chev { transform: rotate(90deg); color: var(--accent2); }
+    .hi-chev {
+      color: var(--text3);
+      font-size: 9px;
+      transition: transform .15s, color .15s;
+      justify-self: end;
+    }
+
+    .hi.open .hi-chev {
+      transform: rotate(90deg);
+      color: var(--accent2);
+    }
 
     /* Expanded body */
-    .hi-body { display: none; border-top: 1px solid var(--border); padding: 10px 14px 12px 32px; }
-    .hi.open .hi-body { display: block; }
+    .hi-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 10px 14px 12px 32px;
+    }
+
+    .hi.open .hi-body {
+      display: block;
+    }
+
     .hi-body-hdr {
-      font-size: 9px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
-      color: var(--text3); margin-bottom: 7px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 7px;
     }
-    .hi-files { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+
+    .hi-files {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
     .hi-file {
-      padding: 3px 9px; border-radius: 4px; font-size: 10px; font-weight: 600;
-      background: var(--bg3); color: var(--text2); border: 1px solid var(--border);
-      cursor: pointer; transition: all var(--tr); white-space: nowrap;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--bg3);
+      color: var(--text2);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all var(--tr);
+      white-space: nowrap;
     }
-    .hi-file:hover { border-color: var(--accent); color: var(--accent2); background: var(--accent-dim); }
-    .hi-actions { display: flex; gap: 6px; }
+
+    .hi-file:hover {
+      border-color: var(--accent);
+      color: var(--accent2);
+      background: var(--accent-dim);
+    }
+
+    .hi-actions {
+      display: flex;
+      gap: 6px;
+    }
 
     /* Empty state */
     .hi-empty-state {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 10px; padding: 60px 24px; text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 60px 24px;
+      text-align: center;
     }
-    .hi-empty-icon { font-size: 34px; opacity: .18; line-height: 1; }
-    .hi-empty-title { font-family: var(--sans); font-size: 14px; font-weight: 700; color: var(--text2); }
-    .hi-empty-sub { font-size: 11px; color: var(--text3); font-weight: 400; line-height: 1.65; max-width: 260px; }
+
+    .hi-empty-icon {
+      font-size: 34px;
+      opacity: .18;
+      line-height: 1;
+    }
+
+    .hi-empty-title {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text2);
+    }
+
+    .hi-empty-sub {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 400;
+      line-height: 1.65;
+      max-width: 260px;
+    }
 
     /* ════════════════════════════════════
        MODALS
     ════════════════════════════════════ */
     .modal-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6);
-      z-index: 900; align-items: center; justify-content: center;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      z-index: 900;
+      align-items: center;
+      justify-content: center;
     }
-    .modal-overlay.open { display: flex; }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
     .modal {
-      background: var(--bg2); border: 1px solid var(--border2);
-      border-radius: 10px; padding: 24px; max-width: 440px; width: 90%;
-      box-shadow: 0 24px 60px rgba(0,0,0,.5); animation: fadeIn .15s ease-out;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 24px;
+      max-width: 440px;
+      width: 90%;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+      animation: fadeIn .15s ease-out;
     }
-    .modal h3 { font-family: var(--sans); font-size: 16px; font-weight: 700; margin-bottom: 10px; }
-    .modal p { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 18px; font-weight: 400; }
-    .modal-btns { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+    .modal h3 {
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .modal p {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      font-weight: 400;
+    }
+
+    .modal-btns {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
 
     /* Profile edit modal */
-    #profile-modal .modal { max-width: 520px; }
-    .profile-modal-fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+    #profile-modal .modal {
+      max-width: 520px;
+    }
+
+    .profile-modal-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
 
     /* Patch Notes */
     #patchnotes-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7);
-      z-index: 999; align-items: center; justify-content: center;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
     }
-    #patchnotes-overlay.open { display: flex; }
+
+    #patchnotes-overlay.open {
+      display: flex;
+    }
+
     #patchnotes-modal {
-      background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px;
-      width: 440px; max-width: 95vw; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.6);
-      animation: fadeIn .2s ease-out; position: relative;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      width: 440px;
+      max-width: 95vw;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .6);
+      animation: fadeIn .2s ease-out;
+      position: relative;
     }
-    #patchnotes-accent { height: 3px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
-    #patchnotes-header { padding: 24px 24px 16px; }
-    .pn-version-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-    .pn-badge { padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-    .pn-badge-prev { background: var(--bg4); color: var(--text3); }
-    .pn-badge-arrow { color: var(--text3); font-size: 12px; }
-    .pn-badge-new { background: var(--accent-dim); color: var(--accent2); border: 1px solid rgba(184,242,160,.3); }
-    #patchnotes-title { font-family: var(--sans); font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-    #patchnotes-title span { color: var(--accent2); }
-    #patchnotes-subtitle { font-size: 12px; color: var(--text3); font-weight: 400; }
-    #patchnotes-body { padding: 0 24px 16px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-    .pn-section-label { font-size: 10px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--text3); margin-top: 8px; }
-    .pn-item { display: flex; align-items: flex-start; gap: 8px; }
-    .pn-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-    .pn-dot.new { background: var(--accent2); }
-    .pn-dot.improved { background: var(--yellow); }
-    .pn-dot.fixed { background: #6ab4ff; }
-    .pn-text { font-size: 12px; color: var(--text2); font-weight: 400; line-height: 1.5; }
-    .pn-empty { font-size: 12px; color: var(--text3); font-weight: 400; }
-    #patchnotes-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+
+    #patchnotes-accent {
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+    }
+
+    #patchnotes-header {
+      padding: 24px 24px 16px;
+    }
+
+    .pn-version-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pn-badge {
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pn-badge-prev {
+      background: var(--bg4);
+      color: var(--text3);
+    }
+
+    .pn-badge-arrow {
+      color: var(--text3);
+      font-size: 12px;
+    }
+
+    .pn-badge-new {
+      background: var(--accent-dim);
+      color: var(--accent2);
+      border: 1px solid rgba(184, 242, 160, .3);
+    }
+
+    #patchnotes-title {
+      font-family: var(--sans);
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    #patchnotes-title span {
+      color: var(--accent2);
+    }
+
+    #patchnotes-subtitle {
+      font-size: 12px;
+      color: var(--text3);
+      font-weight: 400;
+    }
+
+    #patchnotes-body {
+      padding: 0 24px 16px;
+      max-height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pn-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-top: 8px;
+    }
+
+    .pn-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .pn-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    .pn-dot.new {
+      background: var(--accent2);
+    }
+
+    .pn-dot.improved {
+      background: var(--yellow);
+    }
+
+    .pn-dot.fixed {
+      background: #6ab4ff;
+    }
+
+    .pn-text {
+      font-size: 12px;
+      color: var(--text2);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .pn-empty {
+      font-size: 12px;
+      color: var(--text3);
+      font-weight: 400;
+    }
+
+    #patchnotes-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     #patchnotes-btn {
-      padding: 9px 20px; font-family: var(--mono); font-size: 12px; font-weight: 700;
-      letter-spacing: .8px; text-transform: uppercase; background: var(--accent-dim);
-      color: var(--accent); border: 1.5px solid rgba(184,242,160,.3);
-      border-radius: var(--radius); cursor: pointer; transition: all var(--tr);
+      padding: 9px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1.5px solid rgba(184, 242, 160, .3);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all var(--tr);
     }
-    #patchnotes-btn:hover { background: rgba(184,242,160,.2); border-color: var(--accent); }
-    #patchnotes-meta { font-size: 10px; color: var(--text3); font-weight: 400; }
+
+    #patchnotes-btn:hover {
+      background: rgba(184, 242, 160, .2);
+      border-color: var(--accent);
+    }
+
+    #patchnotes-meta {
+      font-size: 10px;
+      color: var(--text3);
+      font-weight: 400;
+    }
   </style>
 </head>
+
 <body>
-<div id="app">
+  <div id="app">
 
-  <!-- Titlebar -->
-  <div id="titlebar">
-    <div class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 14 14" fill="none">
-          <rect x="1" y="3" width="12" height="2" rx="1" fill="#0d0d0d"/>
-          <rect x="1" y="6.5" width="8" height="2" rx="1" fill="#0d0d0d"/>
-          <rect x="1" y="10" width="10" height="2" rx="1" fill="#0d0d0d"/>
-        </svg>
-      </div>
-      <div>
-        <div class="logo-name">Nomina</div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <div class="logo-version" id="app-version">v1.0.0</div>
-          <div class="logo-version">by Vellova Apps</div>
+    <!-- Titlebar -->
+    <div id="titlebar">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="3" width="12" height="2" rx="1" fill="#0d0d0d" />
+            <rect x="1" y="6.5" width="8" height="2" rx="1" fill="#0d0d0d" />
+            <rect x="1" y="10" width="10" height="2" rx="1" fill="#0d0d0d" />
+          </svg>
+        </div>
+        <div>
+          <div class="logo-name">Nomina</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="logo-version" id="app-version">v1.0.0</div>
+            <div class="logo-version">by Vellova Apps</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Update Banner -->
-  <div id="update-banner">
-    <div id="ub-left">
-      <span id="ub-text">Checking for updates…</span>
-      <span id="ub-meta"></span>
+    <!-- Update Banner -->
+    <div id="update-banner">
+      <div class="ub-content">
+        <div id="ub-left">
+          <span id="ub-text">Checking for updates…</span>
+          <span id="ub-meta"></span>
+        </div>
+        <div id="ub-progress-wrap">
+          <div id="ub-progress">
+            <div id="ub-bar"></div>
+          </div>
+        </div>
+        <div id="ub-actions">
+          <button id="ub-cancel" title="Cancel Download">✕</button>
+          <button id="ub-install" onclick="window.nomina.installUpdate()">↻ Restart &amp; Install</button>
+        </div>
+      </div>
     </div>
-    <div id="ub-progress-wrap"><div id="ub-progress"><div id="ub-bar"></div></div></div>
-    <button id="ub-install" onclick="window.nomina.installUpdate()">↻ Restart &amp; Install</button>
-  </div>
 
-  <!-- Tabs -->
-  <div id="tabs">
-    <div class="tab active" data-tab="rename"><span class="tab-icon">⟳</span>RENAME FILE</div>
-    <div class="tab" data-tab="profiles"><span class="tab-icon">◈</span>PROFILES</div>
-    <div class="tab" data-tab="settings"><span class="tab-icon">◎</span>SETTINGS</div>
-    <div class="tab" data-tab="history"><span class="tab-icon">◷</span>HISTORY</div>
-  </div>
+    <!-- Tabs -->
+    <div id="tabs">
+      <div class="tab active" data-tab="rename"><span class="tab-icon">⟳</span>RENAME FILE</div>
+      <div class="tab" data-tab="profiles"><span class="tab-icon">◈</span>PROFILES</div>
+      <div class="tab" data-tab="settings"><span class="tab-icon">◎</span>SETTINGS</div>
+      <div class="tab" data-tab="history"><span class="tab-icon">◷</span>HISTORY</div>
+    </div>
 
-  <!-- ════ RENAME TAB ════ -->
-  <div class="tab-panel active" id="tab-rename">
-    <div id="rename-panel">
+    <!-- ════ RENAME TAB ════ -->
+    <div class="tab-panel active" id="tab-rename">
+      <div id="rename-panel">
 
-      <!-- Left config -->
-      <div id="rename-config">
+        <!-- Left config -->
+        <div id="rename-config">
 
-        <!-- Profile select -->
-        <div class="config-section">
-          <div class="config-section-header">Profile</div>
-          <div class="config-section-body">
-            <div class="config-field">
-              <div class="select-wrap">
-                <select class="select" id="profile-select">
-                  <option value="">— no profile —</option>
+          <!-- Profile select -->
+          <div class="config-section">
+            <div class="config-section-header">Profile</div>
+            <div class="config-section-body">
+              <div class="config-field">
+                <div class="select-wrap">
+                  <select class="select" id="profile-select">
+                    <option value="">— no profile —</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extraction -->
+          <div class="config-section">
+            <div class="config-section-header">Extraction</div>
+            <div class="config-section-body">
+              <div class="config-field">
+                <div class="field-label">Keyword</div>
+                <input class="input" type="text" id="keyword" placeholder="e.g. Matter Id" />
+              </div>
+              <div class="config-field">
+                <div class="field-label">Position</div>
+                <div class="select-wrap">
+                  <select class="select" id="position">
+                    <option value="">— select position —</option>
+                    <option value="below">Below keyword</option>
+                    <option value="after">After keyword (same line)</option>
+                    <option value="above">Above keyword</option>
+                    <option value="before">Before keyword (same line)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Naming -->
+          <div class="config-section">
+            <div class="config-section-header">File Naming</div>
+            <div class="config-section-body">
+              <div class="two-col">
+                <div class="config-field">
+                  <div class="field-label">Prefix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
+                  <input class="input" type="text" id="prefix" placeholder="CN_" />
+                </div>
+                <div class="config-field">
+                  <div class="field-label">Suffix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
+                  <input class="input" type="text" id="suffix" placeholder="_final" />
+                </div>
+              </div>
+              <div class="config-field">
+                <div class="field-label">Preview</div>
+                <div id="name-preview-box">
+                  <span class="pv-dim">prefix</span><span id="pv-value"> + value + </span><span
+                    class="pv-dim">suffix</span><span id="pv-ext" class="pv-dim">.ext</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Output -->
+          <div class="config-section">
+            <div class="config-section-header">Output</div>
+            <div class="config-section-body">
+              <div class="radio-group">
+                <label class="radio-opt"><input type="radio" name="out-mode" value="inplace" checked /> Rename in
+                  place</label>
+                <label class="radio-opt"><input type="radio" name="out-mode" value="copy" /> Copy to output
+                  folder</label>
+              </div>
+              <div id="output-folder-field">
+                <button class="btn btn-ghost" id="btn-select-output"
+                  style="font-size:10px;padding:5px 10px">Browse…</button>
+                <div id="output-path-display">No folder selected</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /config -->
+
+        <!-- Right main -->
+        <div id="rename-main">
+
+          <div id="rename-top">
+            <!-- Drop zone -->
+            <div id="drop-zone">
+              <div class="drop-icon">📂</div>
+              <div class="drop-text">Drop files or a folder here</div>
+              <div class="drop-sub">
+                <span id="dz-browse-files" style="color:var(--accent);cursor:pointer">Browse files</span>
+                <span style="color:var(--text3)"> · or · </span>
+                <span id="dz-browse" style="color:var(--accent);cursor:pointer">Browse folder</span>
+                <span style="color:var(--text3)"> · .pdf · .xlsx · .txt · .xml · .csv</span>
+              </div>
+            </div>
+
+            <!-- Queue header -->
+            <div id="queue-header" style="display:none">
+              <span id="queue-count">0 files</span>
+              <div id="queue-actions">
+                <button class="btn btn-ghost" id="btn-clear-queue" style="font-size:10px;padding:4px 10px">✕
+                  Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrollable file list -->
+          <div id="rename-scroll">
+            <div id="empty-state">
+              <div class="es-icon">🗂</div>
+              <div class="es-text">No files loaded yet.<br />Drop files or browse a folder to begin.</div>
+            </div>
+          </div>
+
+          <!-- Bottom bar -->
+          <div id="rename-bottom">
+            <div id="log-area"></div>
+            <div id="action-row">
+              <button id="btn-process-all" disabled>⟳ Process Files</button>
+              <button id="btn-rename-all" disabled>✓ Rename All</button>
+            </div>
+          </div>
+
+        </div><!-- /main -->
+      </div>
+    </div><!-- /rename tab -->
+
+    <!-- ════ PROFILES TAB ════ -->
+    <div class="tab-panel" id="tab-profiles">
+      <div id="profiles-panel">
+        <div id="profiles-header">
+          <span id="profiles-count">0 PROFILES</span>
+          <button class="btn btn-accent" id="btn-new-profile">+ NEW PROFILE</button>
+        </div>
+        <div id="profiles-list">
+          <div id="profiles-empty" class="es-text" style="padding:40px;text-align:center">No profiles yet.<br />Create a
+            profile to save your renaming configuration.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ SETTINGS TAB ════ -->
+    <div class="tab-panel" id="tab-settings">
+      <div id="settings-panel">
+
+        <!-- Updates -->
+        <div class="settings-section">
+          <div class="settings-section-header">Updates</div>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Current Version</div>
+              <div class="settings-row-desc" id="settings-version">v1.0.0</div>
+            </div>
+            <div class="settings-row-ctrl">
+              <button class="btn btn-accent" id="btn-check-now">Check Now</button>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Check on startup</div>
+              <div class="settings-row-desc">Automatically check when app launches</div>
+            </div>
+            <div class="settings-row-ctrl">
+              <label class="toggle">
+                <input type="checkbox" id="toggle-check-startup" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Periodic check interval</div>
+              <div class="settings-row-desc">How often to check while app is open</div>
+            </div>
+            <div class="settings-row-ctrl">
+              <div class="select-wrap" style="width:140px">
+                <select class="select" id="sel-check-interval" style="padding-right:24px">
+                  <option value="30min">Every 30 min</option>
+                  <option value="hourly" selected>Every hour</option>
+                  <option value="6h">Every 6 hours</option>
+                  <option value="daily">Once a day</option>
                 </select>
               </div>
             </div>
           </div>
+
+          <div id="update-status-line"></div>
         </div>
 
-        <!-- Extraction -->
-        <div class="config-section">
-          <div class="config-section-header">Extraction</div>
-          <div class="config-section-body">
-            <div class="config-field">
-              <div class="field-label">Keyword</div>
-              <input class="input" type="text" id="keyword" placeholder="e.g. Matter Id" />
+        <!-- Profiles — Import / Export -->
+        <div class="settings-section">
+          <div class="settings-section-header">Profiles — Import / Export</div>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Export All Profiles</div>
+              <div class="settings-row-desc">Save all profiles to a .json backup file</div>
             </div>
-            <div class="config-field">
-              <div class="field-label">Position</div>
-              <div class="select-wrap">
-                <select class="select" id="position">
-                  <option value="">— select position —</option>
-                  <option value="below">Below keyword</option>
-                  <option value="after">After keyword (same line)</option>
-                  <option value="above">Above keyword</option>
-                  <option value="before">Before keyword (same line)</option>
-                </select>
-              </div>
+            <div class="settings-row-ctrl">
+              <button class="btn btn-accent" id="btn-export-profiles">Export ↓</button>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Import Profiles</div>
+              <div class="settings-row-desc">Load profiles from a .json backup file</div>
+            </div>
+            <div class="settings-row-ctrl">
+              <label class="btn btn-accent" style="cursor:pointer">
+                Import ↑
+                <input type="file" accept=".json" id="import-profiles-input" style="display:none" />
+              </label>
             </div>
           </div>
         </div>
 
-        <!-- Naming -->
-        <div class="config-section">
-          <div class="config-section-header">File Naming</div>
-          <div class="config-section-body">
-            <div class="two-col">
-              <div class="config-field">
-                <div class="field-label">Prefix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
-                <input class="input" type="text" id="prefix" placeholder="CN_" />
-              </div>
-              <div class="config-field">
-                <div class="field-label">Suffix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
-                <input class="input" type="text" id="suffix" placeholder="_final" />
-              </div>
-            </div>
-            <div class="config-field">
-              <div class="field-label">Preview</div>
-              <div id="name-preview-box">
-                <span class="pv-dim">prefix</span><span id="pv-value"> + value + </span><span class="pv-dim">suffix</span><span id="pv-ext" class="pv-dim">.ext</span>
-              </div>
+        <!-- Feedback -->
+        <div class="settings-section">
+          <div class="settings-section-header">Feedback</div>
+          <div class="settings-row" style="flex-direction:column;align-items:stretch;gap:10px">
+            <div class="settings-row-desc" style="font-size:12px;color:var(--text2)">Found a bug or have a suggestion?
+              Send feedback directly.</div>
+            <textarea class="input" id="feedback-area" rows="4"
+              placeholder="Describe your feedback, bug report, or feature request..."
+              style="resize:vertical;font-size:12px;line-height:1.6;font-weight:400"></textarea>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <a href="https://github.com/vslnnd/Nomina/issues/new" target="_blank" class="btn btn-ghost"
+                style="text-decoration:none">Open GitHub Issue ↗</a>
+              <button class="btn btn-accent" id="btn-send-feedback">Send via Email</button>
             </div>
           </div>
         </div>
 
-        <!-- Output -->
-        <div class="config-section">
-          <div class="config-section-header">Output</div>
-          <div class="config-section-body">
-            <div class="radio-group">
-              <label class="radio-opt"><input type="radio" name="out-mode" value="inplace" checked/> Rename in place</label>
-              <label class="radio-opt"><input type="radio" name="out-mode" value="copy"/> Copy to output folder</label>
+        <!-- About -->
+        <div class="settings-section">
+          <div class="settings-section-header">About</div>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Nomina</div>
+              <div class="settings-row-desc">Smart file renaming for IP and legal documents</div>
             </div>
-            <div id="output-folder-field">
-              <button class="btn btn-ghost" id="btn-select-output" style="font-size:10px;padding:5px 10px">Browse…</button>
-              <div id="output-path-display">No folder selected</div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /config -->
-
-      <!-- Right main -->
-      <div id="rename-main">
-
-        <div id="rename-top">
-          <!-- Drop zone -->
-          <div id="drop-zone">
-            <div class="drop-icon">📂</div>
-            <div class="drop-text">Drop files or a folder here</div>
-            <div class="drop-sub">
-              <span id="dz-browse-files" style="color:var(--accent);cursor:pointer">Browse files</span>
-              <span style="color:var(--text3)"> · or · </span>
-              <span id="dz-browse" style="color:var(--accent);cursor:pointer">Browse folder</span>
-              <span style="color:var(--text3)"> · .pdf · .xlsx · .txt · .xml · .csv</span>
+            <div class="settings-row-ctrl">
+              <span
+                style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase">VELLOVA
+                APPS</span>
             </div>
           </div>
 
-          <!-- Queue header -->
-          <div id="queue-header" style="display:none">
-            <span id="queue-count">0 files</span>
-            <div id="queue-actions">
-              <button class="btn btn-ghost" id="btn-clear-queue" style="font-size:10px;padding:4px 10px">✕ Clear</button>
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Source Code</div>
+              <div class="settings-row-desc">github.com/vslnnd/Nomina</div>
+            </div>
+            <div class="settings-row-ctrl">
+              <a href="https://github.com/vslnnd/Nomina" target="_blank" class="btn btn-ghost"
+                style="text-decoration:none">View ↗</a>
             </div>
           </div>
         </div>
 
-        <!-- Scrollable file list -->
-        <div id="rename-scroll">
-          <div id="empty-state">
-            <div class="es-icon">🗂</div>
-            <div class="es-text">No files loaded yet.<br/>Drop files or browse a folder to begin.</div>
-          </div>
-        </div>
-
-        <!-- Bottom bar -->
-        <div id="rename-bottom">
-          <div id="log-area"></div>
-          <div id="action-row">
-            <button id="btn-process-all" disabled>⟳ Process Files</button>
-            <button id="btn-rename-all" disabled>✓ Rename All</button>
-          </div>
-        </div>
-
-      </div><!-- /main -->
+      </div>
     </div>
-  </div><!-- /rename tab -->
 
-  <!-- ════ PROFILES TAB ════ -->
-  <div class="tab-panel" id="tab-profiles">
-    <div id="profiles-panel">
-      <div id="profiles-header">
-        <span id="profiles-count">0 PROFILES</span>
-        <button class="btn btn-accent" id="btn-new-profile">+ NEW PROFILE</button>
+    <!-- ════ HISTORY TAB ════ -->
+    <div class="tab-panel" id="tab-history">
+      <div id="history-panel">
+
+        <!-- Row 1: Title + count + action buttons -->
+        <div id="history-header">
+          <div id="history-title-group">
+            <span id="history-title">History</span>
+            <span id="history-count">0</span>
+          </div>
+          <div id="history-header-actions">
+            <button class="btn btn-ghost" id="btn-refresh-history" style="font-size:10px;padding:5px 10px">↻
+              Refresh</button>
+            <button class="btn btn-ghost" id="btn-clear-history" style="font-size:10px;padding:5px 10px">Clear
+              All</button>
+          </div>
+        </div>
+
+        <!-- Row 2: Filter bar — search | sep | date chips | sep | sort | reset -->
+        <div id="history-filterbar">
+          <div id="hist-search-wrap">
+            <span id="hist-search-icon">⌕</span>
+            <input type="text" id="hist-search" placeholder="Search by filename…" autocomplete="off" />
+          </div>
+          <div class="fbar-sep"></div>
+          <div class="date-chips">
+            <button class="date-chip active" data-range="all">All time</button>
+            <button class="date-chip" data-range="today">Today</button>
+            <button class="date-chip" data-range="7days">Last 7 days</button>
+          </div>
+          <div id="hist-filterbar-right">
+            <button id="hist-sort-btn" title="Toggle sort order">
+              <span id="hist-sort-arrow">↓</span>
+              <span id="hist-sort-label">Newest first</span>
+            </button>
+            <button id="hist-reset-btn">✕ Reset</button>
+          </div>
+        </div>
+
+        <!-- Row 3: Active filter indicator (shown only when filters are on) -->
+        <div id="hist-indicator"></div>
+
+        <!-- Entry list -->
+        <div id="history-list"></div>
+
       </div>
-      <div id="profiles-list">
-        <div id="profiles-empty" class="es-text" style="padding:40px;text-align:center">No profiles yet.<br/>Create a profile to save your renaming configuration.</div>
-      </div>
+    </div>
+
+  </div><!-- /app -->
+
+  <!-- Confirm Modal -->
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal">
+      <h3 id="confirm-title">Confirm</h3>
+      <p id="confirm-body"></p>
+      <div class="modal-btns" id="confirm-btns"></div>
     </div>
   </div>
 
-  <!-- ════ SETTINGS TAB ════ -->
-  <div class="tab-panel" id="tab-settings">
-    <div id="settings-panel">
-
-      <!-- Updates -->
-      <div class="settings-section">
-        <div class="settings-section-header">Updates</div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <div class="settings-row-title">Current Version</div>
-            <div class="settings-row-desc" id="settings-version">v1.0.0</div>
-          </div>
-          <div class="settings-row-ctrl">
-            <button class="btn btn-accent" id="btn-check-now">Check Now</button>
-          </div>
+  <!-- Profile Edit Modal -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal" style="max-width:500px">
+      <h3 id="profile-modal-title">New Profile</h3>
+      <div class="profile-modal-fields">
+        <div class="config-field">
+          <div class="field-label">Profile Name</div>
+          <input class="input" type="text" id="pm-name" placeholder="e.g. Monthly IP Invoice" />
         </div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <div class="settings-row-title">Check on startup</div>
-            <div class="settings-row-desc">Automatically check when app launches</div>
-          </div>
-          <div class="settings-row-ctrl">
-            <label class="toggle">
-              <input type="checkbox" id="toggle-check-startup" checked />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
+        <div class="config-field">
+          <div class="field-label">Description <span style="font-weight:400;text-transform:none">(optional)</span></div>
+          <input class="input" type="text" id="pm-desc" placeholder="Short description…" />
         </div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <div class="settings-row-title">Periodic check interval</div>
-            <div class="settings-row-desc">How often to check while app is open</div>
+        <div class="two-col">
+          <div class="config-field">
+            <div class="field-label">Keyword</div>
+            <input class="input" type="text" id="pm-keyword" placeholder="e.g. Matter Id" />
           </div>
-          <div class="settings-row-ctrl">
-            <div class="select-wrap" style="width:140px">
-              <select class="select" id="sel-check-interval" style="padding-right:24px">
-                <option value="30min">Every 30 min</option>
-                <option value="hourly" selected>Every hour</option>
-                <option value="6h">Every 6 hours</option>
-                <option value="daily">Once a day</option>
+          <div class="config-field">
+            <div class="field-label">Position</div>
+            <div class="select-wrap">
+              <select class="select" id="pm-position">
+                <option value="">— select position —</option>
+                <option value="below">Below</option>
+                <option value="after">After (same line)</option>
+                <option value="above">Above</option>
+                <option value="before">Before (same line)</option>
               </select>
             </div>
           </div>
         </div>
-
-        <div id="update-status-line"></div>
-      </div>
-
-      <!-- Profiles — Import / Export -->
-      <div class="settings-section">
-        <div class="settings-section-header">Profiles — Import / Export</div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <div class="settings-row-title">Export All Profiles</div>
-            <div class="settings-row-desc">Save all profiles to a .json backup file</div>
+        <div class="two-col">
+          <div class="config-field">
+            <div class="field-label">Prefix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
+            <input class="input" type="text" id="pm-prefix" placeholder="CN_" />
           </div>
-          <div class="settings-row-ctrl">
-            <button class="btn btn-accent" id="btn-export-profiles">Export ↓</button>
-          </div>
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <div class="settings-row-title">Import Profiles</div>
-            <div class="settings-row-desc">Load profiles from a .json backup file</div>
-          </div>
-          <div class="settings-row-ctrl">
-            <label class="btn btn-accent" style="cursor:pointer">
-              Import ↑
-              <input type="file" accept=".json" id="import-profiles-input" style="display:none" />
-            </label>
+          <div class="config-field">
+            <div class="field-label">Suffix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
+            <input class="input" type="text" id="pm-suffix" placeholder="_final" />
           </div>
         </div>
       </div>
-
-      <!-- Feedback -->
-      <div class="settings-section">
-        <div class="settings-section-header">Feedback</div>
-        <div class="settings-row" style="flex-direction:column;align-items:stretch;gap:10px">
-          <div class="settings-row-desc" style="font-size:12px;color:var(--text2)">Found a bug or have a suggestion? Send feedback directly.</div>
-          <textarea class="input" id="feedback-area" rows="4"
-            placeholder="Describe your feedback, bug report, or feature request..."
-            style="resize:vertical;font-size:12px;line-height:1.6;font-weight:400"></textarea>
-          <div style="display:flex;gap:8px;justify-content:flex-end">
-            <a href="https://github.com/vslnnd/Nomina/issues/new" target="_blank" class="btn btn-ghost" style="text-decoration:none">Open GitHub Issue ↗</a>
-            <button class="btn btn-accent" id="btn-send-feedback">Send via Email</button>
-          </div>
-        </div>
+      <div class="modal-btns">
+        <button class="btn" id="pm-cancel">Cancel</button>
+        <button class="btn btn-danger" id="pm-delete" style="display:none">Delete</button>
+        <button class="btn btn-accent" id="pm-save">✓ Save Profile</button>
       </div>
-
-      <!-- About -->
-      <div class="settings-section">
-        <div class="settings-section-header">About</div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <div class="settings-row-title">Nomina</div>
-            <div class="settings-row-desc">Smart file renaming for IP and legal documents</div>
-          </div>
-          <div class="settings-row-ctrl">
-            <span style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase">VELLOVA APPS</span>
-          </div>
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <div class="settings-row-title">Source Code</div>
-            <div class="settings-row-desc">github.com/vslnnd/Nomina</div>
-          </div>
-          <div class="settings-row-ctrl">
-            <a href="https://github.com/vslnnd/Nomina" target="_blank" class="btn btn-ghost" style="text-decoration:none">View ↗</a>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- ════ HISTORY TAB ════ -->
-  <div class="tab-panel" id="tab-history">
-    <div id="history-panel">
-
-      <!-- Row 1: Title + count + action buttons -->
-      <div id="history-header">
-        <div id="history-title-group">
-          <span id="history-title">History</span>
-          <span id="history-count">0</span>
+  <!-- Patch Notes Modal -->
+  <div id="patchnotes-overlay">
+    <div id="patchnotes-modal">
+      <div id="patchnotes-accent"></div>
+      <div id="patchnotes-header">
+        <div class="pn-version-row">
+          <span class="pn-badge pn-badge-prev" id="pn-prev">v—</span>
+          <span class="pn-badge-arrow">→</span>
+          <span class="pn-badge pn-badge-new" id="pn-new">v— ✓</span>
         </div>
-        <div id="history-header-actions">
-          <button class="btn btn-ghost" id="btn-refresh-history" style="font-size:10px;padding:5px 10px">↻ Refresh</button>
-          <button class="btn btn-ghost" id="btn-clear-history" style="font-size:10px;padding:5px 10px">Clear All</button>
-        </div>
+        <div id="patchnotes-title">What's <span>new?</span></div>
+        <div id="patchnotes-subtitle">Here's what changed in this update</div>
       </div>
-
-      <!-- Row 2: Filter bar — search | sep | date chips | sep | sort | reset -->
-      <div id="history-filterbar">
-        <div id="hist-search-wrap">
-          <span id="hist-search-icon">⌕</span>
-          <input type="text" id="hist-search" placeholder="Search by filename…" autocomplete="off" />
-        </div>
-        <div class="fbar-sep"></div>
-        <div class="date-chips">
-          <button class="date-chip active" data-range="all">All time</button>
-          <button class="date-chip" data-range="today">Today</button>
-          <button class="date-chip" data-range="7days">Last 7 days</button>
-        </div>
-        <div id="hist-filterbar-right">
-          <button id="hist-sort-btn" title="Toggle sort order">
-            <span id="hist-sort-arrow">↓</span>
-            <span id="hist-sort-label">Newest first</span>
-          </button>
-          <button id="hist-reset-btn">✕ Reset</button>
-        </div>
+      <div id="patchnotes-body"></div>
+      <div id="patchnotes-footer">
+        <button id="patchnotes-btn">Rename it ✎</button>
+        <div id="patchnotes-meta">Nomina by Vellova Apps</div>
       </div>
-
-      <!-- Row 3: Active filter indicator (shown only when filters are on) -->
-      <div id="hist-indicator"></div>
-
-      <!-- Entry list -->
-      <div id="history-list"></div>
-
     </div>
   </div>
 
-</div><!-- /app -->
+  <script>
+    // ═══════════════════════════════════════════════════════════
+    //  Helpers
+    // ═══════════════════════════════════════════════════════════
+    function qs(sel, ctx = document) { return ctx.querySelector(sel); }
+    function on(id, ev, fn) { const el = document.getElementById(id); if (el) el.addEventListener(ev, fn); }
 
-<!-- Confirm Modal -->
-<div class="modal-overlay" id="confirm-modal">
-  <div class="modal">
-    <h3 id="confirm-title">Confirm</h3>
-    <p id="confirm-body"></p>
-    <div class="modal-btns" id="confirm-btns"></div>
-  </div>
-</div>
-
-<!-- Profile Edit Modal -->
-<div class="modal-overlay" id="profile-modal">
-  <div class="modal" style="max-width:500px">
-    <h3 id="profile-modal-title">New Profile</h3>
-    <div class="profile-modal-fields">
-      <div class="config-field">
-        <div class="field-label">Profile Name</div>
-        <input class="input" type="text" id="pm-name" placeholder="e.g. Monthly IP Invoice" />
-      </div>
-      <div class="config-field">
-        <div class="field-label">Description <span style="font-weight:400;text-transform:none">(optional)</span></div>
-        <input class="input" type="text" id="pm-desc" placeholder="Short description…" />
-      </div>
-      <div class="two-col">
-        <div class="config-field">
-          <div class="field-label">Keyword</div>
-          <input class="input" type="text" id="pm-keyword" placeholder="e.g. Matter Id" />
-        </div>
-        <div class="config-field">
-          <div class="field-label">Position</div>
-          <div class="select-wrap">
-            <select class="select" id="pm-position">
-              <option value="">— select position —</option>
-              <option value="below">Below</option>
-              <option value="after">After (same line)</option>
-              <option value="above">Above</option>
-              <option value="before">Before (same line)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="two-col">
-        <div class="config-field">
-          <div class="field-label">Prefix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
-          <input class="input" type="text" id="pm-prefix" placeholder="CN_" />
-        </div>
-        <div class="config-field">
-          <div class="field-label">Suffix <span style="font-weight:400;text-transform:none">(opt.)</span></div>
-          <input class="input" type="text" id="pm-suffix" placeholder="_final" />
-        </div>
-      </div>
-    </div>
-    <div class="modal-btns">
-      <button class="btn" id="pm-cancel">Cancel</button>
-      <button class="btn btn-danger" id="pm-delete" style="display:none">Delete</button>
-      <button class="btn btn-accent" id="pm-save">✓ Save Profile</button>
-    </div>
-  </div>
-</div>
-
-<!-- Patch Notes Modal -->
-<div id="patchnotes-overlay">
-  <div id="patchnotes-modal">
-    <div id="patchnotes-accent"></div>
-    <div id="patchnotes-header">
-      <div class="pn-version-row">
-        <span class="pn-badge pn-badge-prev" id="pn-prev">v—</span>
-        <span class="pn-badge-arrow">→</span>
-        <span class="pn-badge pn-badge-new" id="pn-new">v— ✓</span>
-      </div>
-      <div id="patchnotes-title">What's <span>new?</span></div>
-      <div id="patchnotes-subtitle">Here's what changed in this update</div>
-    </div>
-    <div id="patchnotes-body"></div>
-    <div id="patchnotes-footer">
-      <button id="patchnotes-btn">Rename it ✎</button>
-      <div id="patchnotes-meta">Nomina by Vellova Apps</div>
-    </div>
-  </div>
-</div>
-
-<script>
-// ═══════════════════════════════════════════════════════════
-//  Helpers
-// ═══════════════════════════════════════════════════════════
-function qs(sel, ctx = document) { return ctx.querySelector(sel); }
-function on(id, ev, fn) { const el = document.getElementById(id); if (el) el.addEventListener(ev, fn); }
-
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function extClass(ext) {
-  return ({ '.pdf':'pdf','.xlsx':'xlsx','.txt':'txt','.xml':'xml','.csv':'csv' })[ext] || 'other';
-}
-
-function baseName(p) { return p.replace(/\\/g,'/').split('/').pop(); }
-function dirName(p) { const parts = p.replace(/\\/g,'/').split('/'); parts.pop(); return parts.join('/'); }
-function extOf(name) { const i = name.lastIndexOf('.'); return i === -1 ? '' : name.slice(i).toLowerCase(); }
-function noExt(name) { const i = name.lastIndexOf('.'); return i === -1 ? name : name.slice(0, i); }
-
-function sanitize(str) { return str.replace(/[\\/:*?"<>|]/g,'_').trim(); }
-
-function ts() {
-  return new Date().toLocaleTimeString('en-GB', { hour12: false });
-}
-
-// Log panel
-function log(msg, type='info') {
-  const area = document.getElementById('log-area');
-  area.classList.add('visible');
-  const line = document.createElement('div');
-  line.className = `log-line log-${type}`;
-  line.innerHTML = `<span class="log-time">[${ts()}]</span><span class="log-msg">${escHtml(msg)}</span>`;
-  area.appendChild(line);
-  area.scrollTop = area.scrollHeight;
-  // Cap at 80 lines
-  while (area.children.length > 80) area.removeChild(area.firstChild);
-}
-
-// Generic confirm modal
-function showModal(title, body, buttons) {
-  return new Promise(resolve => {
-    document.getElementById('confirm-title').textContent = title;
-    document.getElementById('confirm-body').textContent = body;
-    const btns = document.getElementById('confirm-btns');
-    btns.innerHTML = '';
-    document.getElementById('confirm-modal').classList.add('open');
-    for (const b of buttons) {
-      const el = document.createElement('button');
-      el.textContent = b.label;
-      el.className = 'btn ' + (b.cls || '');
-      el.onclick = () => {
-        document.getElementById('confirm-modal').classList.remove('open');
-        resolve(b.value);
-      };
-      btns.appendChild(el);
+    function escHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-  });
-}
 
-// ═══════════════════════════════════════════════════════════
-//  State
-// ═══════════════════════════════════════════════════════════
-const state = {
-  files: [],       // { path, name, ext, dir, status, extractedValue, matched, error, dupIndex }
-  profiles: [],
-  outMode: 'inplace',
-  outFolder: null,
-};
-
-// ═══════════════════════════════════════════════════════════
-//  Tabs
-// ═══════════════════════════════════════════════════════════
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-    if (tab.dataset.tab === 'history') renderHistory();
-    if (tab.dataset.tab === 'profiles') renderProfileList();
-  });
-});
-
-// ═══════════════════════════════════════════════════════════
-//  Files
-// ═══════════════════════════════════════════════════════════
-const SUPPORTED = ['.pdf','.xlsx','.txt','.xml','.csv'];
-
-function addFiles(paths) {
-  let added = 0;
-  for (const p of paths) {
-    const name = baseName(p);
-    const ext = extOf(name);
-    if (!SUPPORTED.includes(ext)) continue;
-    if (state.files.find(f => f.path === p)) continue;
-    state.files.push({ path: p, name, ext, dir: dirName(p), status: 'pending', extractedValue: null, matched: null, error: null, dupIndex: 0 });
-    added++;
-  }
-  if (added) { log(`Added ${added} file(s).`); renderFileList(); }
-}
-
-async function addFolder(folderPath) {
-  const result = await window.nomina.readFolder(folderPath);
-  if (result && result.error) { log(`Cannot read folder: ${result.error}`, 'err'); return; }
-  addFiles((result || []).map(f => f.path));
-}
-
-// ═══════════════════════════════════════════════════════════
-//  Name Preview
-// ═══════════════════════════════════════════════════════════
-function getNewBase(value, dupIndex) {
-  const prefix = qs('#prefix').value;
-  const suffix = qs('#suffix').value;
-  const base = sanitize(prefix + value + suffix);
-  return base + (dupIndex ? ` (${dupIndex})` : '');
-}
-
-function updatePreview() {
-  const prefix = qs('#prefix').value;
-  const suffix = qs('#suffix').value;
-  const kw = qs('#keyword').value;
-  const pos = qs('#position').value;
-  const sample = kw ? `{value ${pos} "${kw}"}` : '{value}';
-  const pv = document.getElementById('pv-value');
-  if (pv) pv.textContent = (prefix || '') + sample + (suffix || '');
-  renderFileList(); // refresh new name previews
-}
-
-// ═══════════════════════════════════════════════════════════
-//  Processing
-// ═══════════════════════════════════════════════════════════
-async function processFiles() {
-  const keyword = qs('#keyword').value.trim();
-  const position = qs('#position').value;
-
-  if (!keyword) {
-    await showModal('Keyword Required', 'Please enter a keyword before processing.', [
-      { label: 'OK', cls: 'btn-accent', value: true }
-    ]);
-    return;
-  }
-  if (!state.files.length) return;
-
-  qs('#btn-process-all').disabled = true;
-  qs('#btn-rename-all').disabled = true;
-
-  // Reset
-  state.files.forEach(f => { f.status = 'pending'; f.extractedValue = null; f.matched = null; f.error = null; f.dupIndex = 0; });
-
-  const pdfs = state.files.filter(f => f.ext === '.pdf');
-  const others = state.files.filter(f => f.ext !== '.pdf');
-
-  log(`Processing ${pdfs.length} PDF(s)… keyword: "${keyword}" [${position}]`);
-  renderFileList();
-
-  // Step 1: Extract from PDFs
-  for (const pdf of pdfs) {
-    pdf.status = 'reading';
-    renderFileList();
-    const r = await window.nomina.extractPdfValue({ filePath: pdf.path, keyword, position });
-    if (r.success) {
-      pdf.status = 'ready';
-      pdf.extractedValue = r.value;
-      log(`✔ "${pdf.name}" → "${r.value}"`, 'ok');
-    } else {
-      pdf.status = 'error';
-      pdf.error = r.error;
-      log(`✖ "${pdf.name}": ${r.error}`, 'err');
+    function extClass(ext) {
+      return ({ '.pdf': 'pdf', '.xlsx': 'xlsx', '.txt': 'txt', '.xml': 'xml', '.csv': 'csv' })[ext] || 'other';
     }
-    renderFileList();
-  }
 
-  // Check duplicate values across PDFs
-  const readyPdfs = pdfs.filter(f => f.status === 'ready');
-  const valueMap = {};
-  for (const pdf of readyPdfs) {
-    const v = pdf.extractedValue;
-    if (!valueMap[v]) valueMap[v] = [];
-    valueMap[v].push(pdf);
-  }
-  for (const [v, group] of Object.entries(valueMap)) {
-    if (group.length > 1) {
-      log(`⚠ ${group.length} PDFs share value "${v}" — duplicates will get (1), (2)…`, 'warn');
-      group.forEach((pdf, i) => { if (i > 0) pdf.dupIndex = i; });
+    function baseName(p) { return p.replace(/\\/g, '/').split('/').pop(); }
+    function dirName(p) { const parts = p.replace(/\\/g, '/').split('/'); parts.pop(); return parts.join('/'); }
+    function extOf(name) { const i = name.lastIndexOf('.'); return i === -1 ? '' : name.slice(i).toLowerCase(); }
+    function noExt(name) { const i = name.lastIndexOf('.'); return i === -1 ? name : name.slice(0, i); }
+
+    function sanitize(str) { return str.replace(/[\\/:*?"<>|]/g, '_').trim(); }
+
+    function ts() {
+      return new Date().toLocaleTimeString('en-GB', { hour12: false });
     }
-  }
 
-  // Step 2: Match other files
-  for (const other of others) {
-    other.status = 'reading';
-    renderFileList();
-    let found = false;
-    for (const pdf of readyPdfs) {
-      const r = await window.nomina.searchValueInFile({ filePath: other.path, value: pdf.extractedValue, keyword, ext: other.ext });
-      if (r.found) {
-        other.status = 'matched';
-        other.matched = pdf.path;
-        log(`✔ "${other.name}" matched → "${pdf.extractedValue}"`, 'ok');
-        found = true;
-        break;
+    // Log panel
+    function log(msg, type = 'info') {
+      const area = document.getElementById('log-area');
+      area.classList.add('visible');
+      const line = document.createElement('div');
+      line.className = `log-line log-${type}`;
+      line.innerHTML = `<span class="log-time">[${ts()}]</span><span class="log-msg">${escHtml(msg)}</span>`;
+      area.appendChild(line);
+      area.scrollTop = area.scrollHeight;
+      // Cap at 80 lines
+      while (area.children.length > 80) area.removeChild(area.firstChild);
+    }
+
+    // Generic confirm modal
+    function showModal(title, body, buttons) {
+      return new Promise(resolve => {
+        document.getElementById('confirm-title').textContent = title;
+        document.getElementById('confirm-body').textContent = body;
+        const btns = document.getElementById('confirm-btns');
+        btns.innerHTML = '';
+        document.getElementById('confirm-modal').classList.add('open');
+        for (const b of buttons) {
+          const el = document.createElement('button');
+          el.textContent = b.label;
+          el.className = 'btn ' + (b.cls || '');
+          el.onclick = () => {
+            document.getElementById('confirm-modal').classList.remove('open');
+            resolve(b.value);
+          };
+          btns.appendChild(el);
+        }
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  State
+    // ═══════════════════════════════════════════════════════════
+    const state = {
+      files: [],       // { path, name, ext, dir, status, extractedValue, matched, error, dupIndex }
+      profiles: [],
+      outMode: 'inplace',
+      outFolder: null,
+    };
+
+    // ═══════════════════════════════════════════════════════════
+    //  Tabs
+    // ═══════════════════════════════════════════════════════════
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        if (tab.dataset.tab === 'history') renderHistory();
+        if (tab.dataset.tab === 'profiles') renderProfileList();
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    //  Files
+    // ═══════════════════════════════════════════════════════════
+    const SUPPORTED = ['.pdf', '.xlsx', '.txt', '.xml', '.csv'];
+
+    function addFiles(paths) {
+      let added = 0;
+      for (const p of paths) {
+        const name = baseName(p);
+        const ext = extOf(name);
+        if (!SUPPORTED.includes(ext)) continue;
+        if (state.files.find(f => f.path === p)) continue;
+        state.files.push({ path: p, name, ext, dir: dirName(p), status: 'pending', extractedValue: null, matched: null, error: null, dupIndex: 0 });
+        added++;
+      }
+      if (added) { log(`Added ${added} file(s).`); renderFileList(); }
+    }
+
+    async function addFolder(folderPath) {
+      const result = await window.nomina.readFolder(folderPath);
+      if (result && result.error) { log(`Cannot read folder: ${result.error}`, 'err'); return; }
+      addFiles((result || []).map(f => f.path));
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Name Preview
+    // ═══════════════════════════════════════════════════════════
+    function getNewBase(value, dupIndex) {
+      const prefix = qs('#prefix').value;
+      const suffix = qs('#suffix').value;
+      const base = sanitize(prefix + value + suffix);
+      return base + (dupIndex ? ` (${dupIndex})` : '');
+    }
+
+    function updatePreview() {
+      const prefix = qs('#prefix').value;
+      const suffix = qs('#suffix').value;
+      const kw = qs('#keyword').value;
+      const pos = qs('#position').value;
+      const sample = kw ? `{value ${pos} "${kw}"}` : '{value}';
+      const pv = document.getElementById('pv-value');
+      if (pv) pv.textContent = (prefix || '') + sample + (suffix || '');
+      renderFileList(); // refresh new name previews
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Processing
+    // ═══════════════════════════════════════════════════════════
+    async function processFiles() {
+      const keyword = qs('#keyword').value.trim();
+      const position = qs('#position').value;
+
+      if (!keyword) {
+        await showModal('Keyword Required', 'Please enter a keyword before processing.', [
+          { label: 'OK', cls: 'btn-accent', value: true }
+        ]);
+        return;
+      }
+      if (!state.files.length) return;
+
+      qs('#btn-process-all').disabled = true;
+      qs('#btn-rename-all').disabled = true;
+
+      // Reset
+      state.files.forEach(f => { f.status = 'pending'; f.extractedValue = null; f.matched = null; f.error = null; f.dupIndex = 0; });
+
+      const pdfs = state.files.filter(f => f.ext === '.pdf');
+      const others = state.files.filter(f => f.ext !== '.pdf');
+
+      log(`Processing ${pdfs.length} PDF(s)… keyword: "${keyword}" [${position}]`);
+      renderFileList();
+
+      // Step 1: Extract from PDFs
+      for (const pdf of pdfs) {
+        pdf.status = 'reading';
+        renderFileList();
+        const r = await window.nomina.extractPdfValue({ filePath: pdf.path, keyword, position });
+        if (r.success) {
+          pdf.status = 'ready';
+          pdf.extractedValue = r.value;
+          log(`✔ "${pdf.name}" → "${r.value}"`, 'ok');
+        } else {
+          pdf.status = 'error';
+          pdf.error = r.error;
+          log(`✖ "${pdf.name}": ${r.error}`, 'err');
+        }
+        renderFileList();
+      }
+
+      // Check duplicate values across PDFs
+      const readyPdfs = pdfs.filter(f => f.status === 'ready');
+      const valueMap = {};
+      for (const pdf of readyPdfs) {
+        const v = pdf.extractedValue;
+        if (!valueMap[v]) valueMap[v] = [];
+        valueMap[v].push(pdf);
+      }
+      for (const [v, group] of Object.entries(valueMap)) {
+        if (group.length > 1) {
+          log(`⚠ ${group.length} PDFs share value "${v}" — duplicates will get (1), (2)…`, 'warn');
+          group.forEach((pdf, i) => { if (i > 0) pdf.dupIndex = i; });
+        }
+      }
+
+      // Step 2: Match other files
+      for (const other of others) {
+        other.status = 'reading';
+        renderFileList();
+        let found = false;
+        for (const pdf of readyPdfs) {
+          const r = await window.nomina.searchValueInFile({ filePath: other.path, value: pdf.extractedValue, keyword, ext: other.ext });
+          if (r.found) {
+            other.status = 'matched';
+            other.matched = pdf.path;
+            log(`✔ "${other.name}" matched → "${pdf.extractedValue}"`, 'ok');
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          other.status = 'unmatched';
+          log(`⚠ "${other.name}" — no match found`, 'warn');
+        }
+        renderFileList();
+      }
+
+      qs('#btn-process-all').disabled = false;
+      const anyReady = state.files.some(f => f.status === 'ready' || f.status === 'matched');
+      qs('#btn-rename-all').disabled = !anyReady;
+      renderFileList();
+      log('Processing complete.', 'ok');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Renaming
+    // ═══════════════════════════════════════════════════════════
+    async function renameAll() {
+      if (state.outMode === 'copy' && !state.outFolder) {
+        await showModal('No Output Folder', 'Please select an output folder first.', [{ label: 'OK', cls: 'btn-accent', value: true }]);
+        return;
+      }
+
+      const unmatched = state.files.filter(f => f.ext !== '.pdf' && f.status === 'unmatched');
+      if (unmatched.length) {
+        const ans = await showModal('Unmatched Files',
+          `${unmatched.length} file(s) could not be matched to any PDF value and will be skipped. Continue renaming the matched files?`,
+          [
+            { label: 'Continue', cls: 'btn-accent', value: 'yes' },
+            { label: 'Cancel', cls: '', value: 'no' },
+          ]);
+        if (ans !== 'yes') return;
+      }
+
+      // Build plan
+      const plan = [];
+      const readyPdfs = state.files.filter(f => f.ext === '.pdf' && f.status === 'ready');
+      for (const pdf of readyPdfs) {
+        const newBase = getNewBase(pdf.extractedValue, pdf.dupIndex);
+        const dir = state.outMode === 'copy' ? state.outFolder : pdf.dir;
+        plan.push({ file: pdf, newPath: dir + '/' + newBase + pdf.ext });
+      }
+      for (const other of state.files.filter(f => f.ext !== '.pdf' && f.status === 'matched')) {
+        const pdf = state.files.find(f => f.path === other.matched);
+        if (!pdf) continue;
+        const newBase = getNewBase(pdf.extractedValue, pdf.dupIndex);
+        const dir = state.outMode === 'copy' ? state.outFolder : other.dir;
+        plan.push({ file: other, newPath: dir + '/' + newBase + other.ext });
+      }
+
+      // Check conflicts
+      const conflicts = [];
+      for (const item of plan) {
+        const exists = await window.nomina.fileExists(item.newPath);
+        if (exists && item.newPath !== item.file.path) conflicts.push(item);
+      }
+
+      let force = false;
+      if (conflicts.length) {
+        const ans = await showModal('File Conflicts',
+          `${conflicts.length} file(s) already exist with the target name. Overwrite them or skip only conflicting files?`,
+          [
+            { label: 'Overwrite All', cls: 'btn-danger', value: 'overwrite' },
+            { label: 'Skip Conflicts', cls: '', value: 'skip' },
+            { label: 'Cancel', cls: '', value: 'cancel' },
+          ]);
+        if (ans === 'cancel') return;
+        force = ans === 'overwrite';
+      }
+
+      // Execute
+      let ok = 0, skipped = 0, errors = 0;
+      const histFiles = [];
+
+      for (const item of plan) {
+        const isConflict = conflicts.includes(item);
+        let result;
+        if (state.outMode === 'inplace') {
+          result = force && isConflict
+            ? await window.nomina.forceRenameFile({ oldPath: item.file.path, newPath: item.newPath })
+            : await window.nomina.renameFile({ oldPath: item.file.path, newPath: item.newPath });
+        } else {
+          result = force && isConflict
+            ? await window.nomina.forceCopyFile({ oldPath: item.file.path, newPath: item.newPath })
+            : await window.nomina.copyFile({ oldPath: item.file.path, newPath: item.newPath });
+        }
+
+        if (result.status === 'success') {
+          log(`✔ "${item.file.name}" → "${baseName(item.newPath)}"`, 'ok');
+          if (state.outMode === 'inplace') { item.file.path = item.newPath; item.file.name = baseName(item.newPath); }
+          histFiles.push({ name: baseName(item.newPath), path: item.newPath });
+          ok++;
+        } else if (result.status === 'conflict' || result.status === 'skipped') {
+          log(`⊘ Skipped "${item.file.name}" (conflict)`, 'warn');
+          skipped++;
+        } else {
+          log(`✖ Error: "${item.file.name}": ${result.error}`, 'err');
+          errors++;
+        }
+      }
+
+      log(`Done — ${ok} renamed, ${skipped} skipped, ${errors} error(s).`, ok > 0 ? 'ok' : 'warn');
+      renderFileList();
+
+      // Save to history
+      if (ok > 0) {
+        const profileName = qs('#profile-select').value
+          ? state.profiles.find(p => p.id === qs('#profile-select').value)?.name || '—'
+          : '—';
+        await window.nomina.addHistory({
+          id: 'h_' + Date.now(),
+          timestamp: new Date().toISOString(),
+          profileName,
+          files: histFiles,
+          totalRenamed: ok,
+          outputDir: state.outMode === 'copy' ? state.outFolder : (plan[0]?.file.dir || ''),
+        });
       }
     }
-    if (!found) {
-      other.status = 'unmatched';
-      log(`⚠ "${other.name}" — no match found`, 'warn');
-    }
-    renderFileList();
-  }
 
-  qs('#btn-process-all').disabled = false;
-  const anyReady = state.files.some(f => f.status === 'ready' || f.status === 'matched');
-  qs('#btn-rename-all').disabled = !anyReady;
-  renderFileList();
-  log('Processing complete.', 'ok');
-}
+    // ═══════════════════════════════════════════════════════════
+    //  Render File List
+    // ═══════════════════════════════════════════════════════════
+    function renderFileList() {
+      const scroll = document.getElementById('rename-scroll');
+      const empty = document.getElementById('empty-state');
+      const qh = document.getElementById('queue-header');
+      const dz = document.getElementById('drop-zone');
 
-// ═══════════════════════════════════════════════════════════
-//  Renaming
-// ═══════════════════════════════════════════════════════════
-async function renameAll() {
-  if (state.outMode === 'copy' && !state.outFolder) {
-    await showModal('No Output Folder', 'Please select an output folder first.', [{ label: 'OK', cls: 'btn-accent', value: true }]);
-    return;
-  }
+      if (!state.files.length) {
+        empty.style.display = 'flex';
+        qh.style.display = 'none';
+        dz.style.display = '';
+        [...scroll.children].filter(c => c !== empty).forEach(c => c.remove());
+        document.getElementById('queue-count').textContent = '0 files';
+        qs('#btn-process-all').disabled = true;
+        qs('#btn-rename-all').disabled = true;
+        return;
+      }
 
-  const unmatched = state.files.filter(f => f.ext !== '.pdf' && f.status === 'unmatched');
-  if (unmatched.length) {
-    const ans = await showModal('Unmatched Files',
-      `${unmatched.length} file(s) could not be matched to any PDF value and will be skipped. Continue renaming the matched files?`,
-      [
-        { label: 'Continue', cls: 'btn-accent', value: 'yes' },
-        { label: 'Cancel', cls: '', value: 'no' },
-      ]);
-    if (ans !== 'yes') return;
-  }
+      // Files loaded — hide drop zone, show queue header
+      dz.style.display = 'none';
+      empty.style.display = 'none';
+      qh.style.display = 'flex';
+      document.getElementById('queue-count').textContent = `${state.files.length} file${state.files.length !== 1 ? 's' : ''}`;
+      qs('#btn-process-all').disabled = false;
 
-  // Build plan
-  const plan = [];
-  const readyPdfs = state.files.filter(f => f.ext === '.pdf' && f.status === 'ready');
-  for (const pdf of readyPdfs) {
-    const newBase = getNewBase(pdf.extractedValue, pdf.dupIndex);
-    const dir = state.outMode === 'copy' ? state.outFolder : pdf.dir;
-    plan.push({ file: pdf, newPath: dir + '/' + newBase + pdf.ext });
-  }
-  for (const other of state.files.filter(f => f.ext !== '.pdf' && f.status === 'matched')) {
-    const pdf = state.files.find(f => f.path === other.matched);
-    if (!pdf) continue;
-    const newBase = getNewBase(pdf.extractedValue, pdf.dupIndex);
-    const dir = state.outMode === 'copy' ? state.outFolder : other.dir;
-    plan.push({ file: other, newPath: dir + '/' + newBase + other.ext });
-  }
+      // Remove old cards
+      [...scroll.children].filter(c => c !== empty).forEach(c => c.remove());
 
-  // Check conflicts
-  const conflicts = [];
-  for (const item of plan) {
-    const exists = await window.nomina.fileExists(item.newPath);
-    if (exists && item.newPath !== item.file.path) conflicts.push(item);
-  }
+      const pdfs = state.files.filter(f => f.ext === '.pdf');
+      const renderedOthers = new Set();
 
-  let force = false;
-  if (conflicts.length) {
-    const ans = await showModal('File Conflicts',
-      `${conflicts.length} file(s) already exist with the target name. Overwrite them or skip only conflicting files?`,
-      [
-        { label: 'Overwrite All', cls: 'btn-danger', value: 'overwrite' },
-        { label: 'Skip Conflicts', cls: '', value: 'skip' },
-        { label: 'Cancel', cls: '', value: 'cancel' },
-      ]);
-    if (ans === 'cancel') return;
-    force = ans === 'overwrite';
-  }
+      for (const pdf of pdfs) {
+        const matched = state.files.filter(f => f.ext !== '.pdf' && f.matched === pdf.path);
+        matched.forEach(f => renderedOthers.add(f.path));
 
-  // Execute
-  let ok = 0, skipped = 0, errors = 0;
-  const histFiles = [];
+        const card = document.createElement('div');
+        card.className = 'group-card' + (pdf.extractedValue ? ' has-value' : '') + (pdf.status === 'error' ? ' has-error' : '');
+        card.appendChild(makeRow(pdf, true));
+        matched.forEach(other => card.appendChild(makeRow(other, false)));
+        scroll.appendChild(card);
+      }
 
-  for (const item of plan) {
-    const isConflict = conflicts.includes(item);
-    let result;
-    if (state.outMode === 'inplace') {
-      result = force && isConflict
-        ? await window.nomina.forceRenameFile({ oldPath: item.file.path, newPath: item.newPath })
-        : await window.nomina.renameFile({ oldPath: item.file.path, newPath: item.newPath });
-    } else {
-      result = force && isConflict
-        ? await window.nomina.forceCopyFile({ oldPath: item.file.path, newPath: item.newPath })
-        : await window.nomina.copyFile({ oldPath: item.file.path, newPath: item.newPath });
+      // Ungrouped
+      const unrendered = state.files.filter(f => f.ext !== '.pdf' && !renderedOthers.has(f.path));
+      if (unrendered.length) {
+        const section = document.createElement('div');
+        section.className = 'ungrouped-section';
+        const hdr = document.createElement('div');
+        hdr.className = 'ungrouped-header';
+        hdr.textContent = `Unmatched / ungrouped (${unrendered.length})`;
+        section.appendChild(hdr);
+        unrendered.forEach(f => section.appendChild(makeRow(f, false)));
+        scroll.appendChild(section);
+      }
     }
 
-    if (result.status === 'success') {
-      log(`✔ "${item.file.name}" → "${baseName(item.newPath)}"`, 'ok');
-      if (state.outMode === 'inplace') { item.file.path = item.newPath; item.file.name = baseName(item.newPath); }
-      histFiles.push({ name: baseName(item.newPath), path: item.newPath });
-      ok++;
-    } else if (result.status === 'conflict' || result.status === 'skipped') {
-      log(`⊘ Skipped "${item.file.name}" (conflict)`, 'warn');
-      skipped++;
-    } else {
-      log(`✖ Error: "${item.file.name}": ${result.error}`, 'err');
-      errors++;
+    function makeRow(file, isPrimary) {
+      const row = document.createElement('div');
+      row.className = 'file-row' + (isPrimary ? ' primary' : '');
+
+      // Badge
+      const badge = document.createElement('span');
+      badge.className = `ext-badge ext-${extClass(file.ext)}`;
+      badge.textContent = file.ext.replace('.', '');
+      row.appendChild(badge);
+
+      // Info
+      const info = document.createElement('div');
+      info.className = 'file-info';
+      const nameEl = document.createElement('div');
+      nameEl.className = 'file-name';
+      nameEl.textContent = file.name;
+      nameEl.title = file.path;
+      info.appendChild(nameEl);
+
+      if (file.error) {
+        const errEl = document.createElement('div');
+        errEl.className = 'file-error';
+        errEl.textContent = file.error;
+        info.appendChild(errEl);
+      } else if (file.status === 'ready' || file.status === 'matched') {
+        const pdfRef = file.ext === '.pdf' ? file : state.files.find(f => f.path === file.matched);
+        if (pdfRef && pdfRef.extractedValue) {
+          const newBase = getNewBase(pdfRef.extractedValue, pdfRef.dupIndex);
+          const newNameEl = document.createElement('div');
+          newNameEl.className = 'file-newname';
+          newNameEl.textContent = '→ ' + newBase + file.ext;
+          info.appendChild(newNameEl);
+        }
+      }
+      row.appendChild(info);
+
+      // Value chip (PDF only)
+      if (file.ext === '.pdf' && file.extractedValue) {
+        const chip = document.createElement('span');
+        chip.className = 'value-chip';
+        chip.textContent = file.extractedValue;
+        row.appendChild(chip);
+      }
+
+      // Status label
+      const statusMap = { pending: 'Pending', reading: 'Reading…', ready: 'Ready', error: 'Error', matched: 'Matched', unmatched: 'No Match' };
+      const clsMap = { pending: 'sl-pending', reading: 'sl-reading', ready: 'sl-ready', error: 'sl-error', matched: 'sl-matched', unmatched: 'sl-unmatched' };
+      const st = file.status || 'pending';
+      const sl = document.createElement('span');
+      sl.className = `status-label ${clsMap[st] || 'sl-pending'}`;
+      sl.textContent = statusMap[st] || st;
+      row.appendChild(sl);
+
+      // Remove button (shown on hover via CSS)
+      const rmBtn = document.createElement('button');
+      rmBtn.className = 'file-remove';
+      rmBtn.textContent = '✕';
+      rmBtn.title = 'Remove file';
+      rmBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.files = state.files.filter(f => f.path !== file.path);
+        renderFileList();
+      });
+      row.appendChild(rmBtn);
+
+      return row;
     }
-  }
 
-  log(`Done — ${ok} renamed, ${skipped} skipped, ${errors} error(s).`, ok > 0 ? 'ok' : 'warn');
-  renderFileList();
-
-  // Save to history
-  if (ok > 0) {
-    const profileName = qs('#profile-select').value
-      ? state.profiles.find(p => p.id === qs('#profile-select').value)?.name || '—'
-      : '—';
-    await window.nomina.addHistory({
-      id: 'h_' + Date.now(),
-      timestamp: new Date().toISOString(),
-      profileName,
-      files: histFiles,
-      totalRenamed: ok,
-      outputDir: state.outMode === 'copy' ? state.outFolder : (plan[0]?.file.dir || ''),
-    });
-  }
-}
-
-// ═══════════════════════════════════════════════════════════
-//  Render File List
-// ═══════════════════════════════════════════════════════════
-function renderFileList() {
-  const scroll = document.getElementById('rename-scroll');
-  const empty  = document.getElementById('empty-state');
-  const qh     = document.getElementById('queue-header');
-  const dz     = document.getElementById('drop-zone');
-
-  if (!state.files.length) {
-    empty.style.display = 'flex';
-    qh.style.display    = 'none';
-    dz.style.display    = '';
-    [...scroll.children].filter(c => c !== empty).forEach(c => c.remove());
-    document.getElementById('queue-count').textContent = '0 files';
-    qs('#btn-process-all').disabled = true;
-    qs('#btn-rename-all').disabled  = true;
-    return;
-  }
-
-  // Files loaded — hide drop zone, show queue header
-  dz.style.display    = 'none';
-  empty.style.display = 'none';
-  qh.style.display    = 'flex';
-  document.getElementById('queue-count').textContent = `${state.files.length} file${state.files.length !== 1 ? 's' : ''}`;
-  qs('#btn-process-all').disabled = false;
-
-  // Remove old cards
-  [...scroll.children].filter(c => c !== empty).forEach(c => c.remove());
-
-  const pdfs = state.files.filter(f => f.ext === '.pdf');
-  const renderedOthers = new Set();
-
-  for (const pdf of pdfs) {
-    const matched = state.files.filter(f => f.ext !== '.pdf' && f.matched === pdf.path);
-    matched.forEach(f => renderedOthers.add(f.path));
-
-    const card = document.createElement('div');
-    card.className = 'group-card' + (pdf.extractedValue ? ' has-value' : '') + (pdf.status === 'error' ? ' has-error' : '');
-    card.appendChild(makeRow(pdf, true));
-    matched.forEach(other => card.appendChild(makeRow(other, false)));
-    scroll.appendChild(card);
-  }
-
-  // Ungrouped
-  const unrendered = state.files.filter(f => f.ext !== '.pdf' && !renderedOthers.has(f.path));
-  if (unrendered.length) {
-    const section = document.createElement('div');
-    section.className = 'ungrouped-section';
-    const hdr = document.createElement('div');
-    hdr.className = 'ungrouped-header';
-    hdr.textContent = `Unmatched / ungrouped (${unrendered.length})`;
-    section.appendChild(hdr);
-    unrendered.forEach(f => section.appendChild(makeRow(f, false)));
-    scroll.appendChild(section);
-  }
-}
-
-function makeRow(file, isPrimary) {
-  const row = document.createElement('div');
-  row.className = 'file-row' + (isPrimary ? ' primary' : '');
-
-  // Badge
-  const badge = document.createElement('span');
-  badge.className = `ext-badge ext-${extClass(file.ext)}`;
-  badge.textContent = file.ext.replace('.', '');
-  row.appendChild(badge);
-
-  // Info
-  const info = document.createElement('div');
-  info.className = 'file-info';
-  const nameEl = document.createElement('div');
-  nameEl.className = 'file-name';
-  nameEl.textContent = file.name;
-  nameEl.title = file.path;
-  info.appendChild(nameEl);
-
-  if (file.error) {
-    const errEl = document.createElement('div');
-    errEl.className = 'file-error';
-    errEl.textContent = file.error;
-    info.appendChild(errEl);
-  } else if (file.status === 'ready' || file.status === 'matched') {
-    const pdfRef = file.ext === '.pdf' ? file : state.files.find(f => f.path === file.matched);
-    if (pdfRef && pdfRef.extractedValue) {
-      const newBase = getNewBase(pdfRef.extractedValue, pdfRef.dupIndex);
-      const newNameEl = document.createElement('div');
-      newNameEl.className = 'file-newname';
-      newNameEl.textContent = '→ ' + newBase + file.ext;
-      info.appendChild(newNameEl);
+    // ═══════════════════════════════════════════════════════════
+    //  Profiles
+    // ═══════════════════════════════════════════════════════════
+    async function loadProfiles() {
+      state.profiles = await window.nomina.loadProfiles();
+      populateProfileSelect();
+      renderProfileList();
     }
-  }
-  row.appendChild(info);
 
-  // Value chip (PDF only)
-  if (file.ext === '.pdf' && file.extractedValue) {
-    const chip = document.createElement('span');
-    chip.className = 'value-chip';
-    chip.textContent = file.extractedValue;
-    row.appendChild(chip);
-  }
+    function populateProfileSelect() {
+      const sel = qs('#profile-select');
+      const cur = sel.value;
+      sel.innerHTML = '<option value="">— no profile —</option>';
+      state.profiles.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.name;
+        sel.appendChild(opt);
+      });
+      sel.value = cur;
+    }
 
-  // Status label
-  const statusMap = { pending:'Pending', reading:'Reading…', ready:'Ready', error:'Error', matched:'Matched', unmatched:'No Match' };
-  const clsMap    = { pending:'sl-pending', reading:'sl-reading', ready:'sl-ready', error:'sl-error', matched:'sl-matched', unmatched:'sl-unmatched' };
-  const st = file.status || 'pending';
-  const sl = document.createElement('span');
-  sl.className = `status-label ${clsMap[st] || 'sl-pending'}`;
-  sl.textContent = statusMap[st] || st;
-  row.appendChild(sl);
+    function applyProfile(id) {
+      const p = state.profiles.find(x => x.id === id);
+      if (!p) return;
+      qs('#keyword').value = p.keyword || '';
+      qs('#position').value = p.position || 'below';
+      qs('#prefix').value = p.prefix || '';
+      qs('#suffix').value = p.suffix || '';
+      updatePreview();
+      log(`Profile "${p.name}" loaded.`);
+    }
 
-  // Remove button (shown on hover via CSS)
-  const rmBtn = document.createElement('button');
-  rmBtn.className = 'file-remove';
-  rmBtn.textContent = '✕';
-  rmBtn.title = 'Remove file';
-  rmBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    state.files = state.files.filter(f => f.path !== file.path);
-    renderFileList();
-  });
-  row.appendChild(rmBtn);
+    function renderProfileList() {
+      const list = document.getElementById('profiles-list');
+      const empty = document.getElementById('profiles-empty');
+      const count = document.getElementById('profiles-count');
 
-  return row;
-}
+      // Remove only profile cards, never touch the empty element
+      [...list.children].filter(c => c !== empty).forEach(c => c.remove());
 
-// ═══════════════════════════════════════════════════════════
-//  Profiles
-// ═══════════════════════════════════════════════════════════
-async function loadProfiles() {
-  state.profiles = await window.nomina.loadProfiles();
-  populateProfileSelect();
-  renderProfileList();
-}
+      count.textContent = `${state.profiles.length} PROFILE${state.profiles.length !== 1 ? 'S' : ''}`;
 
-function populateProfileSelect() {
-  const sel = qs('#profile-select');
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">— no profile —</option>';
-  state.profiles.forEach(p => {
-    const opt = document.createElement('option');
-    opt.value = p.id;
-    opt.textContent = p.name;
-    sel.appendChild(opt);
-  });
-  sel.value = cur;
-}
+      if (!state.profiles.length) {
+        empty.style.display = '';
+        return;
+      }
+      empty.style.display = 'none';
 
-function applyProfile(id) {
-  const p = state.profiles.find(x => x.id === id);
-  if (!p) return;
-  qs('#keyword').value = p.keyword || '';
-  qs('#position').value = p.position || 'below';
-  qs('#prefix').value = p.prefix || '';
-  qs('#suffix').value = p.suffix || '';
-  updatePreview();
-  log(`Profile "${p.name}" loaded.`);
-}
-
-function renderProfileList() {
-  const list  = document.getElementById('profiles-list');
-  const empty = document.getElementById('profiles-empty');
-  const count = document.getElementById('profiles-count');
-
-  // Remove only profile cards, never touch the empty element
-  [...list.children].filter(c => c !== empty).forEach(c => c.remove());
-
-  count.textContent = `${state.profiles.length} PROFILE${state.profiles.length !== 1 ? 'S' : ''}`;
-
-  if (!state.profiles.length) {
-    empty.style.display = '';
-    return;
-  }
-  empty.style.display = 'none';
-
-  state.profiles.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'profile-card';
-    card.innerHTML = `
+      state.profiles.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'profile-card';
+        card.innerHTML = `
       <div class="profile-dot"></div>
       <div class="profile-info">
         <div class="profile-name">${escHtml(p.name)}</div>
@@ -1596,183 +3012,183 @@ function renderProfileList() {
         <button class="btn" style="font-size:10px;padding:4px 10px">Edit</button>
         <button class="btn btn-danger" style="font-size:10px;padding:4px 10px">Delete</button>
       </div>`;
-    card.querySelector('.btn:not(.btn-danger)').onclick = (e) => { e.stopPropagation(); openProfileModal(p); };
-    card.querySelector('.btn-danger').onclick = (e) => { e.stopPropagation(); deleteProfile(p.id); };
-    card.onclick = () => {
-      qs('#profile-select').value = p.id;
-      applyProfile(p.id);
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(pp => pp.classList.remove('active'));
-      document.querySelector('[data-tab="rename"]').classList.add('active');
-      document.getElementById('tab-rename').classList.add('active');
-    };
-    list.appendChild(card);
-  });
-}
+        card.querySelector('.btn:not(.btn-danger)').onclick = (e) => { e.stopPropagation(); openProfileModal(p); };
+        card.querySelector('.btn-danger').onclick = (e) => { e.stopPropagation(); deleteProfile(p.id); };
+        card.onclick = () => {
+          qs('#profile-select').value = p.id;
+          applyProfile(p.id);
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(pp => pp.classList.remove('active'));
+          document.querySelector('[data-tab="rename"]').classList.add('active');
+          document.getElementById('tab-rename').classList.add('active');
+        };
+        list.appendChild(card);
+      });
+    }
 
-let editingProfileId = null;
+    let editingProfileId = null;
 
-function openProfileModal(profile = null) {
-  editingProfileId = profile ? profile.id : null;
-  qs('#profile-modal-title').textContent = profile ? 'Edit Profile' : 'New Profile';
-  qs('#pm-name').value = profile ? profile.name : '';
-  qs('#pm-desc').value = profile ? (profile.desc || '') : '';
-  qs('#pm-keyword').value = profile ? (profile.keyword || '') : '';
-  qs('#pm-position').value = profile ? (profile.position || 'below') : 'below';
-  qs('#pm-prefix').value = profile ? (profile.prefix || '') : '';
-  qs('#pm-suffix').value = profile ? (profile.suffix || '') : '';
-  qs('#pm-delete').style.display = profile ? '' : 'none';
-  document.getElementById('profile-modal').classList.add('open');
-}
+    function openProfileModal(profile = null) {
+      editingProfileId = profile ? profile.id : null;
+      qs('#profile-modal-title').textContent = profile ? 'Edit Profile' : 'New Profile';
+      qs('#pm-name').value = profile ? profile.name : '';
+      qs('#pm-desc').value = profile ? (profile.desc || '') : '';
+      qs('#pm-keyword').value = profile ? (profile.keyword || '') : '';
+      qs('#pm-position').value = profile ? (profile.position || 'below') : 'below';
+      qs('#pm-prefix').value = profile ? (profile.prefix || '') : '';
+      qs('#pm-suffix').value = profile ? (profile.suffix || '') : '';
+      qs('#pm-delete').style.display = profile ? '' : 'none';
+      document.getElementById('profile-modal').classList.add('open');
+    }
 
-async function saveProfileModal() {
-  const name = qs('#pm-name').value.trim();
-  if (!name) { qs('#pm-name').focus(); return; }
-  const profile = {
-    id: editingProfileId || ('p_' + Date.now()),
-    name,
-    desc: qs('#pm-desc').value.trim(),
-    keyword: qs('#pm-keyword').value.trim(),
-    position: qs('#pm-position').value,
-    prefix: qs('#pm-prefix').value,
-    suffix: qs('#pm-suffix').value,
-  };
-  if (editingProfileId) {
-    const idx = state.profiles.findIndex(p => p.id === editingProfileId);
-    if (idx !== -1) state.profiles[idx] = profile; else state.profiles.push(profile);
-  } else {
-    state.profiles.push(profile);
-  }
-  await window.nomina.saveProfiles(state.profiles);
-  document.getElementById('profile-modal').classList.remove('open');
-  populateProfileSelect();
-  renderProfileList();
-  log(`Profile "${name}" saved.`, 'ok');
-}
+    async function saveProfileModal() {
+      const name = qs('#pm-name').value.trim();
+      if (!name) { qs('#pm-name').focus(); return; }
+      const profile = {
+        id: editingProfileId || ('p_' + Date.now()),
+        name,
+        desc: qs('#pm-desc').value.trim(),
+        keyword: qs('#pm-keyword').value.trim(),
+        position: qs('#pm-position').value,
+        prefix: qs('#pm-prefix').value,
+        suffix: qs('#pm-suffix').value,
+      };
+      if (editingProfileId) {
+        const idx = state.profiles.findIndex(p => p.id === editingProfileId);
+        if (idx !== -1) state.profiles[idx] = profile; else state.profiles.push(profile);
+      } else {
+        state.profiles.push(profile);
+      }
+      await window.nomina.saveProfiles(state.profiles);
+      document.getElementById('profile-modal').classList.remove('open');
+      populateProfileSelect();
+      renderProfileList();
+      log(`Profile "${name}" saved.`, 'ok');
+    }
 
-async function deleteProfile(id) {
-  const p = state.profiles.find(x => x.id === id);
-  if (!p) return;
-  const ans = await showModal('Delete Profile', `Delete profile "${p.name}"? This cannot be undone.`, [
-    { label: 'Delete', cls: 'btn-danger', value: 'yes' },
-    { label: 'Cancel', cls: '', value: 'no' },
-  ]);
-  if (ans !== 'yes') return;
-  state.profiles = state.profiles.filter(x => x.id !== id);
-  await window.nomina.saveProfiles(state.profiles);
-  document.getElementById('profile-modal').classList.remove('open');
-  populateProfileSelect();
-  renderProfileList();
-  log(`Profile "${p.name}" deleted.`, 'warn');
-}
+    async function deleteProfile(id) {
+      const p = state.profiles.find(x => x.id === id);
+      if (!p) return;
+      const ans = await showModal('Delete Profile', `Delete profile "${p.name}"? This cannot be undone.`, [
+        { label: 'Delete', cls: 'btn-danger', value: 'yes' },
+        { label: 'Cancel', cls: '', value: 'no' },
+      ]);
+      if (ans !== 'yes') return;
+      state.profiles = state.profiles.filter(x => x.id !== id);
+      await window.nomina.saveProfiles(state.profiles);
+      document.getElementById('profile-modal').classList.remove('open');
+      populateProfileSelect();
+      renderProfileList();
+      log(`Profile "${p.name}" deleted.`, 'warn');
+    }
 
-// ═══════════════════════════════════════════════════════════
-//  History — state persists across tab switches, resets on app load
-// ═══════════════════════════════════════════════════════════
-const histState = { sortOrder: 'newest', dateRange: 'all', search: '' };
-let histRenderGen = 0; // prevents double-render from concurrent async calls
+    // ═══════════════════════════════════════════════════════════
+    //  History — state persists across tab switches, resets on app load
+    // ═══════════════════════════════════════════════════════════
+    const histState = { sortOrder: 'newest', dateRange: 'all', search: '' };
+    let histRenderGen = 0; // prevents double-render from concurrent async calls
 
-function isHistFiltered() {
-  return histState.search.trim() !== '' || histState.dateRange !== 'all' || histState.sortOrder !== 'newest';
-}
+    function isHistFiltered() {
+      return histState.search.trim() !== '' || histState.dateRange !== 'all' || histState.sortOrder !== 'newest';
+    }
 
-function updateHistoryControls() {
-  const sortBtn = document.getElementById('hist-sort-btn');
-  const arrow   = document.getElementById('hist-sort-arrow');
-  const label   = document.getElementById('hist-sort-label');
-  if (histState.sortOrder === 'newest') {
-    arrow.textContent = '↓'; label.textContent = 'Newest first';
-    sortBtn.classList.remove('active');
-  } else {
-    arrow.textContent = '↑'; label.textContent = 'Oldest first';
-    sortBtn.classList.add('active');
-  }
-  document.querySelectorAll('.date-chip').forEach(c => {
-    c.classList.toggle('active', c.dataset.range === histState.dateRange);
-  });
-  const resetBtn = document.getElementById('hist-reset-btn');
-  resetBtn.classList.toggle('visible', isHistFiltered());
-  const ind = document.getElementById('hist-indicator');
-  if (isHistFiltered()) {
-    const parts = [];
-    if (histState.search.trim()) parts.push(`"${histState.search.trim()}"`);
-    if (histState.dateRange === 'today')  parts.push('Today');
-    if (histState.dateRange === '7days')  parts.push('Last 7 days');
-    if (histState.sortOrder === 'oldest') parts.push('Oldest first');
-    ind.textContent = '⬡ Filters active: ' + parts.join(' · ');
-    ind.classList.add('visible');
-  } else {
-    ind.classList.remove('visible');
-  }
-}
+    function updateHistoryControls() {
+      const sortBtn = document.getElementById('hist-sort-btn');
+      const arrow = document.getElementById('hist-sort-arrow');
+      const label = document.getElementById('hist-sort-label');
+      if (histState.sortOrder === 'newest') {
+        arrow.textContent = '↓'; label.textContent = 'Newest first';
+        sortBtn.classList.remove('active');
+      } else {
+        arrow.textContent = '↑'; label.textContent = 'Oldest first';
+        sortBtn.classList.add('active');
+      }
+      document.querySelectorAll('.date-chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.range === histState.dateRange);
+      });
+      const resetBtn = document.getElementById('hist-reset-btn');
+      resetBtn.classList.toggle('visible', isHistFiltered());
+      const ind = document.getElementById('hist-indicator');
+      if (isHistFiltered()) {
+        const parts = [];
+        if (histState.search.trim()) parts.push(`"${histState.search.trim()}"`);
+        if (histState.dateRange === 'today') parts.push('Today');
+        if (histState.dateRange === '7days') parts.push('Last 7 days');
+        if (histState.sortOrder === 'oldest') parts.push('Oldest first');
+        ind.textContent = '⬡ Filters active: ' + parts.join(' · ');
+        ind.classList.add('visible');
+      } else {
+        ind.classList.remove('visible');
+      }
+    }
 
-async function renderHistory() {
-  const gen = ++histRenderGen; // stamp this call
-  updateHistoryControls();
+    async function renderHistory() {
+      const gen = ++histRenderGen; // stamp this call
+      updateHistoryControls();
 
-  let history = await window.nomina.getHistory(); // newest-first from main
-  if (gen !== histRenderGen) return; // a newer call fired while we awaited — bail out
+      let history = await window.nomina.getHistory(); // newest-first from main
+      if (gen !== histRenderGen) return; // a newer call fired while we awaited — bail out
 
-  const list  = document.getElementById('history-list');
-  const count = document.getElementById('history-count');
-  list.innerHTML = ''; // clear AFTER await so only the latest call wins
-  const total = history.length;
+      const list = document.getElementById('history-list');
+      const count = document.getElementById('history-count');
+      list.innerHTML = ''; // clear AFTER await so only the latest call wins
+      const total = history.length;
 
-  // Search filter
-  const q = histState.search.trim().toLowerCase();
-  if (q) history = history.filter(e => (e.files || []).some(f => f.name.toLowerCase().includes(q)));
+      // Search filter
+      const q = histState.search.trim().toLowerCase();
+      if (q) history = history.filter(e => (e.files || []).some(f => f.name.toLowerCase().includes(q)));
 
-  // Date filter
-  if (histState.dateRange !== 'all') {
-    const cutoff = histState.dateRange === 'today'
-      ? new Date().setHours(0,0,0,0)
-      : Date.now() - 7 * 24 * 60 * 60 * 1000;
-    history = history.filter(e => new Date(e.timestamp).getTime() >= cutoff);
-  }
+      // Date filter
+      if (histState.dateRange !== 'all') {
+        const cutoff = histState.dateRange === 'today'
+          ? new Date().setHours(0, 0, 0, 0)
+          : Date.now() - 7 * 24 * 60 * 60 * 1000;
+        history = history.filter(e => new Date(e.timestamp).getTime() >= cutoff);
+      }
 
-  // Sort
-  if (histState.sortOrder === 'oldest') history = history.slice().reverse();
+      // Sort
+      if (histState.sortOrder === 'oldest') history = history.slice().reverse();
 
-  count.textContent = history.length + (isHistFiltered() ? ' / ' + total : '');
+      count.textContent = history.length + (isHistFiltered() ? ' / ' + total : '');
 
-  if (!history.length) {
-    const empty = document.createElement('div');
-    empty.className = 'hi-empty-state';
-    if (total === 0) {
-      empty.innerHTML = `
+      if (!history.length) {
+        const empty = document.createElement('div');
+        empty.className = 'hi-empty-state';
+        if (total === 0) {
+          empty.innerHTML = `
         <div class="hi-empty-icon">◷</div>
         <div class="hi-empty-title">No history yet</div>
         <div class="hi-empty-sub">Completed renames will appear here automatically.</div>`;
-    } else {
-      empty.innerHTML = `
+        } else {
+          empty.innerHTML = `
         <div class="hi-empty-icon">⊘</div>
         <div class="hi-empty-title">No entries match</div>
         <div class="hi-empty-sub">Try adjusting your search or filters.</div>
         <button class="btn btn-ghost" id="hist-reset-inline" style="font-size:10px;margin-top:4px">✕ Reset filters</button>`;
-      setTimeout(() => {
-        const rb = document.getElementById('hist-reset-inline');
-        if (rb) rb.onclick = () => resetHistFilters();
-      }, 0);
-    }
-    list.appendChild(empty);
-    return;
-  }
+          setTimeout(() => {
+            const rb = document.getElementById('hist-reset-inline');
+            if (rb) rb.onclick = () => resetHistFilters();
+          }, 0);
+        }
+        list.appendChild(empty);
+        return;
+      }
 
-  history.forEach(entry => {
-    const d        = new Date(entry.timestamp);
-    const dateStr  = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
-                   + ' · ' + d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-    const allFiles = entry.files || [];
-    const primary  = allFiles[0] ? allFiles[0].name : 'Unknown';
-    const extra    = allFiles.length > 1 ? ` +${allFiles.length - 1} more` : '';
-    const profile  = entry.profileName && entry.profileName !== '—' ? entry.profileName : null;
-    const renamed  = entry.totalRenamed || 0;
-    // All entries are successes for now; extend later for warn/err
-    const dotCls   = renamed > 0 ? 'ok' : 'warn';
+      history.forEach(entry => {
+        const d = new Date(entry.timestamp);
+        const dateStr = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+          + ' · ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const allFiles = entry.files || [];
+        const primary = allFiles[0] ? allFiles[0].name : 'Unknown';
+        const extra = allFiles.length > 1 ? ` +${allFiles.length - 1} more` : '';
+        const profile = entry.profileName && entry.profileName !== '—' ? entry.profileName : null;
+        const renamed = entry.totalRenamed || 0;
+        // All entries are successes for now; extend later for warn/err
+        const dotCls = renamed > 0 ? 'ok' : 'warn';
 
-    const card = document.createElement('div');
-    card.className = 'hi';
-    card.innerHTML = `
+        const card = document.createElement('div');
+        card.className = 'hi';
+        card.innerHTML = `
       <div class="hi-row">
         <div class="hi-dot ${dotCls}"></div>
         <div class="hi-info">
@@ -1795,374 +3211,390 @@ async function renderHistory() {
         </div>
       </div>`;
 
-    card.querySelector('.hi-row').onclick = () => card.classList.toggle('open');
-    card.querySelector('[data-openfolder]').onclick = e => {
-      e.stopPropagation(); window.nomina.openFolder(entry.outputDir);
-    };
-    list.appendChild(card);
-  });
-}
+        card.querySelector('.hi-row').onclick = () => card.classList.toggle('open');
+        card.querySelector('[data-openfolder]').onclick = e => {
+          e.stopPropagation(); window.nomina.openFolder(entry.outputDir);
+        };
+        list.appendChild(card);
+      });
+    }
 
-function resetHistFilters() {
-  histState.sortOrder = 'newest';
-  histState.dateRange = 'all';
-  histState.search    = '';
-  const s = document.getElementById('hist-search');
-  if (s) s.value = '';
-  renderHistory();
-}
+    function resetHistFilters() {
+      histState.sortOrder = 'newest';
+      histState.dateRange = 'all';
+      histState.search = '';
+      const s = document.getElementById('hist-search');
+      if (s) s.value = '';
+      renderHistory();
+    }
 
-// ═══════════════════════════════════════════════════════════
-//  Settings
-// ═══════════════════════════════════════════════════════════
-async function loadSettings() {
-  const s = await window.nomina.getSettings();
-  qs('#toggle-check-startup').checked = s.checkOnStartup !== false;
-  qs('#sel-check-interval').value = s.checkInterval || 'hourly';
-}
+    // ═══════════════════════════════════════════════════════════
+    //  Settings
+    // ═══════════════════════════════════════════════════════════
+    async function loadSettings() {
+      const s = await window.nomina.getSettings();
+      qs('#toggle-check-startup').checked = s.checkOnStartup !== false;
+      qs('#sel-check-interval').value = s.checkInterval || 'hourly';
+    }
 
-async function saveSettingsFromUI() {
-  await window.nomina.saveSettings({
-    checkOnStartup: qs('#toggle-check-startup').checked,
-    checkInterval: qs('#sel-check-interval').value,
-  });
-}
+    async function saveSettingsFromUI() {
+      await window.nomina.saveSettings({
+        checkOnStartup: qs('#toggle-check-startup').checked,
+        checkInterval: qs('#sel-check-interval').value,
+      });
+    }
 
-// Profiles export/import
-on('btn-export-profiles', 'click', () => {
-  const blob = new Blob([JSON.stringify(state.profiles, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'nomina-profiles.json'; a.click();
-  URL.revokeObjectURL(url);
-  log('Profiles exported.', 'ok');
-});
+    // Profiles export/import
+    on('btn-export-profiles', 'click', () => {
+      const blob = new Blob([JSON.stringify(state.profiles, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'nomina-profiles.json'; a.click();
+      URL.revokeObjectURL(url);
+      log('Profiles exported.', 'ok');
+    });
 
-document.getElementById('import-profiles-input').addEventListener('change', async function() {
-  try {
-    const text = await this.files[0].text();
-    const imported = JSON.parse(text);
-    if (!Array.isArray(imported)) throw new Error('Invalid format');
-    const ans = await showModal('Import Profiles',
-      `Import ${imported.length} profile(s)? Choose to merge with existing or replace all.`,
-      [
-        { label: 'Merge', cls: 'btn-accent', value: 'merge' },
-        { label: 'Replace All', cls: 'btn-danger', value: 'replace' },
-        { label: 'Cancel', cls: '', value: 'cancel' },
-      ]);
-    if (ans === 'cancel') { this.value = ''; return; }
-    if (ans === 'replace') {
-      state.profiles = imported.map(p => ({ ...p, id: p.id || ('p_' + Date.now() + '_' + Math.random().toString(36).substr(2,4)) }));
-    } else {
-      imported.forEach(p => {
-        if (!state.profiles.find(x => x.name === p.name)) {
-          state.profiles.push({ ...p, id: p.id || ('p_' + Date.now() + '_' + Math.random().toString(36).substr(2,4)) });
+    document.getElementById('import-profiles-input').addEventListener('change', async function () {
+      try {
+        const text = await this.files[0].text();
+        const imported = JSON.parse(text);
+        if (!Array.isArray(imported)) throw new Error('Invalid format');
+        const ans = await showModal('Import Profiles',
+          `Import ${imported.length} profile(s)? Choose to merge with existing or replace all.`,
+          [
+            { label: 'Merge', cls: 'btn-accent', value: 'merge' },
+            { label: 'Replace All', cls: 'btn-danger', value: 'replace' },
+            { label: 'Cancel', cls: '', value: 'cancel' },
+          ]);
+        if (ans === 'cancel') { this.value = ''; return; }
+        if (ans === 'replace') {
+          state.profiles = imported.map(p => ({ ...p, id: p.id || ('p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4)) }));
+        } else {
+          imported.forEach(p => {
+            if (!state.profiles.find(x => x.name === p.name)) {
+              state.profiles.push({ ...p, id: p.id || ('p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4)) });
+            }
+          });
+        }
+        await window.nomina.saveProfiles(state.profiles);
+        populateProfileSelect(); renderProfileList();
+        log(`Profiles imported.`, 'ok');
+        this.value = '';
+      } catch (e) {
+        log(`Import failed: ${e.message}`, 'err');
+        this.value = '';
+      }
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    //  Patch Notes
+    // ═══════════════════════════════════════════════════════════
+    function renderMd(str) {
+      return String(str)
+        .replace(/<[^>]+>/g, '')           // strip any HTML tags first
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code style="font-family:var(--mono);font-size:11px;background:var(--bg3);padding:1px 4px;border-radius:3px">$1</code>');
+    }
+
+    function showPatchNotes({ prevVersion, newVersion, notes }) {
+      qs('#pn-prev').textContent = 'v' + prevVersion;
+      qs('#pn-new').textContent = 'v' + newVersion + ' ✓';
+      const body = document.getElementById('patchnotes-body');
+      body.innerHTML = '';
+      const lines = (notes || '').replace(/<[^>]+>/g, '').split('\n').map(l => l.trim()).filter(Boolean);
+      const sections = { new: [], improved: [], fixed: [] };
+      let hasPfx = false;
+      lines.forEach(l => {
+        const m = l.match(/^\+(new|improved|fixed)\s+(.+)/i);
+        if (m) { hasPfx = true; sections[m[1].toLowerCase()].push(m[2]); }
+      });
+      if (hasPfx) {
+        [['new', 'New', 'new'], ['improved', 'Improved', 'improved'], ['fixed', 'Fixed', 'fixed']].forEach(([key, label, cls]) => {
+          if (!sections[key].length) return;
+          const sec = document.createElement('div'); sec.className = 'pn-section-label'; sec.textContent = '✦ ' + label; body.appendChild(sec);
+          sections[key].forEach(text => {
+            const item = document.createElement('div'); item.className = 'pn-item';
+            item.innerHTML = `<div class="pn-dot ${cls}"></div><div class="pn-text">${renderMd(text)}</div>`;
+            body.appendChild(item);
+          });
+        });
+      } else if (notes && notes.trim()) {
+        const el = document.createElement('div'); el.className = 'pn-text'; el.style.whiteSpace = 'pre-wrap'; el.textContent = notes.trim(); body.appendChild(el);
+      } else {
+        const el = document.createElement('div'); el.className = 'pn-empty'; el.textContent = 'No patch notes for this version.'; body.appendChild(el);
+      }
+      document.getElementById('patchnotes-overlay').classList.add('open');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Event Wiring
+    // ═══════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Version
+      const v = await window.nomina.getVersion();
+      document.getElementById('app-version').textContent = 'v' + v;
+      document.getElementById('settings-version').textContent = 'v' + v;
+
+      await loadProfiles();
+      await loadSettings();
+      renderFileList();
+      updatePreview();
+
+      // ── Updater listeners (must be inside DOMContentLoaded) ──
+      let manualUpdateCheck = false;
+      let updateDownloaded = false; // prevents re-prompting after download is done
+
+      function fmtBytes(b) {
+        if (b > 1048576) return (b / 1048576).toFixed(1) + ' MB';
+        if (b > 1024) return (b / 1024).toFixed(0) + ' KB';
+        return b + ' B';
+      }
+      function fmtSpeed(bps) { return fmtBytes(bps) + '/s'; }
+      function fmtEta(sec) {
+        if (!isFinite(sec) || sec < 0) return '—';
+        if (sec < 60) return `${Math.round(sec)}s`;
+        return `${Math.floor(sec / 60)}m ${Math.round(sec % 60)}s`;
+      }
+
+      window.nomina.onUpdateAvailable(async info => {
+        manualUpdateCheck = false;
+
+        // If already downloaded, just make sure banner + install button are visible
+        if (updateDownloaded) {
+          document.getElementById('update-banner').classList.add('visible');
+          document.getElementById('ub-text').textContent = `Update v${info.version} ready to install`;
+          document.getElementById('ub-progress-wrap').style.display = 'none';
+          document.getElementById('ub-cancel').style.display = 'none';
+          document.getElementById('ub-install').style.display = 'flex';
+          return;
+        }
+
+        const ans = await showModal(
+          `Update v${info.version} Available`,
+          `A new version of Nomina is available. Would you like to download and install it now?`,
+          [
+            { label: 'Yes, Download', cls: 'btn-accent', value: 'yes' },
+            { label: 'Not Now', cls: '', value: 'no' },
+          ]
+        );
+        if (ans === 'yes') {
+          document.getElementById('update-banner').classList.add('visible');
+          document.getElementById('ub-progress-wrap').style.display = 'block';
+          document.getElementById('ub-cancel').style.display = 'flex';
+          document.getElementById('ub-install').style.display = 'none';
+          document.getElementById('ub-text').textContent = `Downloading v${info.version}…`;
+          log(`Downloading update v${info.version}…`, 'ok');
+          await window.nomina.approveDownload();
+        } else {
+          log(`Update v${info.version} available — skipped by user.`, 'warn');
+          const el = document.getElementById('update-status-line');
+          if (el) { el.className = 'warn'; el.style.display = 'block'; el.textContent = `Update v${info.version} available — click Check Now to download`; }
         }
       });
-    }
-    await window.nomina.saveProfiles(state.profiles);
-    populateProfileSelect(); renderProfileList();
-    log(`Profiles imported.`, 'ok');
-    this.value = '';
-  } catch(e) {
-    log(`Import failed: ${e.message}`, 'err');
-    this.value = '';
-  }
-});
 
-// ═══════════════════════════════════════════════════════════
-//  Patch Notes
-// ═══════════════════════════════════════════════════════════
-function renderMd(str) {
-  return String(str)
-    .replace(/<[^>]+>/g, '')           // strip any HTML tags first
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
-    .replace(/`([^`]+)`/g,'<code style="font-family:var(--mono);font-size:11px;background:var(--bg3);padding:1px 4px;border-radius:3px">$1</code>');
-}
+      window.nomina.onDownloadProgress(p => {
+        document.getElementById('update-banner').classList.add('visible');
+        document.getElementById('ub-progress-wrap').style.display = 'block';
+        document.getElementById('ub-cancel').style.display = 'flex';
+        document.getElementById('ub-install').style.display = 'none';
 
-function showPatchNotes({ prevVersion, newVersion, notes }) {
-  qs('#pn-prev').textContent = 'v' + prevVersion;
-  qs('#pn-new').textContent = 'v' + newVersion + ' ✓';
-  const body = document.getElementById('patchnotes-body');
-  body.innerHTML = '';
-  const lines = (notes || '').replace(/<[^>]+>/g, '').split('\n').map(l => l.trim()).filter(Boolean);
-  const sections = { new: [], improved: [], fixed: [] };
-  let hasPfx = false;
-  lines.forEach(l => {
-    const m = l.match(/^\+(new|improved|fixed)\s+(.+)/i);
-    if (m) { hasPfx = true; sections[m[1].toLowerCase()].push(m[2]); }
-  });
-  if (hasPfx) {
-    [['new','New','new'],['improved','Improved','improved'],['fixed','Fixed','fixed']].forEach(([key,label,cls]) => {
-      if (!sections[key].length) return;
-      const sec = document.createElement('div'); sec.className = 'pn-section-label'; sec.textContent = '✦ ' + label; body.appendChild(sec);
-      sections[key].forEach(text => {
-        const item = document.createElement('div'); item.className = 'pn-item';
-        item.innerHTML = `<div class="pn-dot ${cls}"></div><div class="pn-text">${renderMd(text)}</div>`;
-        body.appendChild(item);
+        // Smooth progress: don't let it jump backwards
+        const bar = document.getElementById('ub-bar');
+        const currentW = parseFloat(bar.style.width) || 0;
+        if (p.percent > currentW) bar.style.width = `${Math.round(p.percent)}%`;
+
+        document.getElementById('ub-text').textContent = `Downloading update… ${Math.round(p.percent)}%`;
+        const meta = document.getElementById('ub-meta');
+        if (p.total && p.bytesPerSecond) {
+          const remaining = (p.total - p.transferred) / p.bytesPerSecond;
+          meta.textContent = `${fmtBytes(p.transferred)} / ${fmtBytes(p.total)}  ·  ${fmtSpeed(p.bytesPerSecond)}  ·  ETA: ${fmtEta(remaining)}`;
+          meta.style.display = 'block';
+        }
       });
+
+      window.nomina.onUpdateDownloaded(info => {
+        updateDownloaded = true;
+        document.getElementById('update-banner').classList.add('visible');
+        document.getElementById('ub-text').textContent = `Update v${info.version} ready to install`;
+        document.getElementById('ub-meta').style.display = 'none';
+        document.getElementById('ub-bar').style.width = '100%';
+        document.getElementById('ub-progress-wrap').style.display = 'none';
+        document.getElementById('ub-cancel').style.display = 'none';
+        document.getElementById('ub-install').style.display = 'flex';
+        log(`Update v${info.version} ready — click Restart & Install.`, 'ok');
+        const el = document.getElementById('update-status-line');
+        if (el) { el.className = 'ok'; el.style.display = 'block'; el.textContent = `✓ Update v${info.version} downloaded — click Restart & Install in the banner`; }
+      });
+
+      window.nomina.onUpdateError(msg => {
+        log(`Update error: ${msg}`, 'warn');
+        const el = document.getElementById('update-status-line');
+        if (el) { el.className = 'err'; el.style.display = 'block'; el.textContent = `Update error: ${msg}`; }
+      });
+
+      window.nomina.onUpdateNotAvailable(() => {
+        if (updateDownloaded) return; // already downloaded, don't overwrite banner
+        const el = document.getElementById('update-status-line');
+        if (el) {
+          const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          el.className = 'ok';
+          el.style.display = 'block';
+          el.textContent = `✓ You are on the latest version (Last check: ${now})`;
+        }
+        if (manualUpdateCheck) {
+          log('Check complete: No updates found.', 'ok');
+          manualUpdateCheck = false;
+        }
+      });
+
+      window.nomina.onFirstLaunchAfterUpdate(data => showPatchNotes(data));
+
+      // ── Drop zone ──
+      const dz = document.getElementById('drop-zone');
+      dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+      dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+      dz.addEventListener('drop', async e => {
+        e.preventDefault(); dz.classList.remove('drag-over');
+        const paths = Array.from(e.dataTransfer.files).map(f => f.path).filter(Boolean);
+        if (paths.length) addFiles(paths);
+      });
+
+      // Browse files (individual)
+      on('dz-browse-files', 'click', async (e) => {
+        e.stopPropagation();
+        const files = await window.nomina.selectFiles();
+        if (files && files.length) addFiles(files);
+      });
+
+      // Browse folder
+      on('dz-browse', 'click', async (e) => {
+        e.stopPropagation();
+        const folder = await window.nomina.selectFolder();
+        if (folder) await addFolder(folder);
+      });
+
+      // Click on drop zone background = browse files
+      dz.addEventListener('click', e => {
+        if (e.target.id !== 'dz-browse' && e.target.id !== 'dz-browse-files') {
+          document.getElementById('dz-browse-files').click();
+        }
+      });
+
+      // ── Action buttons ──
+      on('btn-process-all', 'click', processFiles);
+      on('btn-rename-all', 'click', renameAll);
+      on('btn-clear-queue', 'click', () => {
+        state.files = [];
+        document.getElementById('log-area').classList.remove('visible');
+        document.getElementById('log-area').innerHTML = '';
+        renderFileList();
+        log('Queue cleared.');
+      });
+
+      // ── Profile select ──
+      qs('#profile-select').addEventListener('change', e => { if (e.target.value) applyProfile(e.target.value); });
+
+      // ── Profile modal ──
+      on('btn-new-profile', 'click', () => openProfileModal());
+      on('pm-save', 'click', saveProfileModal);
+      on('pm-cancel', 'click', () => document.getElementById('profile-modal').classList.remove('open'));
+      on('pm-delete', 'click', () => { if (editingProfileId) deleteProfile(editingProfileId); });
+
+      // ── Output mode ──
+      document.querySelectorAll('input[name="out-mode"]').forEach(r => {
+        r.addEventListener('change', e => {
+          state.outMode = e.target.value;
+          document.getElementById('output-folder-field').classList.toggle('visible', state.outMode === 'copy');
+        });
+      });
+      on('btn-select-output', 'click', async () => {
+        const folder = await window.nomina.selectOutputFolder();
+        if (folder) {
+          state.outFolder = folder;
+          document.getElementById('output-path-display').textContent = folder;
+          log(`Output folder: ${folder}`);
+        }
+      });
+
+      // ── Live preview ──
+      ['keyword', 'prefix', 'suffix'].forEach(id => on(id, 'input', updatePreview));
+      qs('#position').addEventListener('change', updatePreview);
+
+      // ── Settings ──
+      qs('#toggle-check-startup').addEventListener('change', saveSettingsFromUI);
+      qs('#sel-check-interval').addEventListener('change', saveSettingsFromUI);
+      on('btn-check-now', 'click', async () => {
+        if (updateDownloaded) {
+          // Already downloaded — just make sure banner and install button are visible
+          document.getElementById('update-banner').classList.add('visible');
+          return;
+        }
+        manualUpdateCheck = true;
+        const el = document.getElementById('update-status-line');
+        el.className = 'ok'; el.style.display = 'block'; el.textContent = '⟳ Checking for updates…';
+        await window.nomina.checkForUpdates();
+      });
+
+      on('ub-cancel', 'click', async () => {
+        const ans = await showModal('Cancel Download', 'Are you sure you want to stop downloading the update?', [
+          { label: 'Stop Download', cls: 'btn-danger', value: 'yes' },
+          { label: 'Keep Downloading', cls: '', value: 'no' },
+        ]);
+        if (ans === 'yes') {
+          const ok = await window.nomina.cancelDownload();
+          if (ok) {
+            document.getElementById('update-banner').classList.remove('visible');
+            document.getElementById('update-status-line').style.display = 'none';
+            log('Update download cancelled by user.', 'warn');
+          }
+        }
+      });
+      on('btn-send-feedback', 'click', (e) => {
+        e.preventDefault();
+        const fb = encodeURIComponent(document.getElementById('feedback-area').value);
+        window.open(`mailto:support@vellovaapps.com?subject=Nomina Feedback&body=${fb}`, '_blank');
+      });
+
+      // ── History controls ──
+      on('btn-refresh-history', 'click', renderHistory);
+
+      on('btn-clear-history', 'click', async () => {
+        const ans = await showModal('Clear History', 'Clear all rename history? This cannot be undone.', [
+          { label: 'Clear All', cls: 'btn-danger', value: 'yes' },
+          { label: 'Cancel', cls: '', value: 'no' },
+        ]);
+        if (ans !== 'yes') return;
+        await window.nomina.clearHistory();
+        renderHistory();
+        log('History cleared.', 'warn');
+      });
+
+      on('hist-sort-btn', 'click', () => {
+        histState.sortOrder = histState.sortOrder === 'newest' ? 'oldest' : 'newest';
+        renderHistory();
+      });
+
+      on('hist-reset-btn', 'click', () => resetHistFilters());
+
+      // Date chips
+      document.querySelectorAll('.date-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          histState.dateRange = chip.dataset.range;
+          renderHistory();
+        });
+      });
+
+      qs('#hist-search').addEventListener('input', e => {
+        histState.search = e.target.value;
+        renderHistory();
+      });
+
+      // ── Patch notes close ──
+      on('patchnotes-btn', 'click', () => document.getElementById('patchnotes-overlay').classList.remove('open'));
     });
-  } else if (notes && notes.trim()) {
-    const el = document.createElement('div'); el.className = 'pn-text'; el.style.whiteSpace = 'pre-wrap'; el.textContent = notes.trim(); body.appendChild(el);
-  } else {
-    const el = document.createElement('div'); el.className = 'pn-empty'; el.textContent = 'No patch notes for this version.'; body.appendChild(el);
-  }
-  document.getElementById('patchnotes-overlay').classList.add('open');
-}
-
-// ═══════════════════════════════════════════════════════════
-//  Event Wiring
-// ═══════════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', async () => {
-  // Version
-  const v = await window.nomina.getVersion();
-  document.getElementById('app-version').textContent = 'v' + v;
-  document.getElementById('settings-version').textContent = 'v' + v;
-
-  await loadProfiles();
-  await loadSettings();
-  renderFileList();
-  updatePreview();
-
-  // ── Updater listeners (must be inside DOMContentLoaded) ──
-  let manualUpdateCheck = false;
-  let updateDownloaded  = false; // prevents re-prompting after download is done
-
-  function fmtBytes(b) {
-    if (b > 1048576) return (b / 1048576).toFixed(1) + ' MB';
-    if (b > 1024)    return (b / 1024).toFixed(0) + ' KB';
-    return b + ' B';
-  }
-  function fmtSpeed(bps) { return fmtBytes(bps) + '/s'; }
-  function fmtEta(sec) {
-    if (!isFinite(sec) || sec < 0) return '—';
-    if (sec < 60)  return `${Math.round(sec)}s`;
-    return `${Math.floor(sec / 60)}m ${Math.round(sec % 60)}s`;
-  }
-
-  window.nomina.onUpdateAvailable(async info => {
-    manualUpdateCheck = false;
-
-    // If already downloaded, just make sure banner + install button are visible
-    if (updateDownloaded) {
-      document.getElementById('update-banner').classList.add('visible');
-      document.getElementById('ub-text').textContent = `Update v${info.version} ready to install`;
-      document.getElementById('ub-progress-wrap').style.display = 'none';
-      document.getElementById('ub-install').style.display = '';
-      return;
-    }
-
-    const ans = await showModal(
-      `Update v${info.version} Available`,
-      `A new version of Nomina is available. Would you like to download and install it now?`,
-      [
-        { label: 'Yes, Download', cls: 'btn-accent', value: 'yes' },
-        { label: 'Not Now',       cls: '',           value: 'no'  },
-      ]
-    );
-    if (ans === 'yes') {
-      document.getElementById('update-banner').classList.add('visible');
-      document.getElementById('ub-progress-wrap').style.display = '';
-      document.getElementById('ub-text').textContent = `Downloading v${info.version}…`;
-      log(`Downloading update v${info.version}…`, 'ok');
-      await window.nomina.approveDownload();
-    } else {
-      log(`Update v${info.version} available — skipped by user.`, 'warn');
-      const el = document.getElementById('update-status-line');
-      if (el) { el.className = 'warn'; el.style.display = 'block'; el.textContent = `Update v${info.version} available — click Check Now to download`; }
-    }
-  });
-
-  window.nomina.onDownloadProgress(p => {
-    document.getElementById('update-banner').classList.add('visible');
-    document.getElementById('ub-bar').style.width = `${Math.round(p.percent)}%`;
-    document.getElementById('ub-text').textContent = `Downloading update… ${Math.round(p.percent)}%`;
-    const meta = document.getElementById('ub-meta');
-    if (p.total && p.bytesPerSecond) {
-      const remaining = (p.total - p.transferred) / p.bytesPerSecond;
-      meta.textContent = `${fmtBytes(p.transferred)} / ${fmtBytes(p.total)}  ·  ${fmtSpeed(p.bytesPerSecond)}  ·  ETA ${fmtEta(remaining)}`;
-      meta.style.display = '';
-    }
-  });
-
-  window.nomina.onUpdateDownloaded(info => {
-    updateDownloaded = true;
-    document.getElementById('update-banner').classList.add('visible');
-    document.getElementById('ub-text').textContent = `Update v${info.version} ready to install`;
-    document.getElementById('ub-meta').style.display = 'none';
-    document.getElementById('ub-bar').style.width = '100%';
-    document.getElementById('ub-progress-wrap').style.display = 'none';
-    document.getElementById('ub-install').style.display = '';
-    log(`Update v${info.version} ready — click Restart & Install.`, 'ok');
-    const el = document.getElementById('update-status-line');
-    if (el) { el.className = 'ok'; el.style.display = 'block'; el.textContent = `✓ Update v${info.version} downloaded — click Restart & Install in the banner`; }
-  });
-
-  window.nomina.onUpdateError(msg => {
-    log(`Update error: ${msg}`, 'warn');
-    const el = document.getElementById('update-status-line');
-    if (el) { el.className = 'err'; el.style.display = 'block'; el.textContent = `Update error: ${msg}`; }
-  });
-
-  window.nomina.onUpdateNotAvailable(() => {
-    if (updateDownloaded) return; // already downloaded, don't overwrite banner
-    const el = document.getElementById('update-status-line');
-    if (el) {
-      const now = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-      el.className = 'ok';
-      el.style.display = 'block';
-      el.textContent = `✓ You are on the latest version (Last check: ${now})`;
-    }
-    if (manualUpdateCheck) {
-      log('Check complete: No updates found.', 'ok');
-      manualUpdateCheck = false;
-    }
-  });
-
-  window.nomina.onFirstLaunchAfterUpdate(data => showPatchNotes(data));
-
-  // ── Drop zone ──
-  const dz = document.getElementById('drop-zone');
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', async e => {
-    e.preventDefault(); dz.classList.remove('drag-over');
-    const paths = Array.from(e.dataTransfer.files).map(f => f.path).filter(Boolean);
-    if (paths.length) addFiles(paths);
-  });
-
-  // Browse files (individual)
-  on('dz-browse-files', 'click', async (e) => {
-    e.stopPropagation();
-    const files = await window.nomina.selectFiles();
-    if (files && files.length) addFiles(files);
-  });
-
-  // Browse folder
-  on('dz-browse', 'click', async (e) => {
-    e.stopPropagation();
-    const folder = await window.nomina.selectFolder();
-    if (folder) await addFolder(folder);
-  });
-
-  // Click on drop zone background = browse files
-  dz.addEventListener('click', e => {
-    if (e.target.id !== 'dz-browse' && e.target.id !== 'dz-browse-files') {
-      document.getElementById('dz-browse-files').click();
-    }
-  });
-
-  // ── Action buttons ──
-  on('btn-process-all', 'click', processFiles);
-  on('btn-rename-all', 'click', renameAll);
-  on('btn-clear-queue', 'click', () => {
-    state.files = [];
-    document.getElementById('log-area').classList.remove('visible');
-    document.getElementById('log-area').innerHTML = '';
-    renderFileList();
-    log('Queue cleared.');
-  });
-
-  // ── Profile select ──
-  qs('#profile-select').addEventListener('change', e => { if (e.target.value) applyProfile(e.target.value); });
-
-  // ── Profile modal ──
-  on('btn-new-profile', 'click', () => openProfileModal());
-  on('pm-save', 'click', saveProfileModal);
-  on('pm-cancel', 'click', () => document.getElementById('profile-modal').classList.remove('open'));
-  on('pm-delete', 'click', () => { if (editingProfileId) deleteProfile(editingProfileId); });
-
-  // ── Output mode ──
-  document.querySelectorAll('input[name="out-mode"]').forEach(r => {
-    r.addEventListener('change', e => {
-      state.outMode = e.target.value;
-      document.getElementById('output-folder-field').classList.toggle('visible', state.outMode === 'copy');
-    });
-  });
-  on('btn-select-output', 'click', async () => {
-    const folder = await window.nomina.selectOutputFolder();
-    if (folder) {
-      state.outFolder = folder;
-      document.getElementById('output-path-display').textContent = folder;
-      log(`Output folder: ${folder}`);
-    }
-  });
-
-  // ── Live preview ──
-  ['keyword','prefix','suffix'].forEach(id => on(id, 'input', updatePreview));
-  qs('#position').addEventListener('change', updatePreview);
-
-  // ── Settings ──
-  qs('#toggle-check-startup').addEventListener('change', saveSettingsFromUI);
-  qs('#sel-check-interval').addEventListener('change', saveSettingsFromUI);
-  on('btn-check-now', 'click', async () => {
-    if (updateDownloaded) {
-      // Already downloaded — just make sure banner and install button are visible
-      document.getElementById('update-banner').classList.add('visible');
-      return;
-    }
-    manualUpdateCheck = true;
-    const el = document.getElementById('update-status-line');
-    el.className = 'ok'; el.style.display = 'block'; el.textContent = '⟳ Checking for updates…';
-    await window.nomina.checkForUpdates();
-  });
-  on('btn-send-feedback', 'click', (e) => {
-    e.preventDefault();
-    const fb = encodeURIComponent(document.getElementById('feedback-area').value);
-    window.open(`mailto:support@vellovaapps.com?subject=Nomina Feedback&body=${fb}`, '_blank');
-  });
-
-  // ── History controls ──
-  on('btn-refresh-history', 'click', renderHistory);
-
-  on('btn-clear-history', 'click', async () => {
-    const ans = await showModal('Clear History', 'Clear all rename history? This cannot be undone.', [
-      { label: 'Clear All', cls: 'btn-danger', value: 'yes' },
-      { label: 'Cancel', cls: '', value: 'no' },
-    ]);
-    if (ans !== 'yes') return;
-    await window.nomina.clearHistory();
-    renderHistory();
-    log('History cleared.', 'warn');
-  });
-
-  on('hist-sort-btn', 'click', () => {
-    histState.sortOrder = histState.sortOrder === 'newest' ? 'oldest' : 'newest';
-    renderHistory();
-  });
-
-  on('hist-reset-btn', 'click', () => resetHistFilters());
-
-  // Date chips
-  document.querySelectorAll('.date-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      histState.dateRange = chip.dataset.range;
-      renderHistory();
-    });
-  });
-
-  qs('#hist-search').addEventListener('input', e => {
-    histState.search = e.target.value;
-    renderHistory();
-  });
-
-  // ── Tab switching — history rerenders but filters persist ──
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-      if (tab.dataset.tab === 'history') renderHistory();
-      if (tab.dataset.tab === 'profiles') renderProfileList();
-    });
-  });
-
-  // ── Patch notes close ──
-  on('patchnotes-btn', 'click', () => document.getElementById('patchnotes-overlay').classList.remove('open'));
-});
-</script>
+  </script>
 </body>
+
 </html>
