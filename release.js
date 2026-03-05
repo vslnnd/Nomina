@@ -157,9 +157,15 @@ function uploadPatchNotes(version, notes) {
   if (!token) { console.log('\n⚠  No GH_TOKEN — patch notes not uploaded'); return; }
 
   console.log('\n📝 Uploading patch notes to GitHub release...');
-  githubRequest('GET', `/repos/vslnnd/Nomina/releases/tags/v${version}`, token, null, (err, release) => {
-    if (err || !release || !release.id) {
-      console.log('⚠  Could not find GitHub release — patch notes skipped'); return;
+
+  // Use /releases (not /releases/tags/) so we can find draft releases too
+  githubRequest('GET', `/repos/vslnnd/Nomina/releases?per_page=10`, token, null, (err, releases) => {
+    if (err || !Array.isArray(releases)) {
+      console.log('⚠  Could not list GitHub releases — patch notes skipped'); return;
+    }
+    const release = releases.find(r => r.tag_name === `v${version}`);
+    if (!release || !release.id) {
+      console.log(`⚠  Could not find release for v${version} — patch notes skipped`); return;
     }
     githubRequest('PATCH', `/repos/vslnnd/Nomina/releases/${release.id}`, token, { body: notes }, (err2) => {
       if (err2) console.log('⚠  Failed to upload patch notes:', err2.message);
