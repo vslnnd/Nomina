@@ -352,13 +352,24 @@ ipcMain.handle('save-settings', (_, s) => {
 
 // ─── Auto Updater ──────────────────────────────────────────────────────────────
 
+autoUpdater.logger = console;
 autoUpdater.autoDownload = false;       // we ask the user first
 autoUpdater.autoInstallOnAppQuit = true;
+
+// Force current version to match app.getVersion() to ensure consistency
+try {
+  autoUpdater.currentVersion = app.getVersion();
+  console.log(`[Updater] Current version explicitly set to: ${autoUpdater.currentVersion}`);
+} catch (e) {
+  console.error('[Updater] Failed to set currentVersion:', e.message);
+}
 
 let lastCheckedVersion = null;
 
 function triggerUpdateCheck() {
+  console.log('[Updater] Triggering update check...');
   autoUpdater.checkForUpdates().catch(err => {
+    console.error('[Updater] Check for updates failed:', err.message);
     if (mainWindow) mainWindow.webContents.send('update-error', err.message);
   });
 }
@@ -367,10 +378,16 @@ function schedulePeriodicCheck(interval) {
   if (updateCheckInterval) clearInterval(updateCheckInterval);
   const ms = { '30min': 30 * 60000, 'hourly': 60 * 60000, '6h': 6 * 3600000, 'daily': 24 * 3600000 };
   const delay = ms[interval] || ms['hourly'];
+  console.log(`[Updater] Scheduling periodic check every ${interval} (${delay}ms)`);
   updateCheckInterval = setInterval(triggerUpdateCheck, delay);
 }
 
+autoUpdater.on('checking-for-update', () => {
+  console.log('[Updater] Checking for update...');
+});
+
 autoUpdater.on('update-available', info => {
+  console.log(`[Updater] Update available: v${info.version}`);
   lastCheckedVersion = info.version;
   if (mainWindow) mainWindow.webContents.send('update-available', info);
 });
@@ -380,6 +397,7 @@ autoUpdater.on('download-progress', progress => {
 });
 
 autoUpdater.on('update-downloaded', info => {
+  console.log(`[Updater] Update v${info.version} downloaded`);
   // Store patch notes to show on next launch
   const settings = loadSettings();
   settings.pendingPatchNotes = {
@@ -391,11 +409,13 @@ autoUpdater.on('update-downloaded', info => {
   if (mainWindow) mainWindow.webContents.send('update-downloaded', info);
 });
 
-autoUpdater.on('update-not-available', () => {
+autoUpdater.on('update-not-available', (info) => {
+  console.log(`[Updater] Update not available. Current version is up to date. (Server says: ${info ? info.version : 'unknown'})`);
   if (mainWindow) mainWindow.webContents.send('update-not-available');
 });
 
 autoUpdater.on('error', err => {
+  console.error('[Updater] Error:', err.message);
   if (mainWindow) mainWindow.webContents.send('update-error', err.message);
 });
 
@@ -405,11 +425,14 @@ ipcMain.handle('check-for-updates', () => {
 
 // User approved download after being prompted
 ipcMain.handle('approve-download', () => {
+  console.log('[Updater] User approved download');
   autoUpdater.downloadUpdate().catch(err => {
+    console.error('[Updater] Download failed:', err.message);
     if (mainWindow) mainWindow.webContents.send('update-error', err.message);
   });
 });
 
 ipcMain.on('install-update', () => {
+  console.log('[Updater] Installing update and restarting...');
   autoUpdater.quitAndInstall();
 });

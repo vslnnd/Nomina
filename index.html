@@ -2009,7 +2009,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.nomina.onUpdateNotAvailable(() => {
     if (updateDownloaded) return; // already downloaded, don't overwrite banner
     const el = document.getElementById('update-status-line');
-    if (el) { el.className = 'ok'; el.style.display = 'block'; el.textContent = '✓ You are on the latest version'; }
+    if (el) {
+      const now = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+      el.className = 'ok';
+      el.style.display = 'block';
+      el.textContent = `✓ You are on the latest version (Last check: ${now})`;
+    }
+    if (manualUpdateCheck) {
+      log('Check complete: No updates found.', 'ok');
+      manualUpdateCheck = false;
+    }
   });
 
   window.nomina.onFirstLaunchAfterUpdate(data => showPatchNotes(data));
