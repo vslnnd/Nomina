@@ -47,4 +47,5 @@ contextBridge.exposeInMainWorld('nomina', {
   onUpdateNotAvailable: (cb) => ipcRenderer.on('update-not-available', () => cb()),
   onUpdateError: (cb) => ipcRenderer.on('update-error', (_, msg) => cb(msg)),
   onFirstLaunchAfterUpdate: (cb) => ipcRenderer.on('first-launch-after-update', (_, data) => cb(data)),
+  setTitleBarOverlay: (opts) => ipcRenderer.invoke('set-titlebar-overlay', opts),
 });

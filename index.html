@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nomina</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap');
 
@@ -30,6 +31,26 @@
       --sans: 'Syne', sans-serif;
       --radius: 6px;
       --tr: .15s ease;
+    }
+
+    [data-theme="light"] {
+      --bg: #f3f2ee;
+      --bg2: #eceae4;
+      --bg3: #e5e3dc;
+      --bg4: #dddbd3;
+      --border: #cbc8be;
+      --border2: #b6b3a8;
+      --accent: #1f7808;
+      --accent2: #165c04;
+      --accent-dim: rgba(31, 120, 8, .1);
+      --accent-dim2: rgba(31, 120, 8, .05);
+      --red: #be1f1f;
+      --red-dim: rgba(190, 31, 31, .1);
+      --yellow: #8a6000;
+      --yellow-dim: rgba(138, 96, 0, .1);
+      --text: #1a1a17;
+      --text2: #3a3a37;
+      --text3: #676560;
     }
 
     *,
@@ -271,9 +292,17 @@
     }
 
     .tab-icon {
-      margin-right: 5px;
-      font-size: 10px;
+      margin-right: 6px;
+      font-size: 14px;
+      line-height: 1;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
+
+
+
+
 
     /* ── Tab Panels ── */
     .tab-panel {
@@ -499,6 +528,56 @@
     .toggle input:checked+.toggle-slider::before {
       transform: translateX(18px);
       background: var(--accent2);
+    }
+
+    /* ── Theme Pill Toggle ── */
+    .theme-pill {
+      display: flex;
+      align-items: center;
+    }
+    .theme-pill-track {
+      position: relative;
+      display: flex;
+      background: var(--bg4);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 3px;
+      gap: 0;
+    }
+    .theme-pill-opt {
+      position: relative;
+      z-index: 1;
+      padding: 3px 14px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      border: none;
+      background: transparent;
+      color: var(--text3);
+      cursor: pointer;
+      border-radius: 16px;
+      transition: color .25s ease;
+      white-space: nowrap;
+    }
+    .theme-pill-opt.active {
+      color: var(--text);
+    }
+    .theme-pill-thumb {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      left: 3px;
+      width: calc(50% - 3px);
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      transition: transform .25s ease;
+      pointer-events: none;
+    }
+    .theme-pill-track[data-active="light"] .theme-pill-thumb {
+      transform: translateX(100%);
     }
 
     /* ════════════════════════════════════
@@ -2088,11 +2167,17 @@
 
     <!-- Tabs -->
     <div id="tabs">
-      <div class="tab active" data-tab="rename"><span class="tab-icon">⟳</span>RENAME FILE</div>
-      <div class="tab" data-tab="profiles"><span class="tab-icon">◈</span>PROFILES</div>
-      <div class="tab" data-tab="settings"><span class="tab-icon">◎</span>SETTINGS</div>
-      <div class="tab" data-tab="history"><span class="tab-icon">◷</span>HISTORY</div>
+      <div class="tab active" data-tab="rename"><i class="ph ph-pencil-simple tab-icon"></i>RENAME FILE</div>
+      <div class="tab" data-tab="profiles"><i class="ph ph-bookmarks tab-icon"></i>PROFILES</div>
+      <div class="tab" data-tab="history"><i class="ph ph-clock-counter-clockwise tab-icon"></i>HISTORY</div>
+      <div class="tab" data-tab="settings"><i class="ph ph-gear-six tab-icon"></i>SETTINGS</div>
     </div>
+
+
+
+
+
+
 
     <!-- ════ RENAME TAB ════ -->
     <div class="tab-panel active" id="tab-rename">
@@ -2220,7 +2305,7 @@
           <div id="rename-bottom">
             <div id="log-area"></div>
             <div id="action-row">
-              <button id="btn-process-all" disabled>⟳ Process Files</button>
+              <button id="btn-process-all" disabled><i class="ph ph-arrow-clockwise"></i> Process Files</button>
               <button id="btn-rename-all" disabled>✓ Rename All</button>
             </div>
           </div>
@@ -2246,6 +2331,28 @@
     <!-- ════ SETTINGS TAB ════ -->
     <div class="tab-panel" id="tab-settings">
       <div id="settings-panel">
+
+
+        <!-- Appearance -->
+        <div class="settings-section">
+          <div class="settings-section-header">Appearance</div>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-title">Theme</div>
+              <div class="settings-row-desc">Switch between dark and light mode</div>
+            </div>
+            <div class="settings-row-ctrl">
+              <div class="theme-pill">
+                <div class="theme-pill-track" id="theme-pill-track" data-active="dark">
+                  <button class="theme-pill-opt active" data-theme-val="dark">Dark</button>
+                  <button class="theme-pill-opt" data-theme-val="light">Light</button>
+                  <div class="theme-pill-thumb"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Updates -->
         <div class="settings-section">
@@ -3156,7 +3263,7 @@
         empty.className = 'hi-empty-state';
         if (total === 0) {
           empty.innerHTML = `
-        <div class="hi-empty-icon">◷</div>
+        <div class="hi-empty-icon"><i class="ph ph-clock-counter-clockwise"></i></div>
         <div class="hi-empty-title">No history yet</div>
         <div class="hi-empty-sub">Completed renames will appear here automatically.</div>`;
         } else {
@@ -3231,18 +3338,53 @@
     // ═══════════════════════════════════════════════════════════
     //  Settings
     // ═══════════════════════════════════════════════════════════
+    const TITLEBAR_DARK  = { color: '#0d0d0d', symbolColor: '#848484', height: 46 };
+    const TITLEBAR_LIGHT = { color: '#f3f2ee', symbolColor: '#676560', height: 46 };
+
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      if (theme === 'light') {
+        html.setAttribute('data-theme', 'light');
+      } else {
+        html.removeAttribute('data-theme');
+      }
+      const track = document.getElementById('theme-pill-track');
+      if (track) {
+        track.dataset.active = theme;
+        track.querySelectorAll('.theme-pill-opt').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.themeVal === theme);
+        });
+      }
+      const overlay = theme === 'light' ? TITLEBAR_LIGHT : TITLEBAR_DARK;
+      if (window.nomina && window.nomina.setTitleBarOverlay) {
+        window.nomina.setTitleBarOverlay(overlay);
+      }
+    }
+
     async function loadSettings() {
       const s = await window.nomina.getSettings();
       qs('#toggle-check-startup').checked = s.checkOnStartup !== false;
       qs('#sel-check-interval').value = s.checkInterval || 'hourly';
+      applyTheme(s.theme || 'dark');
     }
 
     async function saveSettingsFromUI() {
+      const track = document.getElementById('theme-pill-track');
+      const theme = track ? track.dataset.active : 'dark';
       await window.nomina.saveSettings({
         checkOnStartup: qs('#toggle-check-startup').checked,
         checkInterval: qs('#sel-check-interval').value,
+        theme,
       });
     }
+
+    // Theme pill wiring
+    document.querySelectorAll('.theme-pill-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyTheme(btn.dataset.themeVal);
+        saveSettingsFromUI();
+      });
+    });
 
     // Profiles export/import
     on('btn-export-profiles', 'click', () => {

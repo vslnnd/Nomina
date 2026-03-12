@@ -446,3 +446,7 @@ ipcMain.on('install-update', () => {
   console.log('[Updater] Installing update and restarting...');
   autoUpdater.quitAndInstall();
 });
+
+ipcMain.handle('set-titlebar-overlay', (_, opts) => {
+  if (mainWindow) mainWindow.setTitleBarOverlay(opts);
+});
