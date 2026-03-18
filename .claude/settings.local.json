@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"require.*pdfjs\\\\|import.*pdfjs\" /c/Users/dawso/Nomina/*.js)",
+      "Bash(npm install:*)",
+      "Bash(npm view:*)",
+      "Bash(node -e \"const m = require\\(''''pdfjs-dist/legacy/build/pdf.mjs''''\\); console.log\\(typeof m\\)\")",
+      "Bash(node -e \"const pdf = require\\(''pdfjs-dist/legacy/build/pdf.mjs''\\); console.log\\(Object.keys\\(pdf.GlobalWorkerOptions\\)\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(node -e:*)"
+    ]
+  }
+}

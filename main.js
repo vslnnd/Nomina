@@ -150,8 +150,8 @@ ipcMain.handle('file-exists', (_, p) => fs.existsSync(p));
 
 ipcMain.handle('extract-pdf-value', async (_, { filePath, keyword, position }) => {
   try {
-    const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = false;
+    const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = require('url').pathToFileURL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href;
 
     const data = new Uint8Array(fs.readFileSync(filePath));
     const doc = await pdfjsLib.getDocument({ data, verbosity: 0 }).promise;
@@ -207,12 +207,26 @@ ipcMain.handle('extract-pdf-value', async (_, { filePath, keyword, position }) =
         .filter((item, i) => i !== kwIndex && Math.abs(item.y - kw.y) <= LINE_TOL && item.x > kw.x + 2)
         .sort((a, b) => a.x - b.x);
       if (cands.length) value = cands[0].str;
+      if (!value) {
+        const idx = kw.str.toLowerCase().indexOf(kwLower);
+        if (idx !== -1) {
+          const remainder = kw.str.substring(idx + keyword.trim().length).replace(/^[:\s]+/, '').trim();
+          if (remainder) value = remainder;
+        }
+      }
 
     } else if (position === 'before') {
       const cands = allItems
         .filter((item, i) => i !== kwIndex && Math.abs(item.y - kw.y) <= LINE_TOL && item.x < kw.x - 2)
         .sort((a, b) => b.x - a.x);
       if (cands.length) value = cands[0].str;
+      if (!value) {
+        const idx = kw.str.toLowerCase().indexOf(kwLower);
+        if (idx > 0) {
+          const prefix = kw.str.substring(0, idx).replace(/[:\s]+$/, '').trim();
+          if (prefix) value = prefix;
+        }
+      }
 
     } else if (position === 'below') {
       const below = allItems
