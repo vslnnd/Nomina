@@ -168,6 +168,7 @@ ipcMain.handle('extract-pdf-value', async (_, { filePath, keyword, position }) =
           str,
           x: item.transform[4],
           y: vp.height - item.transform[5], // flip Y: higher = lower on page
+          w: item.width,
           page: p,
         });
       }
@@ -228,25 +229,24 @@ ipcMain.handle('extract-pdf-value', async (_, { filePath, keyword, position }) =
         }
       }
 
-    } else if (position === 'below') {
-      const below = allItems
-        .filter((item, i) => i !== kwIndex && item.y > kw.y + LINE_TOL && item.page === kw.page)
-        .sort((a, b) => {
-          const dy = a.y - b.y;
-          if (Math.abs(dy) > 3) return dy;
-          return Math.abs(a.x - kw.x) - Math.abs(b.x - kw.x);
-        });
-      if (below.length) value = below[0].str;
-
-    } else if (position === 'above') {
-      const above = allItems
-        .filter((item, i) => i !== kwIndex && item.y < kw.y - LINE_TOL && item.page === kw.page)
-        .sort((a, b) => {
-          const dy = b.y - a.y;
-          if (Math.abs(dy) > 3) return dy;
-          return Math.abs(a.x - kw.x) - Math.abs(b.x - kw.x);
-        });
-      if (above.length) value = above[0].str;
+    } else if (position === 'below' || position === 'above') {
+      // Column-aware: prefer items whose horizontal span overlaps the keyword's,
+      // so an unrelated line in another column can't win on y-distance alone.
+      const COL_TOL = 6;
+      const overlapsKw = (item) =>
+        item.x < kw.x + (kw.w || 0) + COL_TOL && item.x + (item.w || 0) + COL_TOL > kw.x;
+      const dir = position === 'below' ? 1 : -1;
+      const cands = allItems.filter(
+        (item, i) => i !== kwIndex && (item.y - kw.y) * dir > LINE_TOL && item.page === kw.page
+      );
+      const aligned = cands.filter(overlapsKw);
+      const pool = aligned.length ? aligned : cands;
+      pool.sort((a, b) => {
+        const dy = (a.y - b.y) * dir;
+        if (Math.abs(dy) > 3) return dy;
+        return Math.abs(a.x - kw.x) - Math.abs(b.x - kw.x);
+      });
+      if (pool.length) value = pool[0].str;
     }
 
     if (!value) return { success: false, error: `No value found ${position} keyword "${keyword}"` };

@@ -14,7 +14,7 @@ Nomina reads the text inside your PDF files and renames them according to patter
 - Anchor-based naming patterns with multi-match navigation
 - Batch processing with live preview before any files are renamed
 - Auto-updates — new versions install silently in the background
-- macOS and Windows support
+- Windows support
 
 ---
 
@@ -40,7 +40,6 @@ Get the latest version from the [Releases](../../releases/latest) page.
 
 | Platform | File |
 |----------|------|
-| macOS | `.dmg` |
 | Windows | `.exe` installer |
 
 No setup required — download, install, open.
