@@ -2,47 +2,60 @@
 
 **Rename files automatically based on their PDF content.**
 
-Nomina reads the text inside your PDF files and renames them according to patterns you define — no manual work, no copy-pasting. Built for professionals who process large volumes of documents and need precision at scale.
+Nomina reads the text inside your PDF files and renames them according to patterns you define, with no manual work and no copy-pasting. Built for professionals who process large volumes of documents and need precision at scale.
 
-> Part of the [Vellova Apps](https://github.com/vslnnd) suite.
+> Part of the [Vellova Apps](https://github.com/vslnnd) suite · [See it on my portfolio](https://nenad.vercel.app/nomina/)
 
 ---
 
 ## Features
 
-- Spatial text extraction — correctly handles multi-column PDFs and complex layouts
+- Spatial text extraction that handles multi-column PDFs and complex layouts
 - Anchor-based naming patterns with multi-match navigation
-- Batch processing with live preview before any files are renamed
-- Auto-updates — new versions install silently in the background
-- Windows support
+- Matching XLSX, TXT, XML and CSV files are paired with their PDF and renamed with it
+- Batch processing with a live preview before any file is renamed
+- Profiles for the patterns you use often
+- Auto-updates that install in the background
 
 ---
 
-## Screenshots
+## See it in action
 
-**Rename File — drop your files, set a keyword and position, preview the output before renaming**
-![Rename File](screenshots/rename-file.png)
+### Pick files
 
-**Empty state — clean starting point, supports PDF, XLSX, TXT, XML and CSV**
-![Empty State](screenshots/empty-state.png)
+Drop in a batch of scans. Each PDF is read, matching files are paired with it, and every new name is previewed before you rename.
 
-**Profiles — save your extraction configuration and reuse it across sessions**
-![Profiles](screenshots/profiles.png)
+![Adding scanned PDFs and a spreadsheet, and previewing their new names](media/pick-files.gif)
 
-**Settings — manage updates, import/export profiles, and send feedback directly**
-![Settings](screenshots/settings.png)
+### Rename options
+
+Set a keyword and where the value sits relative to it, plus an optional prefix and suffix.
+
+![Setting the keyword, position, prefix and suffix](media/rename-options.gif)
+
+### Profiles
+
+Save a renaming pattern as a profile and apply it in one click.
+
+![Saving and applying a profile](media/profiles.gif)
+
+### History
+
+A full log of every rename, batch by batch.
+
+![The history of past renames](media/history.gif)
+
+### Settings
+
+Auto-updates install in the background, plus appearance and feedback.
+
+![The settings screen](media/settings.gif)
 
 ---
 
 ## Download
 
-Get the latest version from the [Releases](../../releases/latest) page.
-
-| Platform | File |
-|----------|------|
-| Windows | `.exe` installer |
-
-No setup required — download, install, open.
+Get the latest Windows installer from the [Releases](../../releases/latest) page. Run it, and Nomina keeps itself up to date from then on.
 
 ---
 
@@ -50,7 +63,7 @@ No setup required — download, install, open.
 
 ```bash
 npm install
-npm run dev
+npm start
 ```
 
 ---
